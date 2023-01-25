@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/loginStyle.js";
-import { Button, IconButton, makeStyles, TextField } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  makeStyles,
+  TextField,
+} from "@material-ui/core";
 import CustomInput from "../../../components/CustomInput/CustomInput";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Router from "next/router";
@@ -38,6 +44,8 @@ export default function Login() {
         } else {
           toast.error("Sem Permissão");
         }
+      } else {
+        toast.error("Email ou Senha incorreto");
       }
     }
   };
@@ -87,7 +95,7 @@ export default function Login() {
             fullWidth
             onClick={() => submit()}
           >
-            Logar
+            {isLoading ? <CircularProgress></CircularProgress> : "Logar"}
           </Button>
         </div>
       </div>

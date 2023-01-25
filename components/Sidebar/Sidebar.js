@@ -19,12 +19,9 @@ import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
 import styles from "assets/jss/nextjs-material-dashboard/components/sidebarStyle.js";
 
 export default function Sidebar(props) {
-  // used for checking current route
   const router = useRouter();
-  // creates styles for this component
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
     return router.route.indexOf(routeName) > -1 ? true : false;
   }
@@ -34,16 +31,10 @@ export default function Sidebar(props) {
       {routes.map((prop, key) => {
         var activePro = " ";
         var listItemClasses;
-        if (prop.path === "/upgrade-to-pro") {
-          activePro = classes.activePro + " ";
-          listItemClasses = classNames({
-            [" " + classes[color]]: true,
-          });
-        } else {
-          listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path),
-          });
-        }
+
+        listItemClasses = classNames({
+          [" " + classes[color]]: activeRoute(prop.layout + prop.path),
+        });
         const whiteFontClasses = classNames({
           [" " + classes.whiteFont]:
             activeRoute(prop.layout + prop.path) ||
@@ -82,22 +73,7 @@ export default function Sidebar(props) {
       })}
     </List>
   );
-  var brand = (
-    <div className={classes.logo}>
-      <a
-        href="https://www.creative-tim.com?ref=njsmd-sidebar"
-        className={classNames(classes.logoLink, {
-          [classes.logoLinkRTL]: props.rtlActive,
-        })}
-        target="_blank"
-      >
-        <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
-        </div>
-        {logoText}
-      </a>
-    </div>
-  );
+  var brand = <div className={classes.logo}>MKT</div>;
   return (
     <div>
       <Hidden mdUp implementation="css">
@@ -120,12 +96,7 @@ export default function Sidebar(props) {
             {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
             {links}
           </div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
-          ) : null}
+          <div className={classes.background} />
         </Drawer>
       </Hidden>
       <Hidden smDown implementation="css">
@@ -141,12 +112,8 @@ export default function Sidebar(props) {
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
-          ) : null}
+
+          <div className={classes.background} />
         </Drawer>
       </Hidden>
     </div>
