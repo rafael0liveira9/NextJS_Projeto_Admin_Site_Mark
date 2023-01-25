@@ -4,6 +4,13 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 
+import { useEffect } from "react";
+import { initGA, logPageView } from "analytics";
+// import "react-multi-carousel/lib/styles.css";
+import "react-modal-video/css/modal-video.min.css";
+import "rc-drawer/assets/index.css";
+// import "typeface-dm-sans";
+
 import PageChange from "components/PageChange/PageChange.js";
 
 import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
@@ -26,6 +33,12 @@ Router.events.on("routeChangeError", () => {
 });
 
 export default class MyApp extends App {
+  componentDidMount() {
+    initGA();
+    logPageView();
+    Router.events.on("routeChangeComplete", logPageView);
+  }
+
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
 
