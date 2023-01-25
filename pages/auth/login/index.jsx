@@ -12,6 +12,7 @@ import CustomInput from "../../../components/CustomInput/CustomInput";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Router from "next/router";
 import { toast, Toaster } from "react-hot-toast";
+import SEO from "../../../components/Seo/SEO";
 
 export default function Login() {
   const useStyles = makeStyles(styles);
@@ -52,6 +53,7 @@ export default function Login() {
 
   return (
     <div className={classes.mainPanel}>
+      <SEO title={"Login"}></SEO>
       <div className={classes.mainContent}>
         <div className={classes.container}>
           <h1 className={classes.logoPlaceholder}>MKT PROMO</h1>

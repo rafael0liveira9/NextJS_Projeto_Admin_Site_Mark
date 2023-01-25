@@ -40,6 +40,7 @@ import {
 } from "variables/charts.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import SEO from "../../components/Seo/SEO";
 
 function Dashboard() {
   const useStyles = makeStyles(styles);
@@ -47,6 +48,7 @@ function Dashboard() {
   return (
     <div>
       <GridContainer>
+        <SEO title={"Dashboard"}></SEO>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
             <CardHeader color="warning" stats icon>
