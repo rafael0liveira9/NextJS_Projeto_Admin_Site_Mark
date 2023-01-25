@@ -20,6 +20,8 @@ export default function IndexPage() {
     //     </Layout>
     //   </StickyProvider>
     // </ThemeProvider>
-    <div></div>
+    <div>
+      <div></div>
+    </div>
   );
 }
