@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Sticky from "react-stickynode";
 import Header from "./header/header";
-import Footer from "./footer/footer";
 export default function Layout({ children }) {
   const [isSticky, setIsSticky] = useState(false);
   const handleStateChange = (status) => {
