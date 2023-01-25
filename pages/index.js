@@ -10,15 +10,18 @@ import ServiceSection from "../sections/service-section";
 
 export default function IndexPage() {
   return (
-    <ThemeProvider theme={theme}>
-      <StickyProvider>
-        <Layout>
-          <SEO title="Startup Landing 005" />
-          <Banner />
-          <KeyFeature />
-          <ServiceSection />
-        </Layout>
-      </StickyProvider>
-    </ThemeProvider>
+    // <ThemeProvider theme={theme}>
+    //   <StickyProvider>
+    //     <Layout>
+    //       <SEO title="Startup Landing 005" />
+    //       <Banner />
+    //       <KeyFeature />
+    //       <ServiceSection />
+    //     </Layout>
+    //   </StickyProvider>
+    // </ThemeProvider>
+    <div>
+      <div></div>
+    </div>
   );
 }
