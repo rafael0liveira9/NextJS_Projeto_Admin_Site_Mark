@@ -2,8 +2,9 @@ import { Container, Box, Heading, Text, Image, Button } from "theme-ui";
 import BannerImg from "assets/banner-thumb.png";
 import ShapeLeft from "assets/shape-left.png";
 import ShapeRight from "assets/shape-right.png";
+import Link from "next/link";
 
-export default function Banner() {
+export default function Banner({ isOne }) {
   return (
     <section sx={styles.banner} id="home">
       <Container sx={styles.banner.container}>
@@ -16,7 +17,15 @@ export default function Banner() {
             victory of the managements that supplies best design system
             guidelines ever.
           </Text>
-          <Button variant="primary">Explore</Button>
+          {isOne ? (
+            <Link href={"/lp"}>
+              <Button variant="primary">Explore</Button>
+            </Link>
+          ) : (
+            <Link href={"/slider"}>
+              <Button variant="primary">Explore</Button>
+            </Link>
+          )}
         </Box>
 
         <Box sx={styles.banner.imageBox}>

@@ -1,77 +1,24 @@
-import { Checkbox, Input, makeStyles, Slider } from "@material-ui/core";
-import React, { useState } from "react";
-import SEO from "../../components/Seo/SEO";
-import styles from "../../assets/jss/nextjs-material-dashboard/views/lp";
+import React from "react";
+import { ThemeProvider } from "theme-ui";
+import { StickyProvider } from "../../contexts/app/app.provider";
+import theme from "theme";
+import SEO from "components/seo";
+import Layout from "components/layout";
+import Banner from "../../sections/banner";
+import KeyFeature from "../../sections/key-feature";
+import ServiceSection from "../../sections/service-section";
 
-function Index() {
-  const useStyles = makeStyles(styles);
-  const classes = useStyles();
-
-  const [value, setValue] = useState(399);
-  const [checkBox1, setCheckBox1] = useState(false);
-  const [checkBox2, setCheckBox2] = useState(false);
-  const [checkBox3, setCheckBox3] = useState(false);
-  const [checkBox4, setCheckBox4] = useState(false);
-
+export default function IndexPage() {
   return (
-    <div className={classes.mainPanel}>
-      <div className={classes.mainContent}>
-        <h1>Quanto você quer investir?</h1>
-        <div>
-          <h3>Valor Mínimo e Máximo</h3>
-          <Slider
-            getAriaLabel={() => "Minimum distance"}
-            value={value}
-            min={399}
-            max={1299}
-            onChange={(e, t) => setValue(t)}
-            valueLabelDisplay="auto"
-            getAriaValueText={(a) => `${a}`}
-          />
-        </div>
-        <div className={classes.row}>
-          <Checkbox value={checkBox1} onChange={(e, i) => setCheckBox1(i)} />
-          <p>Já possui rede social ativa?</p>
-          {checkBox1 && (
-            <div className={classes.row}>
-              <p>Deseja melhora-la?</p>
-              <Checkbox />
-            </div>
-          )}
-        </div>
-        <div className={classes.row}>
-          <Checkbox value={checkBox2} onChange={(e, i) => setCheckBox2(i)} />
-          <p>Já possui logo?</p>
-          {checkBox2 && (
-            <div className={classes.row}>
-              <p>Deseja melhora-la?</p>
-              <Checkbox />
-            </div>
-          )}
-        </div>
-        <div className={classes.row}>
-          <Checkbox value={checkBox3} onChange={(e, i) => setCheckBox3(i)} />
-          <p>Já possui site?</p>
-          {checkBox3 && (
-            <div className={classes.row}>
-              <p>Deseja melhora-la?</p>
-              <Checkbox />
-            </div>
-          )}
-        </div>
-        <div className={classes.row}>
-          <Checkbox value={checkBox4} onChange={(e, i) => setCheckBox4(i)} />
-          <p>Já possui blog?</p>
-          {checkBox4 && (
-            <div className={classes.row}>
-              <p>Deseja melhora-la?</p>
-              <Checkbox />
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <ThemeProvider theme={theme}>
+      <StickyProvider>
+        <Layout>
+          <SEO title="Startup Landing 005" />
+          <Banner isOne={false} />
+          <KeyFeature />
+          <ServiceSection />
+        </Layout>
+      </StickyProvider>
+    </ThemeProvider>
   );
 }
-
-export default Index;

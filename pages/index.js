@@ -14,7 +14,7 @@ export default function IndexPage() {
       <StickyProvider>
         <Layout>
           <SEO title="Startup Landing 005" />
-          <Banner />
+          <Banner isOne={true} />
           <KeyFeature />
           <ServiceSection />
         </Layout>
