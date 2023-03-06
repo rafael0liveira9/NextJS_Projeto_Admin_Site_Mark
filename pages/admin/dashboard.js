@@ -53,7 +53,7 @@ function Dashboard() {
         <GridItem xs={12} sm={6} md={3}>
           <Card>
             <CardHeader color="dark" stats icon>
-              <CardIcon color="dark">
+              <CardIcon color="primary">
                 <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Site - Site One Page</p>
@@ -70,7 +70,7 @@ function Dashboard() {
         <GridItem xs={12} sm={6} md={3}>
           <Card>
             <CardHeader color="dark" stats icon>
-              <CardIcon color="dark">
+              <CardIcon color="primary">
                 <Brush></Brush>
               </CardIcon>
               <p className={classes.cardCategory}>Logo - Logo Customizada</p>

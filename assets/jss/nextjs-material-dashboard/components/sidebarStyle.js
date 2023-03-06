@@ -118,7 +118,7 @@ const sidebarStyle = (theme) => ({
     display: "block",
     top: "0",
     left: "0",
-    backgroundColor: "#ff6900",
+    backgroundColor: "#3f2ca0",
     "&:after": {
       position: "absolute",
       zIndex: "3",
