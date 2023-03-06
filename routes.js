@@ -6,22 +6,37 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
 import Language from "@material-ui/icons/Language";
+import { DataUsage, WorkSharp } from "@material-ui/icons";
 
 const dashboardRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    rtlName: "لوحة القيادة",
     icon: Dashboard,
-
     layout: "/admin",
   },
   {
     path: "/table-list",
-    name: "Table List",
-    rtlName: "قائمة الجدول",
-    icon: "content_paste",
-
+    name: "Documentos",
+    icon: LibraryBooks,
+    layout: "/admin",
+  },
+  {
+    path: "/table-list",
+    name: "Contatos",
+    icon: BubbleChart,
+    layout: "/admin",
+  },
+  {
+    path: "/table-list",
+    name: "Prospecção",
+    icon: DataUsage,
+    layout: "/admin",
+  },
+  {
+    path: "/table-list",
+    name: "Workflow",
+    icon: WorkSharp,
     layout: "/admin",
   },
 ];

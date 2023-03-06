@@ -56,9 +56,9 @@ function Index() {
   }
 
   async function sendData() {
-    console.log(formData);
     let data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}search/packages`,
+      // `${process.env.NEXT_PUBLIC_API_URL}search/packages`,
+      `http://localhost:3001/packages/search`,
       {
         method: "POST",
         headers: {
@@ -67,6 +67,8 @@ function Index() {
         body: JSON.stringify(formData),
       }
     );
+
+    console.log(await data.json());
   }
 
   return (
