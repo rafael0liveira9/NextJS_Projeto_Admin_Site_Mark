@@ -1,13 +1,29 @@
-const withPlugins = require("next-compose-plugins");
-const withImages = require("next-images");
-const withSass = require("@zeit/next-sass");
-const withCSS = require("@zeit/next-css");
-const webpack = require("webpack");
-const path = require("path");
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path')
 
-module.exports = withPlugins([[withSass], [withImages], [withCSS]], {
-  webpack(config, options) {
-    config.resolve.modules.push(path.resolve("./"));
-    return config;
+/** @type {import('next').NextConfig} */
+
+// Remove this if you're not using Fullcalendar features
+const withTM = require('next-transpile-modules')([
+  '@fullcalendar/common',
+  '@fullcalendar/react',
+  '@fullcalendar/daygrid',
+  '@fullcalendar/list',
+  '@fullcalendar/timegrid'
+])
+
+module.exports = withTM({
+  trailingSlash: true,
+  reactStrictMode: false,
+  experimental: {
+    esmExternals: false
   },
-});
+  webpack: config => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision')
+    }
+
+    return config
+  }
+})
