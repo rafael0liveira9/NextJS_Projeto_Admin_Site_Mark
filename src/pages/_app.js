@@ -59,6 +59,7 @@ import "src/iconify-bundle/icons-bundle-react";
 
 // ** Global css styles
 import "../../styles/globals.css";
+import "../../styles/start.css";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -106,14 +107,14 @@ const App = (props) => {
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+          <title>{`${themeConfig.templateName} - Mark`}</title>
           <meta
             name="description"
-            content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+            content={`${themeConfig.templateName} – Mark, é uma agência de marketing digital de Curitiba/PR`}
           />
           <meta
             name="keywords"
-            content="Material Design, MUI, Admin Template, React Admin Template"
+            content="Mark, Marketing Digital, divulgação, Marketing, Publicidade, Tráfego Pago, ADS, Midias Sociais, Criar Site"
           />
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
