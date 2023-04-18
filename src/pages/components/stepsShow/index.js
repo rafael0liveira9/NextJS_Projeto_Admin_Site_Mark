@@ -7,12 +7,12 @@ const StepsShow = (step) => {
       case 1:
       return (
         <div className="stepsBar">
-          <div className="step"><p>1</p></div>
-          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#fe7200"></AiOutlineMinus></div>
+          <div className="stepNow"><p>1</p></div>
+          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#17084e"></AiOutlineMinus></div>
           <div className="step"><p>2</p></div>
-          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#fe7200"></AiOutlineMinus></div>
+          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#17084e"></AiOutlineMinus></div>
           <div className="step"><p>3</p></div>
-          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#fe7200"></AiOutlineMinus></div>
+          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#17084e"></AiOutlineMinus></div>
           <div className="step"><p>4</p></div>
         </div> 
         )
@@ -22,10 +22,10 @@ const StepsShow = (step) => {
         <div className="stepsBar">
           <div className="stepVerify"><AiOutlineCheck size={35} fill="#028200"></AiOutlineCheck></div>
           <div className="stepSeparator"><AiOutlineMinus size={15} fill="#028200"></AiOutlineMinus></div>
-          <div className="step"><p>2</p></div>
-          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#fe7200"></AiOutlineMinus></div>
+          <div className="stepNow"><p>2</p></div>
+          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#17084e"></AiOutlineMinus></div>
           <div className="step"><p>3</p></div>
-          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#fe7200"></AiOutlineMinus></div>
+          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#17084e"></AiOutlineMinus></div>
           <div className="step"><p>4</p></div>
         </div> 
         )
@@ -37,8 +37,8 @@ const StepsShow = (step) => {
           <div className="stepSeparator"><AiOutlineMinus size={15} fill="#028200"></AiOutlineMinus></div>
           <div className="stepVerify"><AiOutlineCheck size={35} fill="#028200"></AiOutlineCheck></div>
           <div className="stepSeparator"><AiOutlineMinus size={15} fill="#028200"></AiOutlineMinus></div>
-          <div className="step"><p>3</p></div>
-          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#fe7200"></AiOutlineMinus></div>
+          <div className="stepNow"><p>3</p></div>
+          <div className="stepSeparator"><AiOutlineMinus size={15} fill="#17084e"></AiOutlineMinus></div>
           <div className="step"><p>4</p></div>
         </div> 
         )
@@ -52,7 +52,7 @@ const StepsShow = (step) => {
           <div className="stepSeparator"><AiOutlineMinus size={15} fill="#028200"></AiOutlineMinus></div>
           <div className="stepVerify"><AiOutlineCheck size={35} fill="#028200"></AiOutlineCheck></div>
           <div className="stepSeparator"><AiOutlineMinus size={15} fill="#028200"></AiOutlineMinus></div>
-          <div className="step"><p>4</p></div>
+          <div className="stepNow"><p>4</p></div>
         </div> 
         )
      break;

@@ -1,7 +1,8 @@
 // ** MUI Imports
 import Slider from '@mui/material/Slider'
 
-const marks = [
+
+let m = [
   {
     value: 0,
     label: '0°'
@@ -20,19 +21,23 @@ const marks = [
   }
 ]
 
-const valuetext = value => {
-  return `${value}°C`
-}
 
-const SliderCustomMarks = () => {
+const SliderCustomMarks = ({ marks, defaultValue, step, variable, min, max, valueLabelFormat, value, onChange}) => {
+  if (!!marks) m=marks
   return (
+    
     <Slider
-      step={10}
-      marks={marks}
-      defaultValue={20}
+      step={step !== undefined ? step : 10}
+      marks={m}
+      defaultValue={defaultValue || 20}
       valueLabelDisplay='auto'
-      getAriaValueText={valuetext}
+      getAriaValueText={value => `${value}${variable !== undefined ? variable : '°C'}`}
       aria-labelledby='custom-marks-slider'
+      min={min || undefined}
+      max={max || undefined}
+      valueLabelFormat={valueLabelFormat || undefined}
+      onChange={onChange}
+      value={value}
     />
   )
 }

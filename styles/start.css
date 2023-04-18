@@ -1,4 +1,4 @@
-  .full-page-start {
+.full-page-start {
       background: rgb(72, 16, 213);
       background: radial-gradient(circle, rgba(72, 16, 213, 1) 0%, rgba(23, 8, 78, 1) 58%);
       width: 100%;
@@ -7,60 +7,98 @@
       flex-direction: column;
       justify-content: space-evenly;
       align-items: center;
-      padding-top: 3%;
-  }
-
-  .full-content-slider {
+      padding-top: 1%;
+}
+.full-content-slider {
       background-color: #ffffff;
       width: 90%;
-      min-height: 85vh;
-      max-height: 85vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       border-radius: 17px;
       overflow: auto;
+      margin: 10px;
+}
+
+/* *********************************************** START */
+.full-content-slider h1 {
+    color: rgba(23, 8, 78, 1);
+    align-self: baseline;
+    margin-top: 30px;
+    margin-left: 25px;
+    font-size: 22px;
+}
+
+.full-content-slider p {
+    font-size: 18px;
+}
+
+.headerBar {
+    display: flex;
+    width: 90%;
+    height: 7vh;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 50px
+}
+
+.headerBar h1 {
+    font-size: 32px;
+    font-weight: 400;
+    color: rgba(23, 8, 78, 1)
+}
+
+.checkbox-div{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    align-items: center;
   }
 
-  .full-content-slider h1 {
-      color: rgba(23, 8, 78, 1);
-      align-self: baseline;
-      margin-top: 30px;
-      margin-left: 25px;
-      font-size: 22px;
+  .checkbox-div-title{
+    width: 95%;
+    color: #222222;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 0px 8px;
+    /* background-color: #f0f0f0; */
+    text-align: center;
   }
 
-  .full-content-slider p {
-      font-size: 18px;
+/* *********************************************** Packages */
+  .packages-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
   }
 
-  .headerBar {
-      display: flex;
-      width: 90%;
-      height: 7vh;
-      background-color: #FFFFFF;
-      border-radius: 10px;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 50px
-  }
+  .card-box { 
 
-  .headerBar h1 {
-      font-size: 32px;
-      font-weight: 400;
-      color: rgba(23, 8, 78, 1)
-  }
-
-  /* ************************************ packages */
-  .card-box {
-      width: 100%;
+      max-width: 47%;
+      min-width: 47%;      
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      padding: 5px;
       align-items: center;
       justify-content: center;
+      margin-top: 10px;
   }
+  .card-box-button { 
+    
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
+    }
 
   .package-card {
       display: flex;
@@ -71,12 +109,13 @@
       border-radius: 15px;
       justify-content: flex-start;
       align-items: center;
+      border: 1px solid white;
       /* box-shadow: 2px 5px 8px #777; */
   }
 
   .package-title {
       width: 100%;
-      height: 30px;
+      height: 22px;
       text-align: center;
       background-color: rgba(72, 16, 213, 1);
       color: #FFFFFF;
@@ -97,10 +136,8 @@
   }
 
   .package-midle {
-      height: 60px;
       width: 100%;
-      min-height: 40%;
-      margin: 0px 20px;
+      min-height: 60px;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -113,7 +150,7 @@
   }
 
   .package-price {
-      font-size: 30px;
+      font-size: 20px;
       font-weight: bold;
       color: #444444;
       text-decoration: underline 1px;
@@ -127,9 +164,9 @@
   .package-products {
       display: flex;
       width: 100%;
-      height: auto;
+      min-height: 80px;
       justify-content: left;
-      align-items: center;
+      align-items: flex-start;
       flex-wrap: wrap;
       padding: 5px;
       border-top: rgba(72, 16, 213, 1) 1px solid;
@@ -145,9 +182,19 @@
       text-align: center;
       margin: 1%;
       padding: 0.8%;
-      white-space: nowrap;
 
   }
+  .list-product {
+    display: flex;
+    background-color: #f0f0f0;
+    color: #222222;
+    font-size: 12px;
+    border-radius: 5px;
+    text-align: start;
+    margin: 4% 0;
+    padding: 2% 5%;
+
+}
 
   .custom-button {
       display: flex;
@@ -161,7 +208,7 @@
       font-size: 14px;
       padding: 10px 40px;
       border-style: none;
-      margin: 20px;
+      margin: 30px;
       cursor: pointer;
       border: 1px solid #FFFFFF;
   }
@@ -177,31 +224,43 @@
   .stepsBar {
       display: flex;
       width: 90%;
-      height: 7vh;
+      height: auto;
       background-color: #FFFFFF;
       border-radius: 10px;
       justify-content: space-around;
       align-items: center;
-      padding: 0px 20px;
+      padding: 15px 20px;
       margin-bottom: 20%;
   }
 
   .step {
       display: flex;
-      border: #fe7200 solid 1px;
+      border: #17084e solid 1px;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
       width: 45px;
       height: 45px;
       border-radius: 50px;
-      color: #fe7200;
+      color: #17084e;
       background-color: #fafafa;
   }
-
+  .stepNow {
+    display: flex;
+    border: #17084e solid 2px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50px;
+    color: #17084e;
+    font-weight: bold;
+    background-color: #007bff20;
+}
   .stepVerify {
       display: flex;
-      border: #028200 solid 1px;
+      border: #028200 solid 2px;
       align-items: center;
       justify-content: center;
       font-size: 30px;
@@ -209,6 +268,7 @@
       height: 45px;
       border-radius: 50px;
       color: #028200;
+      font-weight: bold;
       background-color: #fafafa;
   }
 
@@ -243,10 +303,37 @@
       border-radius: 17px;
       padding: 50px 20px;
   }
+  .modal-lead-confirm {
+    background-color: #ffffff;
+    width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-radius: 17px;
+    padding: 20px;
+    align-items: center;
+}
+.modal-lead-confirm h1{
+    color: #fe7200;
+    font-size: 24px;
+    text-align: center;
+}
+.modal-lead-confirm h2{
+    color: #222222;
+    font-size: 20px;
+    text-align:end;
+}
+.modal-lead-confirm p{
+    color: #222222;
+    font-size: 14px;
+}
 
   .label-lead {
       width: 90%;
       text-align: center;
+
   }
 
   .modal-lead h1 {
@@ -261,17 +348,6 @@
       color: #fe7200;
       margin-top: -10px;
       ;
-  }
-
-  .button-close {
-      margin-left: 85%;
-      margin-bottom: 10px;
-      border-radius: 50px;
-      padding: 8px 12px;
-      background-color: transparent;
-      color: #FFFFFF;
-      font-weight: bold;
-      border: 1px solid #FFFFFF;
   }
 
   .input-lead {
@@ -300,30 +376,144 @@
 
   .button-submit:hover {
       background-color: rgba(23, 8, 78, 1);
+
   }
+  /* **************************************** Register */
+  .div-checkbox{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    padding: 0 15px;
+  }
+  .button-checkbox{
+    width: 15px;
+    height: 15px;
+  }
+  .register-lead {
+    background-color: #ffffff;
+    width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 17px;
+    padding: 50px 20px;
+    margin-bottom: 30px;
+}
+.register-lead p {
+    font-size: 10px;
+    font-weight: bold;
+    color: #fe7200;
+    text-align: center;  
+    
+}
+  .div-checkbox p {
+    width: 100%;
+    height: 15px;
+    text-align: center;
+    font-size: 10px;
+  }
+  .div-button-submit{
+    width: 100%;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  .button-submit-register {
+    width: 50%;
+    height: 30px;
+    background-color: #751fc5;
+    border: solid #751fc5 1px;
+    color: #FFFFFF;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 5px;
+    margin-top: 20px;
+}
+.button-submit-register :hover {
+    background-color: rgba(23, 8, 78, 1);
+}
+  .button-submit-user {
+    width: 50%;
+    height: 30px;
+    background-color: transparent;
+    border: solid #751fc5 1px;
+    color: #751fc5;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 5px;
+}
+.button-submit-user :hover {
+    color: #FFFFFF;
+    background-color: rgba(23, 8, 78, 1);
+}
+.error-input {
+    font-size: 10px !important;
+    color: red !important;
+    margin: none !important;
+    padding: none !important;
+    line-height: 0.8 !important;
+    margin-top: -1%;
+    width: 85%;
+    text-align: left;
+}
+.error-global {
+    font-size: 10px !important;
+    color: red !important;
+    margin: none !important;
+    padding: none !important;
+    line-height: 0.8 !important;
+    margin-top: -1%;
+    width: 100%;
+    text-align: center;
+}
+
+
 
   @media (min-width: 720px) {
 
-      .full-content-slider {
-
+    .full-content-slider {
           width: 50%;
-
-      }
-      .full-content-slider h1 {
+    }
+    .full-content-slider h1 {
         align-self: center;
-      }
-      .stepsBar {
-
+    }
+    .stepsBar {
           width: 60%;
-      }
-
-      .package-card {
-          width: 50%;
-      }
-
-      .modal-lead {
+    }
+    .modal-lead {
           width: 500px;
           height: auto;
-      }
-
+    }
+    .packages-container{
+        width: 50%;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-lead-confirm{
+        width: 30%;
+    }
+    .package-card {
+        width: 80%;
+    }
+    .div-checkbox{
+        justify-content: center;
+        gap: 20px;
+    }
+    .register-lead {
+        width: 40%;
+        margin-top: 40px;
+    }
+    .input-lead {
+        max-width: 400px;
+    }
   }
