@@ -15,3 +15,4 @@ const Paywall = () => {
 
 export default Paywall
 Paywall.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+Paywall.guestGuard = false;

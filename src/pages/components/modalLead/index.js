@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material'
-
+import nookies from "nookies";
+import { stringify } from 'stylis';
 
 const ModalLead = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const [name, setName] = useState();
   const [phone, setPhone] = useState();
-  const [inputPhone, setInputPhone] = useState();
   const [email, setEmail] = useState();
-  const [inputEmail, setInputEmail] = useState();
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
 
@@ -31,12 +30,11 @@ const ModalLead = () => {
          setErrorEmail(false);
       });
    }    
-  setEmail(e.target.value);
-  setInputEmail(e.target.value.replace(/(\D*)(@)(\D*)(.com)(\D*)/, "$1$2$3$4"));
+
+  setEmail(e.target.value.replace(/(\D*)(@)(\D*)(.com)(\D*)/, "$1$2$3$4"));
   }
   const phoneReal = (e) => {
-    setPhone(e.target.value.replace(/\D/g, ""));
-    setInputPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/,"($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
+    setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/,"($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
   }
 
   if (modalOpen === true) {
@@ -50,18 +48,26 @@ const ModalLead = () => {
             margin: "10px"
           }}></TextField>
           {errorName ? <h3 class="error-input">Insira um Nome valido...</h3> : ""}
-          <TextField required label='E-mail' defaultValue='' name="email" alt="input phone" onChange={emailReal} value={inputEmail} sx={{
+          <TextField required label='E-mail' defaultValue='' name="email" alt="input phone" onChange={emailReal} value={email} sx={{
             margin: "10px"
           }}></TextField>
           {errorEmail ? <h3 class="error-input">Insira um Email valido...</h3> : ""}
-          <TextField label='Telefone' defaultValue='' name="phone" alt="input phone" onChange={phoneReal} value={inputPhone} sx={{
+          <TextField label='Telefone' defaultValue='' name="phone" alt="input phone" onChange={phoneReal} value={phone} sx={{
             margin: "10px"
           }}></TextField>
-          <Button variant='contained' onClick={() => {setModalOpen(false)}} style={{ cursor: "pointer", margin:"20px"}} color='primary'>VER PROMOÇÕES</Button>
+          <Button variant='contained' onClick={() => {
+             nookies.set(null, "tokenLead", JSON.stringify({name, email, phone}), {
+               maxAge: 28800,
+               path: "/",
+             });
+            setModalOpen(false)
+          }} style={{ cursor: "pointer", margin:"20px", width:"200px", height:"50px"}} color='primary'>VER PROMOÇÕES
+          </Button>
         </div>
       </div>
     )
   }
 }
+
 
   export default ModalLead

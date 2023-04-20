@@ -2,75 +2,205 @@ import React, { useState } from 'react';
 import StepsShow from '../../components/stepsShow';
 import BlankLayout from 'src/@core/layouts/BlankLayout';
 import { useRouter } from "next/router";
-import { regex } from 'src/utils/regex';
-import { match } from 'stylis';
-import { TextField } from '@mui/material'
+import nookies from 'nookies';
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { TextField, Button, FormControlLabel, Switch } from '@mui/material'
+import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
+export async function getServerSideProps(ctx) {
+  let tokenLead;
+  try{
+  tokenLead = JSON.parse(nookies.get(ctx).tokenLead)
+  } catch {tokenLead = null}
+  return {
+      props: {
+          tokenLead: tokenLead
+      }
+  }
+}
+
+const Register = (props) => {
+  const router = useRouter();
+  const [name, setName] = useState(props.tokenLead.name || '');
+  const [errorName, setErrorName] = useState(false);
+  const [cpf, setCpf] = useState('');
+  const [errorCpf, setErrorCpf] = useState(false);
+  const [phone, setPhone] = useState(props.tokenLead.phone || '');
+  const [errorPhone, setErrorPhone] = useState(false);
+  const [email, setEmail] = useState(props.tokenLead.email || '');
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordConf, setPasswordConf] = useState('');
+  const [errorPasswordAny, setErrorpasswordAny] = useState(false);
+  const [errorPasswordConf, setErrorpasswordConf] = useState(false);
+  const [errorPassword9c, setErrorpassword9c] = useState(false);
+  const [errorPasswordEsp, setErrorpasswordEsp] = useState(false);
+  const [errorPasswordLet, setErrorpasswordLet] = useState(false);
+  const [errorPasswordNum, setErrorpasswordNum] = useState(false);
+  const [errorCheck1, setErrorCheck1] = useState(false);
+  const [errorCheck2, setErrorCheck2] = useState(false);
+  const [formCheck, setFormCheck] = useState();
 
 
-const Register = () => {
-    const router = useRouter();
-    const [error, setError] = useState({
-        cpfError: false,
-        emailError: false,
-        phoneError: false,  
-    });
-    const [dataForm, setDataForm] = useState({
-        name: '',
-        cpf: '',
-        email: '',
-        phone: '',
-        companyName: ''
-    });
-    const [name, setName] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [company, setCompany] = useState('');
-    const onChangeInput = e => {
-        setCompany(e.target.value );
-    }
-    const cpfReal = (e) => {
-        let inputCpf = e.target.value;
-        setCpf(e.target.value.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4"));
-    }
-    const phoneReal = (e) => {
-        let inputPhone = e.target.value;
-        setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/,"($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
-    }
-    const emailReal = (e) => {
-        let inputEmail = e.target.value;
-        setEmail(e.target.value.replace(/(\D*)(@)(\D*)(.com)(\D*)/, "$1$2$3$4"));
-        if(inputEmail.length !==0 || inputEmail === email){console.log(inputEmail, email, "Ok")} else {console.log("inputEmail, email, não OK")}
-    }
-    return (
-        <>
-            <div class="full-page-modal">
-                <div class="register-lead">
-                    <img src="/images/favicon.png" width={100}></img>
-                    <h3>Preencha</h3>
-                    <TextField required id='form-props-required' name="name" label='Nome' defaultValue='' onChange={(e) => setName(e.target.value)} value={name}/>
-                    <TextField required id='form-props-required' name="document" label='CPF/CNPJ' defaultValue='' onChange={cpfReal} value={cpf}/>
-                    {error.cpfError ? <h3 class="error-input">Insira um CPF valido...</h3> : ""}
-                    <input class="input-lead" name="email" type="name" alt="input email" placeholder="E-mail..." onChange={emailReal} value={email}></input>
-                    {error.emailError ? <h3 class="error-input">Insira um E-mail valido...</h3> : ""}
-                    <input class="input-lead" name="phone" type="tel" alt="input phone" placeholder="Telefone..." onChange={phoneReal} value={phone}></input>
-                    {error.phoneError ? <h3 class="error-input">Insira um Telefone valido...</h3> : ""}
-                    <input class="input-lead" name="companyName" type="text" alt="input companyName" placeholder="Nome da Empresa..." onChange={company} value={dataForm.companyName}></input>
-                    <div class="div-checkbox" ><input style={{ cursor:"pointer"}} class="button-checkbox" type="checkbox"></input><p>Li e Concordo com os termos e Politica de Privacidade.</p></div>
-                    <div class="div-button-submit">
-                        <button onClick={() => router.push("/start/paywall")} style={{ cursor:"pointer"}} class="button-submit-register" type="submit">CADASTRAR-SE</button>
-                        <button onClick={() => router.push("/login/")} style={{ cursor:"pointer"}} class="button-submit-user" type="submit">LOGIN</button>
-                        {error.cpfError || error.emailError || error.phoneError ? <h3 class="error-global">Algum dos dados digitados está incorreto, revise e tente novamente...</h3> : ""}
-                    </div>
-                </div>
-                <StepsShow step={3}></StepsShow>
-            </div>
 
-        </>
-    )
-    console.log(dataForm);
+  const nameReal = (e) => {
+    { if (e.target.value.length > 0) {setErrorName(true); setFormCheck(false)} else {setErrorName(false); setFormCheck(null) }}
+    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
+    if ((e.target.value.replace(/\d/g, "").length) >= 4) {
+      setErrorName(false);
+      setFormCheck(null)
+    }
+  }
+
+  const cpfReal = (e) => {
+    const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/gm;
+    let m;
+    { if (e.target.value.length > 0) {setErrorCpf(true); setFormCheck(false)} else {setErrorCpf(false);setFormCheck(null) };}
+    while ((m = regex.exec(e.target.value)) !== null) {
+      if (m.index === regex.lastIndex) {
+        regex.lastIndex++;
+      }
+      m.forEach(() => {
+        setErrorCpf(false);
+      });
+    }
+    setCpf(e.target.value.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
+    setFormCheck(null)
+  }
+
+  const emailReal = (e) => {
+    const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
+
+    { if(e.target.value.length > 0) {setErrorEmail(!regex.test(e.target.value)); setFormCheck(false)} else {setErrorEmail(false); setFormCheck(null)  };}
+
+    setEmail(e.target.value);
+    setFormCheck(null)
+  }
+
+
+  const phoneReal = (e) => {
+    const regex = /(\(\d{2}\)) (\d)(\d{4})(\d{4})/gm;
+    let m;
+    { if(e.target.value.length > 0) {setErrorPhone(true); setFormCheck(false)} else {setErrorPhone(false); setFormCheck(null)};}
+    while ((m = regex.exec(e.target.value)) !== null) {
+      if (m.index === regex.lastIndex) {
+        regex.lastIndex++;
+      }
+      m.forEach(() => {
+        setErrorPhone(false);
+      });
+
+    }
+    setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/, "($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
+    setFormCheck(null)
+  }
+
+  const passwordReal = (e) => {
+    const regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/gm;
+    const regex9c = /^.{8,}$/gm;
+    const regexEsp = /[\$\*&@#]/gm;
+    const regexLet = /[A-Z]/gm;
+    const regexNum = /\d/gm;
+    let m;
+    console.log(e.target.value.length);
+    {if (e.target.value.length !== 0) { 
+        setErrorpasswordAny(!regex.test(e.target.value));
+        setErrorpasswordConf(passwordConf !== e.target.value);
+        setErrorpassword9c(!regex9c.test(e.target.value));
+        setErrorpasswordEsp(!regexEsp.test(e.target.value));
+        setErrorpasswordLet(!regexLet.test(e.target.value));
+        setErrorpasswordNum(!regexNum.test(e.target.value));
+      } else {
+        setErrorpasswordAny(false);
+        setErrorpasswordConf(false);
+        setErrorpassword9c(false);
+        setErrorpasswordEsp(false);
+        setErrorpasswordLet(false);
+        setErrorpasswordNum(false);
+      }};
+
+    setPassword(e.target.value);
+    setFormCheck(null)
+    }
+    const passwordRealConf = (e) => {
+  
+      { password.length > 0 ? setErrorpasswordConf(password !== e.target.value) : setErrorpasswordConf(false) };
+  
+      setPasswordConf(e.target.value);
+      setFormCheck(null)
+    }
+
+  return (
+    <>
+      <div class="full-page-start">
+        <div class="register-lead">
+          <img src="/images/favicon.png" width={70}></img>
+          <h3>Preencha o Cadastro:</h3>
+          {!name && !errorName ?
+          <TextField required id='form-props-required' autoFocus={true} name="name" label='Nome' defaultValue="" onChange={nameReal} value={name} sx={{ margin: "5px"}}/> :
+          <TextField required id='form-props-required' autoFocus={true} name="name" label='Nome' defaultValue="" onChange={nameReal} value={name} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+          {errorName ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um Nome valido</h3> : ""}
+
+          {/* sx={{ margin: "5px"}} 
+          sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}} */}
+          {!cpf && !errorCpf ?
+          <TextField required id='form-props-required' name="document" label='CPF' defaultValue="" onChange={cpfReal} value={cpf} sx={{margin: "5px"}} /> :
+          <TextField required id='form-props-required' name="document" label='CPF' defaultValue="" onChange={cpfReal} value={cpf} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+          {errorCpf ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um CPF valido</h3> : ""}
+
+          {!email && !errorEmail ?
+          <TextField required id='form-props-required' name="email" label='E-mail' default="" onChange={emailReal} value={email} sx={{margin: "5px"}} /> :
+          <TextField required id='form-props-required' name="email" label='E-mail' default="" onChange={emailReal} value={email} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+          {errorEmail ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um E-mail valido</h3> : ""}
+
+          {!phone && !errorPhone ?
+          <TextField required id='form-props-required' name="phone" label='Telefone' defaultValue="" onChange={phoneReal} value={phone} sx={{margin: "5px"}} /> :
+          <TextField required id='form-props-required' name="phone" label='Telefone' defaultValue="" onChange={phoneReal} value={phone} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+          {errorPhone ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um Telefone valido</h3> : ""}
+
+          {!password  ?
+          <TextField required id='form-props-required' name="password" label='Senha' defaultValue='' onChange={passwordReal} value={password} sx={{margin: "5px"}} /> :
+          <TextField required id='form-props-required' name="password" label='Senha' defaultValue='' onChange={passwordReal} value={password} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+
+          {!passwordConf ? 
+          <TextField required id='form-props-required' name="passwordConfirm" label='Confirmar Senha' defaultValue='' onChange={passwordRealConf} value={passwordConf} sx={{margin: "5px"}} /> :
+          <TextField required id='form-props-required' name="passwordConfirm" label='Confirmar Senha' defaultValue='' onChange={passwordRealConf} value={passwordConf} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+
+
+          {errorPasswordAny || errorPasswordConf ? <h3 class="error-input">Requisitos para Senha:</h3> : ""}
+          {errorPasswordConf === true && (errorPasswordAny === true || passwordConf !== password) ? <h3 class="error-input"><AiOutlineClose size={9} /> As senhas devem ser iguais</h3> 
+          : errorPasswordConf === false && errorPasswordAny === true ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> As senhas são iguais</h3> 
+          : ""}
+          {errorPasswordEsp === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> Um Caractere Especial</h3> 
+          : errorPasswordEsp === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> Um Caractere Especial</h3> 
+          : ""}
+          {errorPasswordLet === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> Uma Letra Maiuscula</h3> 
+          : errorPasswordLet === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> Uma Letra Maiuscula</h3> 
+          : ""}
+          {errorPasswordNum === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> Um Numero</h3> 
+          : errorPasswordNum === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> Um Numero</h3> 
+          : ""}
+          {errorPassword9c === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> 8 Caracteres</h3> 
+          : errorPassword9c === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> 8 Caracteres</h3> 
+          : ""}
+          <div class="div-checkbox1" ><FormControlLabel control={<Switch checked={errorCheck1} onClick={() => {setErrorCheck1(!errorCheck1)}}/>} /><p>Concordo com os <a href='#'>Termos de Utilização</a></p></div>
+          <div class="div-checkbox2" ><FormControlLabel control={<Switch checked={errorCheck2} onClick={() => {setErrorCheck2(!errorCheck2)}}/>} /><p>Concordo com a <a href='#'>Politica de Privacidade</a></p></div>
+          <div class="div-button-submit">
+            {formCheck === false || errorPasswordAny || errorName || errorCpf || errorEmail || errorPhone || !errorCheck1 || !errorCheck2 || errorPasswordConf ?
+            <Button variant='contained' disabled style={{ cursor: "pointer", width: "250px", height: "50px" }} color='primary'>CADASTRAR-SE</Button> :
+            <Button variant='contained' onClick={() => router.push("/start/paywall")} style={{ cursor: "pointer", width: "250px", height: "50px" }} color='primary'>CADASTRAR-SE</Button>}
+            {formCheck === false || errorPasswordAny || errorName || errorCpf || errorEmail || errorPhone ? <h3 class="error-global">Formulário incompleto, revise e tente novamente...</h3> : ""}
+            <Button variant='outlined' onClick={() => router.push("/login/")} style={{ cursor: "pointer", width: "250px", height: "35px" }} color='primary'>FAZER LOGIN</Button>
+          </div>
+        </div>
+        <StepsShow step={3}></StepsShow>
+      </div>
+
+    </>
+  )
+  console.log(dataForm);
 
 }
 
 export default Register
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+Register.guestGuard = false;

@@ -68,6 +68,12 @@ const DefaultPalette = (mode, skin) => {
       dark: '#64C623',
       contrastText: whiteColor
     },
+    blackOrWhite: {
+      light: '#FFFFFF',
+      main: '#FFFFFF',
+      dark: '#000000',
+      contrastText: whiteColor
+    },
     grey: {
       50: '#FAFAFA',
       100: '#F5F5F5',

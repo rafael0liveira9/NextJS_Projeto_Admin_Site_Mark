@@ -110,7 +110,7 @@ const Start = () => {
             </RadioGroup>
           </div>
         </div>
-        <Button variant='contained' onClick={() => router.push("/start/packages")} style={{ cursor: "pointer", margin:"20px"}} color='secondary'>AVANÇAR</Button>
+        <Button variant='contained' onClick={() => router.push("/start/packages")} style={{ cursor: "pointer", margin:"20px", width:"250px", height:"50px"}} color='secondary'>AVANÇAR</Button>
         {/* <div onClick={() => router.push("/start/packages")}><button style={{ cursor: "pointer" }} class="custom-button" href={`/start/packages/`}>AVANÇAR</button></div> */}
       </div>
       <StepsShow step={1}></StepsShow>
@@ -120,4 +120,4 @@ const Start = () => {
 
 export default Start
 Start.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-// Start.guestGuard = false;
+Start.guestGuard = false;

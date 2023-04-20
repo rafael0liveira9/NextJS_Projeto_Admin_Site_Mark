@@ -15,3 +15,4 @@ const Custom = () => {
 
 export default Custom
 Custom.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+Custom.guestGuard = false;
