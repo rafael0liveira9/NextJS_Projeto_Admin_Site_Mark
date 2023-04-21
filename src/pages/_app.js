@@ -1,68 +1,40 @@
-// ** Next Imports
 import Head from "next/head";
 import { Router } from "next/router";
-
-// ** Store Imports
-import { store } from "src/store";
 import { Provider } from "react-redux";
-
-// ** Loader Import
+import { store } from "src/store";
 import NProgress from "nprogress";
-
-// ** Emotion Imports
 import { CacheProvider } from "@emotion/react";
-
-// ** Config Imports
-import "src/configs/i18n";
 import { defaultACLObj } from "src/configs/acl";
+import "src/configs/i18n";
 import themeConfig from "src/configs/themeConfig";
-
-// ** Fake-DB Import
 import "src/@fake-db";
-
-// ** Third Party Import
 import { Toaster } from "react-hot-toast";
-
-// ** Component Imports
-import UserLayout from "src/layouts/UserLayout";
 import AclGuard from "src/@core/components/auth/AclGuard";
-import ThemeComponent from "src/@core/theme/ThemeComponent";
 import AuthGuard from "src/@core/components/auth/AuthGuard";
 import GuestGuard from "src/@core/components/auth/GuestGuard";
 import WindowWrapper from "src/@core/components/window-wrapper";
-
-// ** Spinner Import
+import ThemeComponent from "src/@core/theme/ThemeComponent";
+import UserLayout from "src/layouts/UserLayout";
 import Spinner from "src/@core/components/spinner";
-
-// ** Contexts
-import { AuthProvider } from "src/context/AuthContext";
 import {
   SettingsConsumer,
   SettingsProvider,
 } from "src/@core/context/settingsContext";
-
-// ** Styled Components
+import { AuthProvider } from "src/context/AuthContext";
 import ReactHotToast from "src/@core/styles/libs/react-hot-toast";
-
-// ** Utils Imports
 import { createEmotionCache } from "src/@core/utils/create-emotion-cache";
+import nookies from "nookies";
 
-// ** Prismjs Styles
 import "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-tsx";
-
-// ** React Perfect Scrollbar Style
+import "prismjs/themes/prism-tomorrow.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "src/iconify-bundle/icons-bundle-react";
-
-// ** Global css styles
 import "../../styles/globals.css";
 
 const clientSideEmotionCache = createEmotionCache();
 
-// ** Pace Loader
 if (themeConfig.routingLoader) {
   Router.events.on("routeChangeStart", () => {
     NProgress.start();
@@ -75,21 +47,32 @@ if (themeConfig.routingLoader) {
   });
 }
 
-const Guard = ({ children, authGuard, guestGuard }) => {
+const Guard = ({ children, authGuard, guestGuard, cookies }) => {
   if (guestGuard) {
-    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>;
+    return (
+      <GuestGuard cookies={cookies} fallback={<Spinner />}>
+        {children}
+      </GuestGuard>
+    );
   } else if (!guestGuard && !authGuard) {
     return <>{children}</>;
   } else {
-    return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>;
+    return (
+      <AuthGuard cookies={cookies} fallback={<Spinner />}>
+        {children}
+      </AuthGuard>
+    );
   }
 };
 
-// ** Configure JSS & ClassName
 const App = (props) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+    cookies,
+  } = props;
 
-  // Variables
   const contentHeightFixed = Component.contentHeightFixed ?? false;
 
   const getLayout =
@@ -118,7 +101,7 @@ const App = (props) => {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
 
-        <AuthProvider>
+        <AuthProvider cookies={cookies}>
           <SettingsProvider
             {...(setConfig ? { pageSettings: setConfig() } : {})}
           >
@@ -127,10 +110,15 @@ const App = (props) => {
                 return (
                   <ThemeComponent settings={settings}>
                     <WindowWrapper>
-                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                      <Guard
+                        authGuard={authGuard}
+                        guestGuard={guestGuard}
+                        cookies={cookies}
+                      >
                         <AclGuard
                           aclAbilities={aclAbilities}
                           guestGuard={guestGuard}
+                          cookies={cookies}
                         >
                           {getLayout(<Component {...pageProps} />)}
                         </AclGuard>
@@ -151,6 +139,11 @@ const App = (props) => {
       </CacheProvider>
     </Provider>
   );
+};
+
+App.getInitialProps = async (ctx) => {
+  const cookies = nookies.get(ctx.ctx);
+  return { cookies };
 };
 
 export default App;

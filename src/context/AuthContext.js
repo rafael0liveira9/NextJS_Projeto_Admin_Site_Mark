@@ -1,16 +1,9 @@
-// ** React Imports
 import { createContext, useEffect, useState } from "react";
-
-// ** Next Import
 import { useRouter } from "next/router";
-
-// ** Axios
 import axios from "axios";
-
-// ** Config
 import authConfig from "src/configs/auth";
+import nookies from "nookies";
 
-// ** Defaults
 const defaultProvider = {
   user: null,
   loading: true,
@@ -22,18 +15,14 @@ const defaultProvider = {
 };
 const AuthContext = createContext(defaultProvider);
 
-const AuthProvider = ({ children }) => {
-  // ** States
+const AuthProvider = ({ children, cookies }) => {
   const [user, setUser] = useState(defaultProvider.user);
   const [loading, setLoading] = useState(defaultProvider.loading);
 
-  // ** Hooks
   const router = useRouter();
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = window.localStorage.getItem(
-        authConfig.storageTokenKeyName
-      );
+      const storedToken = cookies[authConfig.storageTokenKeyName];
       if (storedToken) {
         setLoading(true);
         await axios
@@ -44,12 +33,13 @@ const AuthProvider = ({ children }) => {
           })
           .then(async (response) => {
             setLoading(false);
+            console.log("Caiu Aqui");
             setUser({ ...response.data });
           })
           .catch(() => {
-            localStorage.removeItem("userData");
-            localStorage.removeItem("refreshToken");
-            localStorage.removeItem("accessToken");
+            nookies.destroy(null, "userData");
+            nookies.destroy(null, "refreshToken");
+            nookies.destroy(null, "accessToken");
             setUser(null);
             setLoading(false);
             if (
@@ -69,24 +59,29 @@ const AuthProvider = ({ children }) => {
 
   const handleLogin = (params, errorCallback) => {
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}login`, {
-        user: params.email,
+      .post(`${process.env.NEXT_PUBLIC_API_URL}signin`, {
+        email: params.email,
         password: params.password,
       })
       .then(async (response) => {
         params.rememberMe
-          ? window.localStorage.setItem(
+          ? nookies.set(
+              null,
               authConfig.storageTokenKeyName,
-              response.data.jwt
+              response.data.token,
+              {
+                maxAge: 30 * 24 * 60 * 60,
+                path: "/",
+              }
             )
           : null;
         const returnUrl = router.query.returnUrl;
         setUser({ ...response.data });
         params.rememberMe
-          ? window.localStorage.setItem(
-              "userData",
-              JSON.stringify(response.data)
-            )
+          ? nookies.set(null, "userData", JSON.stringify(response.data), {
+              maxAge: 30 * 24 * 60 * 60,
+              path: "/",
+            })
           : null;
         const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
         router.replace(redirectURL);
@@ -98,8 +93,8 @@ const AuthProvider = ({ children }) => {
 
   const handleLogout = () => {
     setUser(null);
-    window.localStorage.removeItem("userData");
-    window.localStorage.removeItem(authConfig.storageTokenKeyName);
+    nookies.destroy(null, "userData");
+    nookies.destroy(null, "authConfig.storageTokenKeyName");
     router.push("/login");
   };
 
