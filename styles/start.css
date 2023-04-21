@@ -1,4 +1,36 @@
-.full-page-start {
+.button-test {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+.button-test:hover {
+    transform: translateX(10px);
+  }
+  
+.button-test-error {
+    animation: shake 0.2s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(5px);
+    }
+    50% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  /**************************************************************/
+  
+  .full-page-start {
     background: rgb(72, 16, 213);
     background: radial-gradient(circle, rgba(72, 16, 213, 1) 0%, rgba(23, 8, 78, 1) 58%);
     width: 100%;
@@ -440,7 +472,7 @@
     justify-content: left;
     align-items: center;
     padding-left: 5%;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 .div-checkbox2 {
     width: 90%;
@@ -536,7 +568,7 @@
 }
 
 .error-input {
-    font-size: 9px !important;
+    font-size: 12px !important;
     color: red !important;
     margin: none !important;
     padding: none !important;
@@ -544,9 +576,10 @@
     margin-top: -1%;
     width: 85%;
     text-align: left;
+    margin-left: 5%;
 }
 .nonError-input {
-    font-size: 9px !important;
+    font-size: 12px !important;
     color: rgb(0, 162, 49) !important;
     margin: none !important;
     padding: none !important;
@@ -554,10 +587,12 @@
     margin-top: -1%;
     width: 85%;
     text-align: left;
+    margin-left: 5%;
+    
 }
 
 .error-global {
-    font-size: 10px !important;
+    font-size: 12px !important;
     color: red !important;
     margin: none !important;
     padding: none !important;
@@ -567,6 +602,74 @@
     display: flex;
     justify-content: center;
     text-align: center;
+}
+
+
+/* ************************************ PAGAMENTO */
+
+.section-paywall{
+    background-color: #f9f9f9;
+    width: 95%;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 17px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+}
+.footer-value-package{
+    width: 90%;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 20px;
+    background-color: #fe7200;
+}
+.footer-value-package p{
+    font-size: 15px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.profile-paywall-section h1{
+    font-size: 10px;
+    color: #222222;
+    font-weight: bold;
+}
+.profile-paywall-section h2{
+    font-size: 10px;
+    color: #751fc5;
+}
+
+@media (min-width: 400px) {
+
+
+    .error-input {
+        font-size: 14px !important;
+        margin-top: 0;
+        width: 85%;
+        margin-left: 20%;
+    }
+    .nonError-input {
+        font-size: 14px !important;
+        margin-top: 0;
+        width: 85%;
+        margin-left: 20%;
+    }
+    
+    .div-checkbox1 {
+        padding-left: 7%;
+
+    }
+    .div-checkbox2 {
+        padding-left: 7%;
+
+    }
 }
 
 
@@ -617,4 +720,44 @@
     .input-lead {
         max-width: 400px;
     }
+    .error-input {
+        font-size: 14px !important;
+        margin-top: 0;
+        width: 50%;
+        margin-left: 30%;
+    }
+    .nonError-input {
+        font-size: 14px !important;
+        margin-top: 0;
+        width: 50%;
+        margin-left: 30%;
+    }
+    
+    .error-global {
+        font-size: 12px !important;
+        color: red !important;
+        margin: none !important;
+        padding: none !important;
+        line-height: 0.8 !important;
+        margin-top: -1%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+    .div-checkbox1 {
+        padding-left: 32%;
+
+    }
+    .div-checkbox2 {
+        padding-left: 32%;
+
+    }
+    .section-paywall{
+        width: 40%;
+        margin-top: 40px;
+    
+    }
+
+    
 }

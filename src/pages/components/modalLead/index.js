@@ -10,31 +10,39 @@ const ModalLead = () => {
   const [email, setEmail] = useState();
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
+  const [errorPhone, setErrorPhone] = useState(false);
 
   const nameReal = (e) => {
-    setErrorName(true);
+    { if (e.target.value.length > 0) {setErrorName(true); } else {setErrorName(false)}}
     setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
-    if ((e.target.value.replace(/\d/g, "").length) >= 4){
+    if ((e.target.value.replace(/\d/g, "").length) >= 4) {
       setErrorName(false);
     }
   }
-  const emailReal = (e) => {
-  const regex = /(\D*)(@)(\D*)(.com)(\D*)/gm; 
-  let m;
-  setErrorEmail(true);
-  while ((m = regex.exec(e.target.value)) !== null) {    
-      if (m.index === regex.lastIndex) {      
-        regex.lastIndex++;
-       }    
-      m.forEach(() => {
-         setErrorEmail(false);
-      });
-   }    
 
-  setEmail(e.target.value.replace(/(\D*)(@)(\D*)(.com)(\D*)/, "$1$2$3$4"));
-  }
+
+  const emailReal = (e) => {
+    const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
+
+    { if(e.target.value.length > 0) {setErrorEmail(!regex.test(e.target.value))} else {setErrorEmail(false)};}
+
+    setEmail(e.target.value);
+  }   
+
   const phoneReal = (e) => {
-    setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/,"($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
+    const regex = /(\(\d{2}\)) (\d)(\d{4})(\d{4})/gm;
+    let m;
+    { if(e.target.value.length > 0) {setErrorPhone(true)} else {setErrorPhone(false)};}
+    while ((m = regex.exec(e.target.value)) !== null) {
+      if (m.index === regex.lastIndex) {
+        regex.lastIndex++;
+      }
+      m.forEach(() => {
+        setErrorPhone(false);
+      });
+
+    }
+    setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/, "($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
   }
 
   if (modalOpen === true) {

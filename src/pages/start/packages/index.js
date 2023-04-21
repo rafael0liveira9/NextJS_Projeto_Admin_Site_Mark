@@ -127,8 +127,9 @@ const Packages = ({ tokenLead }) => {
     const [modalPackage, setModalPackage] = useState(false);
     const [descriptiion, setDescriptiion] = useState({})
     const [checked, setChecked] = useState({});
-    const ModalPackage = () => {
-        useEffect(() => { console.log(descriptiion) }, [descriptiion]);
+    const [packageSelected, setPackageSelected] = useState({});
+    const ModalPackage = (e) => {
+        useEffect(() => { descriptiion }, [descriptiion]);
         if (modalPackage === true) {
             return (
                 <div class="full-page-modal">
@@ -145,7 +146,14 @@ const Packages = ({ tokenLead }) => {
                         </div>
 
                         <div class="card-box-button">
-                            <Button variant='contained' onClick={(y) => { setModalPackage(false); setChecked(descriptiion); }} style={{ cursor: "pointer", margin: "20px" }} color='primary'>ESCOLHER ESTE</Button>
+                            <Button variant='contained' 
+                            onClick={(y) => { 
+                                setModalPackage(false); 
+                                setChecked(descriptiion);
+                                setPackageSelected({descriptiion});
+                                console.log(packageSelected);
+                            }} 
+                            style={{ cursor: "pointer", margin: "20px" }} color='primary'>ESCOLHER ESTE</Button>
                         </div>
                     </div>
                 </div>
@@ -173,7 +181,7 @@ const Packages = ({ tokenLead }) => {
                             handleChange={setDescriptiion}
                         ></PackItens>))}
                 </div>
-                <Button variant='contained' onClick={() => router.push("/start/register")} style={{ cursor: "pointer", marginTop: "20px", width:"250px", height:"50px"}} color='primary'>AVANÇAR</Button>
+                <Button variant='contained' onClick={(packageSelected) => router.push("/start/register/")} style={{ cursor: "pointer", marginTop: "20px", width:"250px", height:"50px"}} color='primary'>AVANÇAR</Button>
                 <Button variant='outlined' onClick={() => router.push("/start/custom")} style={{ cursor: "pointer", margin: "20px", width:"250px", height:"35px"}} color='blackOrWhite'>ESCOLHER OUTRO</Button>
                 <StepsShow step={2}></StepsShow>
             </div>
