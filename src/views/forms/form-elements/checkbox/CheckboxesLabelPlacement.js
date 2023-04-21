@@ -3,16 +3,12 @@ import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
-const CheckboxesLabelPlacement = () => {
+const CheckboxesLabelPlacement = (valueYes, valueNo) => {
   return (
     <div>
       <FormGroup row>
-        <FormControlLabel value='top' label='Top' labelPlacement='top' control={<Checkbox />} sx={{ mr: 9.2 }} />
-        <FormControlLabel value='bottom' label='Bottom' labelPlacement='bottom' control={<Checkbox />} />
-      </FormGroup>
-      <FormGroup row sx={{ mt: 4 }}>
-        <FormControlLabel value='start' label='Start' control={<Checkbox />} labelPlacement='start' sx={{ mr: 4 }} />
-        <FormControlLabel value='end' control={<Checkbox />} label='End' labelPlacement='end' />
+        <FormControlLabel defaultChecked  label='Sim' labelPlacement='top' control={<Checkbox checked={valueYes || true}/>} />
+        <FormControlLabel label='Não' labelPlacement='top' control={<Checkbox checked={valueNo}/>} />
       </FormGroup>
     </div>
   )
