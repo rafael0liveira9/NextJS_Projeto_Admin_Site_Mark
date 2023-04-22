@@ -34,14 +34,14 @@ const AclGuard = (props) => {
   ) {
     return <>{children}</>;
   }
-  if (auth.user && auth.user.User.roleTypeId == 1 && !ability) {
+  if (auth.user && auth.user.User.roleTypeId == 3 && !ability) {
     setAbility(
       buildAbilityFor(auth.user.User.roleTypeId, aclAbilities.subject)
     );
   }
-
-  // Check the access of current user and render pages
+  console.log(ability);
   if (ability && ability.can(aclAbilities.action, aclAbilities.subject)) {
+    console.log("Aqui");
     return (
       <AbilityContext.Provider value={ability}>
         {children}

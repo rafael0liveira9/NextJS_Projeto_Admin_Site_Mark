@@ -33,7 +33,7 @@ const AuthProvider = ({ children, cookies }) => {
           })
           .then(async (response) => {
             setLoading(false);
-            console.log("Caiu Aqui");
+
             setUser({ ...response.data });
           })
           .catch(() => {

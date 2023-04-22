@@ -128,7 +128,7 @@ const Packages = ({ tokenLead }) => {
     const [descriptiion, setDescriptiion] = useState({})
     const [checked, setChecked] = useState({});
     const ModalPackage = () => {
-        useEffect(() => { console.log(descriptiion) }, [descriptiion]);
+        useEffect(() => { 
         if (modalPackage === true) {
             return (
                 <div class="full-page-modal">

@@ -31,7 +31,7 @@ const themeConfig = {
   appBarBlur: true /* true | false */,
   responsiveFontSizes: true /* true | false */,
   disableRipple: false /* true | false */,
-  disableCustomizer: false /* true | false */,
+  disableCustomizer: true /* true | false */,
   toastPosition:
     "top-right" /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */,
 };

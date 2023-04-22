@@ -9,7 +9,7 @@ export const AppAbility = Ability;
  */
 const defineRulesFor = (role, subject) => {
   const { can, rules } = new AbilityBuilder(AppAbility);
-  if (role === 1) {
+  if (role === 3) {
     can("manage", "all");
   } else if (role === 2) {
     can(["read"], "acl-page");

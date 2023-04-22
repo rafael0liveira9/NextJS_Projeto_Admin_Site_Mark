@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
-import StepsShow from '../../components/stepsShow';
-import BlankLayout from 'src/@core/layouts/BlankLayout';
+import React, { useState } from "react";
+import StepsShow from "../../components/stepsShow";
+import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
-import nookies from 'nookies';
+import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { TextField, Button, FormControlLabel, Switch } from '@mui/material'
-import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
+import { TextField, Button, FormControlLabel, Switch } from "@mui/material";
+import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 export async function getServerSideProps(ctx) {
   let tokenLead;
-  try{
-  tokenLead = JSON.parse(nookies.get(ctx).tokenLead)
-  } catch {tokenLead = null}
-  return {
-      props: {
-          tokenLead: tokenLead
-      }
+  try {
+    tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
+  } catch {
+    tokenLead = null;
   }
+  return {
+    props: {
+      tokenLead: tokenLead,
+    },
+  };
 }
 
 const Register = (props) => {
   const router = useRouter();
-  const [name, setName] = useState(props.tokenLead.name || '');
+  const [name, setName] = useState(props.tokenLead.name || "");
   const [errorName, setErrorName] = useState(false);
-  const [cpf, setCpf] = useState('');
+  const [cpf, setCpf] = useState("");
   const [errorCpf, setErrorCpf] = useState(false);
-  const [phone, setPhone] = useState(props.tokenLead.phone || '');
+  const [phone, setPhone] = useState(props.tokenLead.phone || "");
   const [errorPhone, setErrorPhone] = useState(false);
-  const [email, setEmail] = useState(props.tokenLead.email || '');
+  const [email, setEmail] = useState(props.tokenLead.email || "");
   const [errorEmail, setErrorEmail] = useState(false);
-  const [password, setPassword] = useState('');
-  const [passwordConf, setPasswordConf] = useState('');
+  const [password, setPassword] = useState("");
+  const [passwordConf, setPasswordConf] = useState("");
   const [errorPasswordAny, setErrorpasswordAny] = useState(false);
   const [errorPasswordConf, setErrorpasswordConf] = useState(false);
   const [errorPassword9c, setErrorpassword9c] = useState(false);
@@ -40,21 +42,35 @@ const Register = (props) => {
   const [errorCheck2, setErrorCheck2] = useState(false);
   const [formCheck, setFormCheck] = useState();
 
-
-
   const nameReal = (e) => {
-    { if (e.target.value.length > 0) {setErrorName(true); setFormCheck(false)} else {setErrorName(false); setFormCheck(null) }}
-    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
-    if ((e.target.value.replace(/\d/g, "").length) >= 4) {
-      setErrorName(false);
-      setFormCheck(null)
+    {
+      if (e.target.value.length > 0) {
+        setErrorName(true);
+        setFormCheck(false);
+      } else {
+        setErrorName(false);
+        setFormCheck(null);
+      }
     }
-  }
+    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
+    if (e.target.value.replace(/\d/g, "").length >= 4) {
+      setErrorName(false);
+      setFormCheck(null);
+    }
+  };
 
   const cpfReal = (e) => {
     const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/gm;
     let m;
-    { if (e.target.value.length > 0) {setErrorCpf(true); setFormCheck(false)} else {setErrorCpf(false);setFormCheck(null) };}
+    {
+      if (e.target.value.length > 0) {
+        setErrorCpf(true);
+        setFormCheck(false);
+      } else {
+        setErrorCpf(false);
+        setFormCheck(null);
+      }
+    }
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
         regex.lastIndex++;
@@ -63,24 +79,43 @@ const Register = (props) => {
         setErrorCpf(false);
       });
     }
-    setCpf(e.target.value.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
-    setFormCheck(null)
-  }
+    setCpf(
+      e.target.value
+        .replace(/\D/g, "")
+        .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+    );
+    setFormCheck(null);
+  };
 
   const emailReal = (e) => {
     const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
 
-    { if(e.target.value.length > 0) {setErrorEmail(!regex.test(e.target.value)); setFormCheck(false)} else {setErrorEmail(false); setFormCheck(null)  };}
+    {
+      if (e.target.value.length > 0) {
+        setErrorEmail(!regex.test(e.target.value));
+        setFormCheck(false);
+      } else {
+        setErrorEmail(false);
+        setFormCheck(null);
+      }
+    }
 
     setEmail(e.target.value);
-    setFormCheck(null)
-  }
-
+    setFormCheck(null);
+  };
 
   const phoneReal = (e) => {
     const regex = /(\(\d{2}\)) (\d)(\d{4})(\d{4})/gm;
     let m;
-    { if(e.target.value.length > 0) {setErrorPhone(true); setFormCheck(false)} else {setErrorPhone(false); setFormCheck(null)};}
+    {
+      if (e.target.value.length > 0) {
+        setErrorPhone(true);
+        setFormCheck(false);
+      } else {
+        setErrorPhone(false);
+        setFormCheck(null);
+      }
+    }
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
         regex.lastIndex++;
@@ -88,11 +123,15 @@ const Register = (props) => {
       m.forEach(() => {
         setErrorPhone(false);
       });
-
     }
-    setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/, "($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
-    setFormCheck(null)
-  }
+    setPhone(
+      e.target.value
+        .replace(/\D/g, "")
+        .replace(/(\d{2})(\d)/, "($1) $2")
+        .replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4")
+    );
+    setFormCheck(null);
+  };
 
   const passwordReal = (e) => {
     const regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/gm;
@@ -101,8 +140,9 @@ const Register = (props) => {
     const regexLet = /[A-Z]/gm;
     const regexNum = /\d/gm;
     let m;
-    console.log(e.target.value.length);
-    {if (e.target.value.length !== 0) { 
+
+    {
+      if (e.target.value.length !== 0) {
         setErrorpasswordAny(!regex.test(e.target.value));
         setErrorpasswordConf(passwordConf !== e.target.value);
         setErrorpassword9c(!regex9c.test(e.target.value));
@@ -116,18 +156,22 @@ const Register = (props) => {
         setErrorpasswordEsp(false);
         setErrorpasswordLet(false);
         setErrorpasswordNum(false);
-      }};
+      }
+    }
 
     setPassword(e.target.value);
-    setFormCheck(null)
+    setFormCheck(null);
+  };
+  const passwordRealConf = (e) => {
+    {
+      password.length > 0
+        ? setErrorpasswordConf(password !== e.target.value)
+        : setErrorpasswordConf(false);
     }
-    const passwordRealConf = (e) => {
-  
-      { password.length > 0 ? setErrorpasswordConf(password !== e.target.value) : setErrorpasswordConf(false) };
-  
-      setPasswordConf(e.target.value);
-      setFormCheck(null)
-    }
+
+    setPasswordConf(e.target.value);
+    setFormCheck(null);
+  };
 
   return (
     <>
@@ -135,72 +179,385 @@ const Register = (props) => {
         <div class="register-lead">
           <img src="/images/favicon.png" width={70}></img>
           <h3>Preencha o Cadastro:</h3>
-          {!name && !errorName ?
-          <TextField required id='form-props-required' autoFocus={true} name="name" label='Nome' defaultValue="" onChange={nameReal} value={name} sx={{ margin: "5px"}}/> :
-          <TextField required id='form-props-required' autoFocus={true} name="name" label='Nome' defaultValue="" onChange={nameReal} value={name} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
-          {errorName ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um Nome valido</h3> : ""}
+          {!name && !errorName ? (
+            <TextField
+              required
+              id="form-props-required"
+              autoFocus={true}
+              name="name"
+              label="Nome"
+              defaultValue=""
+              onChange={nameReal}
+              value={name}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              autoFocus={true}
+              name="name"
+              label="Nome"
+              defaultValue=""
+              onChange={nameReal}
+              value={name}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
+          {errorName ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Insira um Nome valido
+            </h3>
+          ) : (
+            ""
+          )}
 
           {/* sx={{ margin: "5px"}} 
           sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}} */}
-          {!cpf && !errorCpf ?
-          <TextField required id='form-props-required' name="document" label='CPF' defaultValue="" onChange={cpfReal} value={cpf} sx={{margin: "5px"}} /> :
-          <TextField required id='form-props-required' name="document" label='CPF' defaultValue="" onChange={cpfReal} value={cpf} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
-          {errorCpf ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um CPF valido</h3> : ""}
+          {!cpf && !errorCpf ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="document"
+              label="CPF"
+              defaultValue=""
+              onChange={cpfReal}
+              value={cpf}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="document"
+              label="CPF"
+              defaultValue=""
+              onChange={cpfReal}
+              value={cpf}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
+          {errorCpf ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Insira um CPF valido
+            </h3>
+          ) : (
+            ""
+          )}
 
-          {!email && !errorEmail ?
-          <TextField required id='form-props-required' name="email" label='E-mail' default="" onChange={emailReal} value={email} sx={{margin: "5px"}} /> :
-          <TextField required id='form-props-required' name="email" label='E-mail' default="" onChange={emailReal} value={email} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
-          {errorEmail ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um E-mail valido</h3> : ""}
+          {!email && !errorEmail ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="email"
+              label="E-mail"
+              default=""
+              onChange={emailReal}
+              value={email}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="email"
+              label="E-mail"
+              default=""
+              onChange={emailReal}
+              value={email}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
+          {errorEmail ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Insira um E-mail valido
+            </h3>
+          ) : (
+            ""
+          )}
 
-          {!phone && !errorPhone ?
-          <TextField required id='form-props-required' name="phone" label='Telefone' defaultValue="" onChange={phoneReal} value={phone} sx={{margin: "5px"}} /> :
-          <TextField required id='form-props-required' name="phone" label='Telefone' defaultValue="" onChange={phoneReal} value={phone} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
-          {errorPhone ? <h3 class="error-input"><AiOutlineClose size={9} /> Insira um Telefone valido</h3> : ""}
+          {!phone && !errorPhone ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="phone"
+              label="Telefone"
+              defaultValue=""
+              onChange={phoneReal}
+              value={phone}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="phone"
+              label="Telefone"
+              defaultValue=""
+              onChange={phoneReal}
+              value={phone}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
+          {errorPhone ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Insira um Telefone valido
+            </h3>
+          ) : (
+            ""
+          )}
 
-          {!password  ?
-          <TextField required id='form-props-required' name="password" label='Senha' defaultValue='' onChange={passwordReal} value={password} sx={{margin: "5px"}} /> :
-          <TextField required id='form-props-required' name="password" label='Senha' defaultValue='' onChange={passwordReal} value={password} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+          {!password ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="password"
+              label="Senha"
+              defaultValue=""
+              onChange={passwordReal}
+              value={password}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="password"
+              label="Senha"
+              defaultValue=""
+              onChange={passwordReal}
+              value={password}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
 
-          {!passwordConf ? 
-          <TextField required id='form-props-required' name="passwordConfirm" label='Confirmar Senha' defaultValue='' onChange={passwordRealConf} value={passwordConf} sx={{margin: "5px"}} /> :
-          <TextField required id='form-props-required' name="passwordConfirm" label='Confirmar Senha' defaultValue='' onChange={passwordRealConf} value={passwordConf} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>}
+          {!passwordConf ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="passwordConfirm"
+              label="Confirmar Senha"
+              defaultValue=""
+              onChange={passwordRealConf}
+              value={passwordConf}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="passwordConfirm"
+              label="Confirmar Senha"
+              defaultValue=""
+              onChange={passwordRealConf}
+              value={passwordConf}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
 
-
-          {errorPasswordAny || errorPasswordConf ? <h3 class="error-input">Requisitos para Senha:</h3> : ""}
-          {errorPasswordConf === true && (errorPasswordAny === true || passwordConf !== password) ? <h3 class="error-input"><AiOutlineClose size={9} /> As senhas devem ser iguais</h3> 
-          : errorPasswordConf === false && errorPasswordAny === true ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> As senhas são iguais</h3> 
-          : ""}
-          {errorPasswordEsp === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> Um Caractere Especial</h3> 
-          : errorPasswordEsp === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> Um Caractere Especial</h3> 
-          : ""}
-          {errorPasswordLet === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> Uma Letra Maiuscula</h3> 
-          : errorPasswordLet === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> Uma Letra Maiuscula</h3> 
-          : ""}
-          {errorPasswordNum === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> Um Numero</h3> 
-          : errorPasswordNum === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> Um Numero</h3> 
-          : ""}
-          {errorPassword9c === true && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="error-input"><AiOutlineClose size={9} /> 8 Caracteres</h3> 
-          : errorPassword9c === false && (errorPasswordAny || errorPasswordConf === true) ? <h3 class="nonError-input"><AiOutlineCheck size={9} /> 8 Caracteres</h3> 
-          : ""}
-          <div class="div-checkbox1" ><FormControlLabel control={<Switch checked={errorCheck1} onClick={() => {setErrorCheck1(!errorCheck1)}}/>} /><p>Concordo com os <a href='#'>Termos de Utilização</a></p></div>
-          <div class="div-checkbox2" ><FormControlLabel control={<Switch checked={errorCheck2} onClick={() => {setErrorCheck2(!errorCheck2)}}/>} /><p>Concordo com a <a href='#'>Politica de Privacidade</a></p></div>
+          {errorPasswordAny || errorPasswordConf ? (
+            <h3 class="error-input">Requisitos para Senha:</h3>
+          ) : (
+            ""
+          )}
+          {errorPasswordConf === true &&
+          (errorPasswordAny === true || passwordConf !== password) ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> As senhas devem ser iguais
+            </h3>
+          ) : errorPasswordConf === false && errorPasswordAny === true ? (
+            <h3 class="nonError-input">
+              <AiOutlineCheck size={9} /> As senhas são iguais
+            </h3>
+          ) : (
+            ""
+          )}
+          {errorPasswordEsp === true &&
+          (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Um Caractere Especial
+            </h3>
+          ) : errorPasswordEsp === false &&
+            (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="nonError-input">
+              <AiOutlineCheck size={9} /> Um Caractere Especial
+            </h3>
+          ) : (
+            ""
+          )}
+          {errorPasswordLet === true &&
+          (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Uma Letra Maiuscula
+            </h3>
+          ) : errorPasswordLet === false &&
+            (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="nonError-input">
+              <AiOutlineCheck size={9} /> Uma Letra Maiuscula
+            </h3>
+          ) : (
+            ""
+          )}
+          {errorPasswordNum === true &&
+          (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Um Numero
+            </h3>
+          ) : errorPasswordNum === false &&
+            (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="nonError-input">
+              <AiOutlineCheck size={9} /> Um Numero
+            </h3>
+          ) : (
+            ""
+          )}
+          {errorPassword9c === true &&
+          (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> 8 Caracteres
+            </h3>
+          ) : errorPassword9c === false &&
+            (errorPasswordAny || errorPasswordConf === true) ? (
+            <h3 class="nonError-input">
+              <AiOutlineCheck size={9} /> 8 Caracteres
+            </h3>
+          ) : (
+            ""
+          )}
+          <div class="div-checkbox1">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={errorCheck1}
+                  onClick={() => {
+                    setErrorCheck1(!errorCheck1);
+                  }}
+                />
+              }
+            />
+            <p>
+              Concordo com os <a href="#">Termos de Utilização</a>
+            </p>
+          </div>
+          <div class="div-checkbox2">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={errorCheck2}
+                  onClick={() => {
+                    setErrorCheck2(!errorCheck2);
+                  }}
+                />
+              }
+            />
+            <p>
+              Concordo com a <a href="#">Politica de Privacidade</a>
+            </p>
+          </div>
           <div class="div-button-submit">
-            {formCheck === false || errorPasswordAny || errorName || errorCpf || errorEmail || errorPhone || !errorCheck1 || !errorCheck2 || errorPasswordConf ?
-            <Button variant='contained' disabled style={{ cursor: "pointer", width: "250px", height: "50px" }} color='primary'>CADASTRAR-SE</Button> :
-            <Button variant='contained' onClick={() => router.push("/start/paywall")} style={{ cursor: "pointer", width: "250px", height: "50px" }} color='primary'>CADASTRAR-SE</Button>}
-            {formCheck === false || errorPasswordAny || errorName || errorCpf || errorEmail || errorPhone ? <h3 class="error-global">Formulário incompleto, revise e tente novamente...</h3> : ""}
-            <Button variant='outlined' onClick={() => router.push("/login/")} style={{ cursor: "pointer", width: "250px", height: "35px" }} color='primary'>FAZER LOGIN</Button>
+            {formCheck === false ||
+            errorPasswordAny ||
+            errorName ||
+            errorCpf ||
+            errorEmail ||
+            errorPhone ||
+            !errorCheck1 ||
+            !errorCheck2 ||
+            errorPasswordConf ? (
+              <Button
+                variant="contained"
+                disabled
+                style={{ cursor: "pointer", width: "250px", height: "50px" }}
+                color="primary"
+              >
+                CADASTRAR-SE
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => router.push("/start/paywall")}
+                style={{ cursor: "pointer", width: "250px", height: "50px" }}
+                color="primary"
+              >
+                CADASTRAR-SE
+              </Button>
+            )}
+            {formCheck === false ||
+            errorPasswordAny ||
+            errorName ||
+            errorCpf ||
+            errorEmail ||
+            errorPhone ? (
+              <h3 class="error-global">
+                Formulário incompleto, revise e tente novamente...
+              </h3>
+            ) : (
+              ""
+            )}
+            <Button
+              variant="outlined"
+              onClick={() => router.push("/login/")}
+              style={{ cursor: "pointer", width: "250px", height: "35px" }}
+              color="primary"
+            >
+              FAZER LOGIN
+            </Button>
           </div>
         </div>
         <StepsShow step={3}></StepsShow>
       </div>
-
     </>
-  )
-  console.log(dataForm);
+  );
+};
 
-}
-
-export default Register
+export default Register;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 Register.guestGuard = false;
