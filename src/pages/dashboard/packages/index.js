@@ -5,8 +5,10 @@ import { Button, Card, Typography } from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/package/PackageTable";
+import { useRouter } from "next/router";
 
 export default function PackagePage() {
+  const router = useRouter();
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
@@ -18,7 +20,7 @@ export default function PackagePage() {
         }
         button={"Adicionar Pacote"}
         onTap={() => {
-          console.log("Adicionando...");
+          router.push(`${router.pathname}/add`);
         }}
       />
       <Grid item xs={12}>
