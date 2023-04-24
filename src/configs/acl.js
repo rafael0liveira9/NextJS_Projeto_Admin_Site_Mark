@@ -9,7 +9,7 @@ export const AppAbility = Ability;
  */
 const defineRulesFor = (role, subject) => {
   const { can, rules } = new AbilityBuilder(AppAbility);
-  if (role === 1) {
+  if (role === 3) {
     can("manage", "all");
   } else if (role === 2) {
     can(["read"], "acl-page");
@@ -22,8 +22,6 @@ const defineRulesFor = (role, subject) => {
 
 export const buildAbilityFor = (role, subject) => {
   return new AppAbility(defineRulesFor(role, subject), {
-    // https://casl.js.org/v5/en/guide/subject-type-detection
-    // @ts-ignore
     detectSubjectType: (object) => object.type,
   });
 };

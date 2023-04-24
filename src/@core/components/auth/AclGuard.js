@@ -19,14 +19,13 @@ import { useAuth } from "src/hooks/useAuth";
 
 const AclGuard = (props) => {
   // ** Props
-  const { aclAbilities, children, guestGuard } = props;
+  const { aclAbilities, children, guestGuard, cookies } = props;
   const [ability, setAbility] = useState(undefined);
 
   // ** Hooks
   const auth = useAuth();
   const router = useRouter();
 
-  // If guestGuard is true and user is not logged in or its an error page, render the page without checking access
   if (
     guestGuard ||
     router.route === "/404" ||
@@ -35,14 +34,14 @@ const AclGuard = (props) => {
   ) {
     return <>{children}</>;
   }
-
-  // User is logged in, build ability for the user based on his role
-  if (auth.user && auth.user.usersTypeId && !ability) {
-    setAbility(buildAbilityFor(auth.user.usersTypeId, aclAbilities.subject));
+  if (auth.user && auth.user.User.roleTypeId == 3 && !ability) {
+    setAbility(
+      buildAbilityFor(auth.user.User.roleTypeId, aclAbilities.subject)
+    );
   }
-
-  // Check the access of current user and render pages
+  console.log(ability);
   if (ability && ability.can(aclAbilities.action, aclAbilities.subject)) {
+    console.log("Aqui");
     return (
       <AbilityContext.Provider value={ability}>
         {children}

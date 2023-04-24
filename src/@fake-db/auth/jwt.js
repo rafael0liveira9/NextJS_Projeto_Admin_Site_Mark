@@ -107,10 +107,10 @@ mock.onPost("/jwt/register").reply((request) => {
 mock.onGet("/auth/me").reply((config) => {
   // @ts-ignore
   // const token = config.headers.Authorization;
-  // console.log("🚀 ~ file: jwt.js:103 ~ mock.onGet ~ token", token);
+  //
   // // ** Default response
   // let response = [200, {}];
-  // console.log("🚀 ~ file: jwt.js:107 ~ mock.onGet ~ response", response);
+  //
   // // ** Checks if the token is valid or expired
   // jwt.verify(token, jwtConfig.secret, (err, decoded) => {
   //   // ** If token is expired

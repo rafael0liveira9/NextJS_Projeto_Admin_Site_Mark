@@ -10,7 +10,7 @@ const navigation = [
     children: [
       {
         title: "CRM",
-        path: "/dashboards/crm",
+        path: "/dashboard/",
       },
       {
         title: "Analytics",

@@ -5,7 +5,6 @@
  * ! To clear local storage, you may refer https://www.leadshook.com/help/how-to-clear-local-storage-in-google-chrome-browser/.
  */
 const themeConfig = {
-  // ** Layout Configs
   templateName: "Mark" /* App Name */,
   layout: "vertical" /* vertical | horizontal */,
   mode: "light" /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
@@ -13,9 +12,7 @@ const themeConfig = {
   skin: "default" /* default | bordered */,
   contentWidth: "boxed" /* full | boxed */,
   footer: "static" /* fixed | static | hidden */,
-  // ** Routing Configs
   routingLoader: true /* true | false */,
-  // ** Navigation (Menu) Configs
   navHidden: false /* true | false */,
   menuTextTruncate: true /* true | false */,
   navSubItemIcon: "mdi:circle" /* Icon */,
@@ -29,14 +26,12 @@ const themeConfig = {
   horizontalMenuToggle:
     "hover" /* click | hover /*! Note: This is for Horizontal navigation menu only */,
   horizontalMenuAnimation: true /* true | false */,
-  // ** AppBar Configs
   appBar:
     "fixed" /* fixed | static | hidden /*! Note: hidden value will only work for Vertical Layout */,
   appBarBlur: true /* true | false */,
-  // ** Other Configs
   responsiveFontSizes: true /* true | false */,
   disableRipple: false /* true | false */,
-  disableCustomizer: false /* true | false */,
+  disableCustomizer: true /* true | false */,
   toastPosition:
     "top-right" /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */,
 };
