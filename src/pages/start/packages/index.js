@@ -18,7 +18,7 @@ export async function getServerSideProps(ctx) {
             tokenLead: tokenLead
         }
     }
-  }
+  }  
 const f = [
     {
         id: 1,
@@ -104,22 +104,22 @@ const f = [
         price: "R$ 1299",
         recurrence: "Contrato de 12 meses"
     }
-    // ,
-    // {
-    //     id: 7,
-    //     title: "Premium",
-    //     products: [
-    //         "Logo- Criação de uma Logo para a marca",
-    //         "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-    //         "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-    //         "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-    //         "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-    //         "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
-    //         "12 Meses- Contrato"
-    //     ],
-    //     price: "R$ 1299",
-    //     recurrence: "Contrato de 12 meses"
-    // }
+    ,
+    {
+        id: 7,
+        title: "Premium",
+        products: [
+            "Logo- Criação de uma Logo para a marca",
+            "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
+            "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
+            "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+            "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
+            "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
+            "12 Meses- Contrato"
+        ],
+        price: "R$ 1299",
+        recurrence: "Contrato de 12 meses"
+    }
 ];
 
 const Packages = ({ tokenLead }) => {
@@ -128,7 +128,7 @@ const Packages = ({ tokenLead }) => {
     const [descriptiion, setDescriptiion] = useState({})
     const [checked, setChecked] = useState({});
     const [packageSelected, setPackageSelected] = useState({});
-    const ModalPackage = (e) => {
+    const ModalPackage = (e) => {        
         useEffect(() => { descriptiion }, [descriptiion]);
         if (modalPackage === true) {
             return (
@@ -181,7 +181,7 @@ const Packages = ({ tokenLead }) => {
                             handleChange={setDescriptiion}
                         ></PackItens>))}
                 </div>
-                <Button variant='contained' onClick={(packageSelected) => router.push("/start/register/")} style={{ cursor: "pointer", marginTop: "20px", width:"250px", height:"50px"}} color='primary'>AVANÇAR</Button>
+                <Button variant='contained' onClick={() => router.push("/start/register/")} style={{ cursor: "pointer", marginTop: "20px", width:"250px", height:"50px"}} color='primary'>PAGAR AGORA</Button>
                 <Button variant='outlined' onClick={() => router.push("/start/custom")} style={{ cursor: "pointer", margin: "20px", width:"250px", height:"35px"}} color='blackOrWhite'>ESCOLHER OUTRO</Button>
                 <StepsShow step={2}></StepsShow>
             </div>

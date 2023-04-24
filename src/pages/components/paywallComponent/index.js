@@ -2,7 +2,9 @@
 import { useState } from 'react'
 import { useRouter } from "next/router";
 
+
 // ** MUI Imports
+import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Radio from '@mui/material/Radio'
 import Select from '@mui/material/Select'
@@ -17,11 +19,11 @@ import FormLabel from '@mui/material/FormLabel'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
 import RadioGroup from '@mui/material/RadioGroup'
-import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import FormControlLabel from '@mui/material/FormControlLabel'
+
 
 // ** Third Party Imports
 import Payment from 'payment'
@@ -131,8 +133,8 @@ const PaywallComponent = () => {
                     id='form-layouts-collapsible-header-2'
                     aria-controls='form-layouts-collapsible-content-2'
                 >
-                    <Typography variant='subtitle1' sx={{ fontWeight: 500 }}>
-                        Plano Premium
+                    <Typography variant='subtitle1' sx={{ fontWeight: 500, fontSize:"14px" }}>
+                        Plano Selecionado: PREMIUM
                     </Typography>
                 </AccordionSummary>
                 <Divider sx={{ m: '0 !important' }} />
@@ -149,9 +151,9 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
                                 <Typography sx={{ fontWeight: 600 }}>Pagar em 12X</Typography>
-                                <Typography sx={{ fontWeight: 700 }}> R$ 499,00</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ 499,00</Typography>
                             </Box>
                             <Typography variant='body2'>Contrato de 12 meses de prestação de Serviços.</Typography>
                         </Box>
@@ -168,11 +170,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
                                 <Typography sx={{ fontWeight: 600 }}>Pagar em 6X</Typography>
-                                <Typography sx={{ fontWeight: 700 }}> R$ 899,00</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ 899,00</Typography>
                             </Box>
-                            <Typography variant='body2'>Contrato de 12 meses de prestação de Serviços.</Typography>
+                            <Typography variant='body2'>Desconto de 5%. Contrato de 12 meses de prestação de Serviços.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -187,16 +189,16 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
                                 <Typography sx={{ fontWeight: 600 }}>Pagar a Vista</Typography>
-                                <Typography sx={{ fontWeight: 700 }}> R$ 4.999,00</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ 4.999,00</Typography>
                             </Box>
-                            <Typography variant='body2'>Contrato de 12 meses de prestação de Serviços.</Typography>
+                            <Typography variant='body2'>Desconto de 10%. Contrato de 12 meses de prestação de Serviços.</Typography>
                         </Box>
                     </BoxWrapper>
                     <Box sx={{ width: '100%', marginTop:10 }}>
                         <Button size='large' type='submit' variant='contained' sx={{ mr: 4, fontSize:12, width:"100%" }}>
-                            Descrição do Plano
+                            Informações do Plano
                         </Button>
                         <Button onClick={() => router.push("/start/packages/")} type='reset' size='large' variant='outlined' color='primary' sx={{ fontSize:12, width:"100%", marginTop:"10px" }}>
                             Escolher Outro
@@ -213,7 +215,7 @@ const PaywallComponent = () => {
                     id='form-layouts-collapsible-header-3'
                     aria-controls='form-layouts-collapsible-content-3'
                 >
-                    <Typography variant='subtitle1' sx={{ fontWeight: 500 }}>
+                    <Typography variant='subtitle1' sx={{ fontWeight: 500, fontSize:"14px" }}>
                         Método de Pagamento
                     </Typography>
                 </AccordionSummary>
@@ -314,9 +316,9 @@ const PaywallComponent = () => {
                     <Button type='reset' size='large' variant='outlined' color='secondary'>
                         Reset
                     </Button> */}
-                    <Button type='reset' size='large' variant='outlined' color='primary' sx={{ fontSize:12, width:"100%", marginTop:"10px" }}>
+                    {/* <Button type='reset' size='large' variant='outlined' color='primary' sx={{ fontSize:12, width:"100%", marginTop:"10px" }}>
                             Ver Contrato
-                    </Button>
+                    </Button> */}
                 </AccordionDetails>
             </Accordion>
         </form>
