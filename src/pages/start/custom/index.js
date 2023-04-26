@@ -38,5 +38,5 @@ const Custom = () => {
 }
 
 export default Custom;
+Custom.guestGuard = true;
 Custom.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-Custom.guestGuard = false;

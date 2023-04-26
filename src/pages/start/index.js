@@ -168,5 +168,5 @@ const Start = () => {
 };
 
 export default Start;
+Start.guestGuard = true;
 Start.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-Start.guestGuard = false;

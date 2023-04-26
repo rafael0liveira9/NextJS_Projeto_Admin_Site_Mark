@@ -214,5 +214,7 @@ const PackItens = (props) => {
     )
 
 }
+
+Packages.guestGuard = true;
 Packages.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-Packages.guestGuard = false;
+

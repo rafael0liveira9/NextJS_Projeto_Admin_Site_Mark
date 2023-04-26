@@ -425,5 +425,5 @@ const Register = (props) => {
   )}
 
 export default Register;
+Register.guestGuard = true;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-Register.guestGuard = false;
