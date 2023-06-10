@@ -168,7 +168,7 @@ const Packages = ({ tokenLead }) => {
             {tokenLead ? null : <ModalLead></ModalLead>}
             <div class="full-page-start">
                 {/* <div class="full-content-slider" > */}
-                <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>Pacotes sugeridos para você:</h1>
+                <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>Planos sugeridos para você:</h1>
                 <div class="packages-container">
                     {f.sort().map((e, y) => (
                         <PackItens
@@ -181,7 +181,7 @@ const Packages = ({ tokenLead }) => {
                             handleChange={setDescriptiion}
                         ></PackItens>))}
                 </div>
-                <Button variant='contained' onClick={() => router.push("/start/register/")} style={{ cursor: "pointer", marginTop: "20px", width:"250px", height:"50px"}} color='primary'>PAGAR AGORA</Button>
+                <Button variant='contained' onClick={() => router.push("/start/register/")} style={{ cursor: "pointer", marginTop: "20px", width:"250px", height:"50px"}} color='primary'>CONTRATAR AGORA</Button>
                 <Button variant='outlined' onClick={() => router.push("/start/custom")} style={{ cursor: "pointer", margin: "20px", width:"250px", height:"35px"}} color='blackOrWhite'>ESCOLHER OUTRO</Button>
                 <StepsShow step={2}></StepsShow>
             </div>

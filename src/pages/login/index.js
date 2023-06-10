@@ -134,7 +134,7 @@ const LoginPage = () => {
     auth.login({ email, password, rememberMe }, () => {
       setError("email", {
         type: "manual",
-        message: "Email or Password is invalid",
+        message: "E-mail ou Senha inválidos",
       });
     });
   };
@@ -153,16 +153,29 @@ const LoginPage = () => {
             position: "relative",
             alignItems: "center",
             justifyContent: "center",
-          }}
-        >
-          <LoginIllustrationWrapper>
-            <LoginIllustration
-              alt="login-illustration"
-              src={`/images/pages/${imageSource}-${theme.palette.mode}.png`}
-            />
-          </LoginIllustrationWrapper>
-          <FooterIllustrationsV2 />
+            overflow:"hidden"
+          }}>
+            <img src="/mark/images/mark-image-example.png" style={{width:"auto", height:"100%"}}></img>
         </Box>
+
+
+        // <Box
+        //   sx={{
+        //     flex: 1,
+        //     display: "flex",
+        //     position: "relative",
+        //     alignItems: "center",
+        //     justifyContent: "center",
+        //   }}
+        // >
+        //   <LoginIllustrationWrapper>
+        //     <LoginIllustration
+        //       alt="login-illustration"
+        //       src={`/mark/images/mark-image-example.png`}
+        //     />
+        //   </LoginIllustrationWrapper>
+        //   <FooterIllustrationsV2 />
+        // </Box>
       ) : null}
       <RightWrapper
         sx={
@@ -179,6 +192,9 @@ const LoginPage = () => {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "background.paper",
+            zIndex:"999999",
+            position:"relative",
+            minWidth:"450px",
           }}
         >
           <BoxWrapper>
@@ -281,12 +297,12 @@ const LoginPage = () => {
               </Typography>
             </Box>
             <Box sx={{ mb: 6 }}>
-              <TypographyStyled variant="h5">{`Welcome to ${themeConfig.templateName}! 👋🏻`}</TypographyStyled>
+              <TypographyStyled variant="h5">{`Bem Vindo ao ${themeConfig.templateName}! 👋🏻`}</TypographyStyled>
               <Typography variant="body2">
-                Please sign-in to your account and start the adventure
+                Por Favor, insira seu Login e Senha para entrar.
               </Typography>
             </Box>
-            <Alert
+            {/* <Alert
               icon={false}
               sx={{
                 py: 3,
@@ -309,7 +325,7 @@ const LoginPage = () => {
                 Client: <strong>client@materialize.com</strong> / Pass:{" "}
                 <strong>client</strong>
               </Typography>
-            </Alert>
+            </Alert> */}
             <form
               noValidate
               autoComplete="off"
@@ -395,7 +411,7 @@ const LoginPage = () => {
                 }}
               >
                 <FormControlLabel
-                  label="Remember Me"
+                  label="Lembrar meus dados."
                   control={
                     <Checkbox
                       checked={rememberMe}
