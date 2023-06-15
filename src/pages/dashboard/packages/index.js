@@ -7,7 +7,7 @@ import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/package/PackageTable";
 import { useRouter } from "next/router";
 
-export default function PackagePage() {
+export default function PackagePage({ packages }) {
   const router = useRouter();
   return (
     <Grid container spacing={6} className="match-height">
@@ -24,8 +24,21 @@ export default function PackagePage() {
         }}
       />
       <Grid item xs={12}>
-        <TableFilter />
+        <TableFilter rowsData={packages} />
       </Grid>
     </Grid>
   );
 }
+
+export const getServerSideProps = async (ctx) => {
+  let data;
+  try {
+    data = await PackagesRepo.getAllPackages();
+  } catch (error) {}
+
+  return {
+    props: {
+      packages: data,
+    },
+  };
+};

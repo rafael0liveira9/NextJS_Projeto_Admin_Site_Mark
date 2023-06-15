@@ -18,6 +18,7 @@ import { getInitials } from "src/@core/utils/get-initials";
 
 // ** Data Import
 import { rows } from "src/@fake-db/table/static-data";
+import { regexMoney, regexMoneyText } from "src/utils/utils";
 
 // ** renders client column
 const renderClient = (params) => {
@@ -32,24 +33,24 @@ const renderClient = (params) => {
     "secondary",
   ];
   const color = states[stateNum];
-  if (row.avatar.length) {
-    return (
-      <CustomAvatar
-        src={`/images/avatars/${row.avatar}`}
-        sx={{ mr: 3, width: "1.875rem", height: "1.875rem" }}
-      />
-    );
-  } else {
-    return (
-      <CustomAvatar
-        skin="light"
-        color={color}
-        sx={{ mr: 3, fontSize: ".8rem", width: "1.875rem", height: "1.875rem" }}
-      >
-        {getInitials(row.full_name ? row.full_name : "John Doe")}
-      </CustomAvatar>
-    );
-  }
+  // if (row.avatar.length) {
+  //   return (
+  //     <CustomAvatar
+  //       src={`/images/avatars/${row.avatar}`}
+  //       sx={{ mr: 3, width: "1.875rem", height: "1.875rem" }}
+  //     />
+  //   );
+  // } else {
+  //   return (
+  //     <CustomAvatar
+  //       skin="light"
+  //       color={color}
+  //       sx={{ mr: 3, fontSize: ".8rem", width: "1.875rem", height: "1.875rem" }}
+  //     >
+  //       {getInitials(row.full_name ? row.full_name : "John Doe")}
+  //     </CustomAvatar>
+  //   );
+  // }
 };
 
 const statusObj = {
@@ -68,8 +69,8 @@ const columns = [
   {
     flex: 0.275,
     minWidth: 290,
-    field: "full_name",
-    headerName: "Name",
+    field: "package_name",
+    headerName: "Nome do Pacote",
     renderCell: (params) => {
       const { row } = params;
 
@@ -82,10 +83,7 @@ const columns = [
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
-              {row.full_name}
-            </Typography>
-            <Typography noWrap variant="caption">
-              {row.email}
+              {row.name}
             </Typography>
           </Box>
         </Box>
@@ -95,60 +93,50 @@ const columns = [
   {
     flex: 0.2,
     minWidth: 120,
-    headerName: "Date",
-    field: "start_date",
+    headerName: "Descrição do Pacote",
+    field: "description",
     renderCell: (params) => (
       <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.start_date}
+        {params.row.description}
       </Typography>
     ),
   },
   {
     flex: 0.2,
     minWidth: 110,
-    field: "salary",
-    headerName: "Salary",
+    field: "value",
+    headerName: "Valor",
     renderCell: (params) => (
       <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.salary}
+        R$ {regexMoneyText(parseFloat(params.row.price).toFixed(2).toString())}
       </Typography>
     ),
   },
   {
     flex: 0.125,
-    field: "age",
+    field: "duedate",
     minWidth: 80,
-    headerName: "Age",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.age}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.2,
-    minWidth: 140,
-    field: "status",
-    headerName: "Status",
+    headerName: "Data de Validade",
     renderCell: (params) => {
-      const status = statusObj[params.row.status];
+      const dueDate = new Date(Date.parse(params.row.dueDate));
 
       return (
-        <CustomChip
-          size="small"
-          skin="light"
-          color={status.color}
-          label={status.title}
-          sx={{ "& .MuiChip-label": { textTransform: "capitalize" } }}
-        />
+        <Typography variant="body2" sx={{ color: "text.primary" }}>
+          {params.row.dueDate
+            ? `${dueDate.getDate()}/${
+                dueDate.getMonth() + 1
+              }/${dueDate.getFullYear()}`
+            : "Sem Validade"}
+        </Typography>
       );
     },
   },
 ];
 
-const TableColumns = () => {
+const TableColumns = ({ rowsData }) => {
+  console.log(rowsData);
   // ** States
-  const [data] = useState(rows);
+  const [data] = useState(rowsData);
   const [pageSize, setPageSize] = useState(7);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -172,7 +160,6 @@ const TableColumns = () => {
 
   return (
     <Card>
-      <CardHeader title="Quick Filter" />
       <DataGrid
         autoHeight
         columns={columns}

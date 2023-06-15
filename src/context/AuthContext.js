@@ -59,22 +59,16 @@ const AuthProvider = ({ children, cookies }) => {
 
   const handleLogin = (params, errorCallback) => {
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}signin`, {
+      .post(`${process.env.NEXT_PUBLIC_API_URL}auth/signin`, {
         email: params.email,
         password: params.password,
       })
       .then(async (response) => {
-        params.rememberMe
-          ? nookies.set(
-              null,
-              authConfig.storageTokenKeyName,
-              response.data.token,
-              {
-                maxAge: 30 * 24 * 60 * 60,
-                path: "/",
-              }
-            )
-          : null;
+        console.log(response);
+        nookies.set(null, authConfig.storageTokenKeyName, response.data.jwt, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
         const returnUrl = router.query.returnUrl;
         setUser({ ...response.data });
         params.rememberMe
