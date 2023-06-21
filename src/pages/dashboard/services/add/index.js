@@ -12,18 +12,27 @@ import Select from "react-select";
 import { toast } from "react-hot-toast";
 import Router from "next/router";
 
-export default function PackageAddPage({ services }) {
+export default function ServiceAddPage({ services }) {
   const [valuePackage, setValuePackage] = useState(0);
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [value, setValue] = useState(0);
   const [dueDate, setDueDate] = useState(null);
-  const [servicesSelect, setServicesSelect] = useState([]);
-  const servicesData = services.map((x) => ({
-    ...x,
-    label: x.name,
-    value: x.id,
-  }));
+  const [servicesSelect, setServicesSelect] = useState(null);
+  const servicesData = [
+    {
+      label: "Site",
+      value: 1,
+    },
+    {
+      label: "Logo",
+      value: 2,
+    },
+    {
+      label: "Social",
+      value: 3,
+    },
+  ];
   const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState({
@@ -34,26 +43,33 @@ export default function PackageAddPage({ services }) {
     services: null,
   });
 
+  console.log(value);
+
   const verifyInputs = () => {
+    console.log(
+      servicesSelect == null,
+      name == null,
+      description == null,
+      value == 0
+    );
     if (
-      errors.name == null ||
+      name == null ||
       description == null ||
       value == 0 ||
-      servicesSelect.length == 0
+      servicesSelect == null
     ) {
+      console.log("Caiu Aqui");
       setErrors({
         name:
-          name == null || name == "" ? "Coloque um nome para o pacote" : null,
+          name == null || name == "" ? "Coloque um nome para o serviço" : null,
         description:
           description == null || description == ""
-            ? "Digite uma descrição para o pacote"
+            ? "Digite uma descrição para o serviço"
             : null,
         value: value == 0 ? "Digite um valor" : null,
         dueDate: null,
         services:
-          servicesSelect.length == 0
-            ? "Selecione pelo menos um serviços"
-            : null,
+          servicesSelect == null ? "Selecione pelo menos um serviços" : null,
       });
       setIsLoading(false);
       return false;
@@ -66,34 +82,35 @@ export default function PackageAddPage({ services }) {
     if (!isLoading && verifyInputs()) {
       setIsLoading(true);
       const data = {
+        serviceTypeId: servicesSelect.value,
         name: name,
         price: value,
         description: description,
-        dueDate: dueDate,
-        services: servicesSelect.map((x) => x.id),
       };
 
       try {
-        let packageCreate = await PackagesRepo.sendPackage(data);
+        let serviceCreate = await ServicesRepo.sendService(data);
         setIsLoading(false);
         Router.back();
       } catch (error) {
         setIsLoading(false);
-        toast.error("Erro ao criar pacote");
+        toast.error("Erro ao criar serviço");
       }
+    } else {
+      toast.error("Preencha todos os campos");
     }
   };
 
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Pacotes</Typography>}
+        title={<Typography variant="h5">Serviços</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, adicionar e excluir pacotes!
+            Aqui você pode ver, adicionar e excluir serviços!
           </Typography>
         }
-        button={"Adicionar Pacote"}
+        button={"Adicionar Serviço"}
         onTap={async () => {
           await onSubmit();
         }}
@@ -101,7 +118,7 @@ export default function PackageAddPage({ services }) {
       <Grid item xs={12} xl={6}>
         <TextField
           fullWidth
-          label="Nome do Pacote"
+          label="Nome do Serviço"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -116,7 +133,7 @@ export default function PackageAddPage({ services }) {
         <TextField
           fullWidth
           value={description}
-          label="Descrição do Pacote"
+          label="Descrição do Serviço"
           onChange={(e) => {
             setDescription(e.target.value);
             verifyInputs();
@@ -124,20 +141,6 @@ export default function PackageAddPage({ services }) {
           required
           error={errors.description}
           helperText={errors.description}
-        />
-      </Grid>
-      <Grid item xs={12} xl={6}>
-        <TextField
-          fullWidth
-          type="datetime-local"
-          value={dueDate}
-          label="Data de Validade"
-          onChange={(e) => {
-            setDueDate(e.target.value);
-            verifyInputs();
-          }}
-          error={errors.dueDate}
-          helperText={errors.dueDate}
         />
       </Grid>
       <Grid item xs={12} xl={6}>
@@ -151,8 +154,7 @@ export default function PackageAddPage({ services }) {
           }}
           required
           defaultValue={[]}
-          isMulti
-          placeholder="Selecione os Serviços"
+          placeholder="Selecione o tipo do serviço"
           options={servicesData}
           onChange={(a) => {
             setServicesSelect(a);
@@ -180,7 +182,7 @@ export default function PackageAddPage({ services }) {
               textAlign: "end",
             },
           }}
-          label="Valor do Pacote"
+          label="Valor do Serviço"
           required
           InputProps={{
             startAdornment: "R$",

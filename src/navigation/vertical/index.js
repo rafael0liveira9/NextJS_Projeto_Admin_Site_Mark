@@ -24,7 +24,7 @@ const navigation = () => {
     {
       title: "Usuários",
       icon: "mdi:user",
-      path: "/dashboard/services",
+      path: "/dashboard/users",
     },
     {
       title: "Companías",
