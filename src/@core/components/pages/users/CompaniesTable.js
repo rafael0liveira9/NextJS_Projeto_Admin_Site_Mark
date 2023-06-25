@@ -72,7 +72,7 @@ const columns = [
     flex: 0.2,
     minWidth: 150,
     field: "company_name",
-    headerName: "Nome da Companía",
+    headerName: "Nome da Companhia",
     renderCell: (params) => {
       const { row } = params;
       console.log(row);

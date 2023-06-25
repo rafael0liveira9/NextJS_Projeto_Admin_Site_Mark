@@ -13,10 +13,10 @@ export default function CompaniesPage({ companies }) {
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Companías</Typography>}
+        title={<Typography variant="h5">Companhias</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, adicionar e excluir companías!
+            Aqui você pode ver, adicionar e excluir companhias!
           </Typography>
         }
         button={"Adicionar Compania"}

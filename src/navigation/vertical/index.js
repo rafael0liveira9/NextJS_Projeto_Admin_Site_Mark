@@ -32,7 +32,7 @@ const navigation = () => {
       path: "/dashboard/packages",
     },
     {
-      sectionTitle: "Usuários e Companías",
+      sectionTitle: "Usuários e Companhias",
     },
     {
       title: "Usuários",
@@ -40,7 +40,7 @@ const navigation = () => {
       path: "/dashboard/users",
     },
     {
-      title: "Companías",
+      title: "Companhias",
       icon: "mdi:company",
       path: "/dashboard/companies",
     },
