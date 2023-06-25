@@ -158,7 +158,7 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
         <Card>
           <CardContent>
             <Typography fontSize={18} fontWeight={700}>
-              Data do Pagamento:
+              Data de criação do pagamento:
             </Typography>
             <Typography>{returnDay(payment.createdAt)}</Typography>
           </CardContent>
