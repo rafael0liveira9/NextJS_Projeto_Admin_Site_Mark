@@ -7,6 +7,7 @@ import nookies from "nookies";
 const defaultProvider = {
   user: null,
   loading: true,
+  token: () => null,
   setUser: () => null,
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
@@ -17,9 +18,11 @@ const AuthContext = createContext(defaultProvider);
 
 const AuthProvider = ({ children, cookies }) => {
   const [user, setUser] = useState(defaultProvider.user);
+  const [token, setToken] = useState(defaultProvider.token);
   const [loading, setLoading] = useState(defaultProvider.loading);
 
   const router = useRouter();
+
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = cookies[authConfig.storageTokenKeyName];
@@ -33,8 +36,8 @@ const AuthProvider = ({ children, cookies }) => {
           })
           .then(async (response) => {
             setLoading(false);
-
             setUser({ ...response.data });
+            setToken(storedToken);
           })
           .catch(() => {
             nookies.destroy(null, "userData");
@@ -64,13 +67,13 @@ const AuthProvider = ({ children, cookies }) => {
         password: params.password,
       })
       .then(async (response) => {
-        console.log(response);
         nookies.set(null, authConfig.storageTokenKeyName, response.data.jwt, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         });
         const returnUrl = router.query.returnUrl;
         setUser({ ...response.data });
+        setToken(response.data.jwt);
         params.rememberMe
           ? nookies.set(null, "userData", JSON.stringify(response.data), {
               maxAge: 30 * 24 * 60 * 60,
@@ -107,6 +110,7 @@ const AuthProvider = ({ children, cookies }) => {
 
   const values = {
     user,
+    token,
     loading,
     setUser,
     setLoading,

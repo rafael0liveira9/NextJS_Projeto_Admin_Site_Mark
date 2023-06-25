@@ -6,6 +6,7 @@ import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/package/PackageTable";
 import { useRouter } from "next/router";
+import nookies from "nookies";
 
 export default function PackagePage({ packages }) {
   const router = useRouter();
@@ -31,9 +32,10 @@ export default function PackagePage({ packages }) {
 }
 
 export const getServerSideProps = async (ctx) => {
-  let data;
+  let data = [];
+  const cookies = nookies.get(ctx);
   try {
-    data = await PackagesRepo.getAllPackages();
+    data = (await PackagesRepo.getAllPackages(cookies.accessToken)).data;
   } catch (error) {}
 
   return {

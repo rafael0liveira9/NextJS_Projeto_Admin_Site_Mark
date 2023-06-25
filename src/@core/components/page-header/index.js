@@ -17,7 +17,7 @@ const PageHeader = (props) => {
           {title}
           {subtitle || null}
         </Stack>
-        <Button onClick={onTap}>{button}</Button>
+        {button && <Button onClick={onTap}>{button}</Button>}
       </Stack>
     </Grid>
   );

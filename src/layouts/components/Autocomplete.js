@@ -457,7 +457,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         </IconButton>
         {!hidden && layout === "vertical" ? (
           <Typography sx={{ userSelect: "none", color: "text.disabled" }}>
-            Search (Ctrl+/)
+            Pesquisar (Ctrl+/)
           </Typography>
         ) : null}
         {openDialog && (

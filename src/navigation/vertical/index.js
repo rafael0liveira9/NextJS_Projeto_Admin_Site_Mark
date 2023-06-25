@@ -6,6 +6,19 @@ const navigation = () => {
       path: "/dashboard/",
     },
     {
+      sectionTitle: "Financeiro e Dados",
+    },
+    {
+      title: "Histórico de Pagamentos",
+      icon: "mdi:money",
+      path: "/dashboard/payments",
+    },
+    {
+      title: "Relatórios",
+      icon: "mdi:data",
+      path: "/dashboard/big-data",
+    },
+    {
       sectionTitle: "Serviços e Pacotes",
     },
     {
@@ -29,7 +42,7 @@ const navigation = () => {
     {
       title: "Companías",
       icon: "mdi:company",
-      path: "/dashboard/packages",
+      path: "/dashboard/companies",
     },
     // {
     //   sectionTitle: "Apps & Pages",

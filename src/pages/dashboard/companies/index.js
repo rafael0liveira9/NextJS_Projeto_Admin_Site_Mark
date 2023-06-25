@@ -1,34 +1,31 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import Icon from "src/@core/components/icon";
-import { Button, Card, Typography } from "@mui/material";
-import { PackagesRepo } from "src/repository/packages.repo";
+import { Typography } from "@mui/material";
 import PageHeader from "src/@core/components/page-header";
-import TableFilter from "src/@core/components/pages/users/UsersTable";
+import TableFilter from "src/@core/components/pages/users/CompaniesTable";
 import { useRouter } from "next/router";
-import { ServicesRepo } from "src/repository/services.repo";
 import { UsersRepo } from "src/repository/users.repo";
 
 import nookies from "nookies";
 
-export default function UsersPage({ users }) {
+export default function CompaniesPage({ companies }) {
   const router = useRouter();
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Usuários</Typography>}
+        title={<Typography variant="h5">Companías</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, adicionar e excluir usuários!
+            Aqui você pode ver, adicionar e excluir companías!
           </Typography>
         }
-        button={"Adicionar Usuário"}
+        button={"Adicionar Compania"}
         onTap={() => {
           router.push(`${router.pathname}/add`);
         }}
       />
       <Grid item xs={12}>
-        <TableFilter rowsData={users} />
+        <TableFilter rowsData={companies} />
       </Grid>
     </Grid>
   );
@@ -38,12 +35,15 @@ export const getServerSideProps = async (ctx) => {
   let data = [];
   const cookies = nookies.get(ctx);
   try {
-    data = (await UsersRepo.getAllUsers(cookies.accessToken)).data;
-  } catch (error) {}
+    data = (await UsersRepo.getAllCompanies(cookies.accessToken)).data;
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(data);
 
   return {
     props: {
-      users: data,
+      companies: data,
     },
   };
 };
