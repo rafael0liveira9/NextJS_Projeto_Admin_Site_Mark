@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import SliderCustomMarks from "src/views/forms/form-elements/slider/SliderCustomMarks";
-import StepsShow from "../components/stepsShow";
+import StepsShow from "../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import { RadioGroup, FormControlLabel, Radio, Button } from "@mui/material";
@@ -167,6 +167,8 @@ const Start = () => {
   );
 };
 
-export default Start;
-Start.guestGuard = true;
 Start.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+Start.guestGuard = false;
+Start.authGuard = false;
+
+export default Start;

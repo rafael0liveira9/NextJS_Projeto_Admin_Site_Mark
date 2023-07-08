@@ -39,9 +39,7 @@ const AclGuard = (props) => {
       buildAbilityFor(auth.user.User.roleTypeId, aclAbilities.subject)
     );
   }
-  console.log(ability);
   if (ability && ability.can(aclAbilities.action, aclAbilities.subject)) {
-    console.log("Aqui");
     return (
       <AbilityContext.Provider value={ability}>
         {children}

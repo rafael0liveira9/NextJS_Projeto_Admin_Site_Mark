@@ -11,4 +11,34 @@ export class ServicesRepo {
       },
     });
   }
+
+  static async contratedServices(token) {
+    return await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}contratedServices/all`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
+
+  static async contratedServicesById(token, id) {
+    return await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}contratedServices/${id}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
+
+  static async logoServiceById(token, id) {
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}logo/${id}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  }
 }

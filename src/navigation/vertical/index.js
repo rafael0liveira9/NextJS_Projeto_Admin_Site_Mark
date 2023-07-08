@@ -32,6 +32,11 @@ const navigation = () => {
       path: "/dashboard/packages",
     },
     {
+      title: "Serviços Contratados",
+      icon: "mdi:checkbox-multiple-outline",
+      path: "/dashboard/services-contrated",
+    },
+    {
       sectionTitle: "Usuários e Companhias",
     },
     {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import StepsShow from "../../components/stepsShow";
+import StepsShow from "../../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
@@ -42,17 +42,23 @@ const Register = (props) => {
   const [errorCheck2, setErrorCheck2] = useState(false);
 
   const FormCheking = () => {
-    if (name && cpf &&  email && phone && password && passwordConf){
-      return true
-    }else{
-      return false
+    if (name && cpf && email && phone && password && passwordConf) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
 
   const nameReal = (e) => {
-    { if (e.target.value.length > 0) {setErrorName(true); } else {setErrorName(false)}}
+    {
+      if (e.target.value.length > 0) {
+        setErrorName(true);
+      } else {
+        setErrorName(false);
+      }
+    }
     setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
-    if ((e.target.value.replace(/\d/g, "").length) >= 4) {
+    if (e.target.value.replace(/\d/g, "").length >= 4) {
       setErrorName(false);
     }
     setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
@@ -65,7 +71,13 @@ const Register = (props) => {
   const cpfReal = (e) => {
     const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/gm;
     let m;
-    { if (e.target.value.length > 0) {setErrorCpf(true)} else {setErrorCpf(false)};}
+    {
+      if (e.target.value.length > 0) {
+        setErrorCpf(true);
+      } else {
+        setErrorCpf(false);
+      }
+    }
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
         regex.lastIndex++;
@@ -74,22 +86,37 @@ const Register = (props) => {
         setErrorCpf(false);
       });
     }
-    setCpf(e.target.value.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"));
-  }
+    setCpf(
+      e.target.value
+        .replace(/\D/g, "")
+        .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+    );
+  };
 
   const emailReal = (e) => {
     const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
 
-    { if(e.target.value.length > 0) {setErrorEmail(!regex.test(e.target.value))} else {setErrorEmail(false)};}
+    {
+      if (e.target.value.length > 0) {
+        setErrorEmail(!regex.test(e.target.value));
+      } else {
+        setErrorEmail(false);
+      }
+    }
 
     setEmail(e.target.value);
-  }
-
+  };
 
   const phoneReal = (e) => {
     const regex = /(\(\d{2}\)) (\d)(\d{4})(\d{4})/gm;
     let m;
-    { if(e.target.value.length > 0) {setErrorPhone(true)} else {setErrorPhone(false)};}
+    {
+      if (e.target.value.length > 0) {
+        setErrorPhone(true);
+      } else {
+        setErrorPhone(false);
+      }
+    }
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
         regex.lastIndex++;
@@ -98,8 +125,13 @@ const Register = (props) => {
         setErrorPhone(false);
       });
     }
-    setPhone(e.target.value.replace(/\D/g, "").replace(/(\d{2})(\d)/, "($1) $2").replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4"));
-  }
+    setPhone(
+      e.target.value
+        .replace(/\D/g, "")
+        .replace(/(\d{2})(\d)/, "($1) $2")
+        .replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4")
+    );
+  };
 
   const passwordReal = (e) => {
     const regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/gm;
@@ -128,14 +160,17 @@ const Register = (props) => {
     }
 
     setPassword(e.target.value);
+  };
+  const passwordRealConf = (e) => {
+    {
+      password.length > 0
+        ? setErrorpasswordConf(password !== e.target.value)
+        : setErrorpasswordConf(false);
     }
-    const passwordRealConf = (e) => {
-  
-      { password.length > 0 ? setErrorpasswordConf(password !== e.target.value) : setErrorpasswordConf(false) };
-  
-      setPasswordConf(e.target.value);
-    }
-    
+
+    setPasswordConf(e.target.value);
+  };
+
   return (
     <>
       <div class="full-page-start">
@@ -183,7 +218,7 @@ const Register = (props) => {
             ""
           )}
 
-          {/* sx={{ margin: "5px"}} 
+          {/* sx={{ margin: "5px"}}
           sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}} */}
           {!cpf && !errorCpf ? (
             <TextField
@@ -302,15 +337,69 @@ const Register = (props) => {
             ""
           )}
 
-          {password  && errorPasswordAny === false?
-          <TextField required id='form-props-required' name="password" label='Senha' defaultValue='' onChange={passwordReal} value={password} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>:
-          <TextField required id='form-props-required' name="password" label='Senha' defaultValue='' onChange={passwordReal} value={password} sx={{margin: "5px"}} />}
+          {password && errorPasswordAny === false ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="password"
+              label="Senha"
+              defaultValue=""
+              onChange={passwordReal}
+              value={password}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="password"
+              label="Senha"
+              defaultValue=""
+              onChange={passwordReal}
+              value={password}
+              sx={{ margin: "5px" }}
+            />
+          )}
 
-
-          {passwordConf && errorPasswordConf === false ? 
-          <TextField required id='form-props-required' name="passwordConfirm" label='Confirmar Senha' defaultValue='' onChange={passwordRealConf} value={passwordConf} sx={{ margin: "5px" ,"& .MuiOutlinedInput-root": {"& > fieldset": { borderColor: "#83E542", borderWidth: "2px" }}}}/>:
-          <TextField required id='form-props-required' name="passwordConfirm" label='Confirmar Senha' defaultValue='' onChange={passwordRealConf} value={passwordConf} sx={{margin: "5px"}} />}
-
+          {passwordConf && errorPasswordConf === false ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="passwordConfirm"
+              label="Confirmar Senha"
+              defaultValue=""
+              onChange={passwordRealConf}
+              value={passwordConf}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="passwordConfirm"
+              label="Confirmar Senha"
+              defaultValue=""
+              onChange={passwordRealConf}
+              value={passwordConf}
+              sx={{ margin: "5px" }}
+            />
+          )}
 
           {errorPasswordAny || errorPasswordConf ? (
             <h3 class="error-input">Requisitos para Senha:</h3>
@@ -412,18 +501,62 @@ const Register = (props) => {
             </p>
           </div>
           <div class="div-button-submit">
-            {  !FormCheking() || errorPasswordAny || errorName || errorCpf || errorEmail || errorPhone || !errorCheck1 || !errorCheck2 || errorPasswordConf ?
-            <Button variant='contained' disabled style={{ cursor: "pointer", width: "250px", height: "50px" }} color='primary'>CADASTRAR-SE</Button> :
-            <Button variant='contained' onClick={() => router.push("/start/paywall")} style={{ cursor: "pointer", width: "250px", height: "50px" }} color='primary'>CADASTRAR-SE</Button>}
-            { errorPasswordAny || errorName || errorCpf || errorEmail || errorPhone || errorPasswordConf ? <h3 class="error-global">Formulário incompleto, revise e tente novamente...</h3> : ""}
-            <Button variant='outlined' onClick={() => router.push("/login/")} style={{ cursor: "pointer", width: "250px", height: "35px" }} color='primary'>FAZER LOGIN</Button>
+            {!FormCheking() ||
+            errorPasswordAny ||
+            errorName ||
+            errorCpf ||
+            errorEmail ||
+            errorPhone ||
+            !errorCheck1 ||
+            !errorCheck2 ||
+            errorPasswordConf ? (
+              <Button
+                variant="contained"
+                disabled
+                style={{ cursor: "pointer", width: "250px", height: "50px" }}
+                color="primary"
+              >
+                CADASTRAR-SE
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => router.push("/start/paywall")}
+                style={{ cursor: "pointer", width: "250px", height: "50px" }}
+                color="primary"
+              >
+                CADASTRAR-SE
+              </Button>
+            )}
+            {errorPasswordAny ||
+            errorName ||
+            errorCpf ||
+            errorEmail ||
+            errorPhone ||
+            errorPasswordConf ? (
+              <h3 class="error-global">
+                Formulário incompleto, revise e tente novamente...
+              </h3>
+            ) : (
+              ""
+            )}
+            <Button
+              variant="outlined"
+              onClick={() => router.push("/login/")}
+              style={{ cursor: "pointer", width: "250px", height: "35px" }}
+              color="primary"
+            >
+              FAZER LOGIN
+            </Button>
           </div>
         </div>
         <StepsShow step={3}></StepsShow>
       </div>
     </>
-  )}
+  );
+};
 
 export default Register;
-Register.guestGuard = true;
+Register.guestGuard = false;
+Register.authGuard = false;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;

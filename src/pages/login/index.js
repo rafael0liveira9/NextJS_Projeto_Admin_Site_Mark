@@ -153,30 +153,32 @@ const LoginPage = () => {
             position: "relative",
             alignItems: "center",
             justifyContent: "center",
-            overflow:"hidden"
-          }}>
-            <img src="/mark/images/mark-image-example.png" style={{width:"auto", height:"100%"}}></img>
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src="/mark/images/mark-image-example.png"
+            style={{ width: "auto", height: "100%" }}
+          ></img>
         </Box>
-
-
-        // <Box
-        //   sx={{
-        //     flex: 1,
-        //     display: "flex",
-        //     position: "relative",
-        //     alignItems: "center",
-        //     justifyContent: "center",
-        //   }}
-        // >
-        //   <LoginIllustrationWrapper>
-        //     <LoginIllustration
-        //       alt="login-illustration"
-        //       src={`/mark/images/mark-image-example.png`}
-        //     />
-        //   </LoginIllustrationWrapper>
-        //   <FooterIllustrationsV2 />
-        // </Box>
-      ) : null}
+      ) : // <Box
+      //   sx={{
+      //     flex: 1,
+      //     display: "flex",
+      //     position: "relative",
+      //     alignItems: "center",
+      //     justifyContent: "center",
+      //   }}
+      // >
+      //   <LoginIllustrationWrapper>
+      //     <LoginIllustration
+      //       alt="login-illustration"
+      //       src={`/mark/images/mark-image-example.png`}
+      //     />
+      //   </LoginIllustrationWrapper>
+      //   <FooterIllustrationsV2 />
+      // </Box>
+      null}
       <RightWrapper
         sx={
           skin === "bordered" && !hidden
@@ -192,9 +194,9 @@ const LoginPage = () => {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "background.paper",
-            zIndex:"999999",
-            position:"relative",
-            minWidth:"450px",
+            zIndex: "999999",
+            position: "relative",
+            minWidth: "450px",
           }}
         >
           <BoxWrapper>

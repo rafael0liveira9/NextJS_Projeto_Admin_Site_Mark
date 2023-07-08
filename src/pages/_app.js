@@ -85,7 +85,6 @@ const App = (props) => {
   const authGuard = Component.authGuard ?? true;
   const guestGuard = Component.guestGuard ?? false;
   const aclAbilities = Component.acl ?? defaultACLObj;
-  console.log("🚀 ~ file: _app.js:88 ~ App ~ aclAbilities:", aclAbilities);
 
   return (
     <Provider store={store}>
