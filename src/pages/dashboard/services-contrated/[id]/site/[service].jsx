@@ -1,21 +1,29 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Icon from "src/@core/components/icon";
-import { Box, Button, Card, CardHeader, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  Container,
+  Typography,
+} from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/services/ServiceContratedTable";
 import { useRouter } from "next/router";
 import { ServicesRepo } from "src/repository/services.repo";
 import { AiOutlineFolderView } from "react-icons/ai";
+import { SiteRepo } from "src/repository/site.repo";
 
 export const getServerSideProps = async (ctx) => {
   let data;
   try {
     data = (
-      await ServicesRepo.contratedServicesById(
+      await ServicesRepo.siteServiceById(
         ctx.req.cookies.accessToken,
-        ctx.query.id
+        ctx.query.service
       )
     ).data;
   } catch (error) {}
@@ -23,365 +31,67 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       services: data,
+      token: ctx.req.cookies.accessToken,
     },
   };
 };
 
-const columnsLogo = [
-  {
-    flex: 0.275,
-    minWidth: 290,
-    field: "package_name",
-    headerName: "Nome do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {/* {renderClient(params)} */}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row.id}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "status",
-    headerName: "Status do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.LogoService?.status}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "feedback",
-    headerName: "Feedback enviado?",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.LogoService?.feedbackSended ? "Sim" : "Não"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "approved",
-    headerName: "Logo Aprovada?",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.LogoService?.LogoProof &&
-              row?.LogoService?.LogoProof.isApproved
-                ? "Sim"
-                : "Não"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.1,
-    minWidth: 50,
-    headerName: "Editar",
-    field: "edit",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        <Button
-          onClick={() => {
-            Router.push(`${Router.asPath}/${params.row.id}`);
-          }}
-        >
-          <AiOutlineFolderView></AiOutlineFolderView>
-        </Button>
-      </Typography>
-    ),
-  },
-];
-const columnsSocial = [
-  {
-    flex: 0.275,
-    minWidth: 290,
-    field: "package_name",
-    headerName: "Nome do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {/* {renderClient(params)} */}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row.id}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "status",
-    headerName: "Status do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.SocialService?.status}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.275,
-    minWidth: 290,
-    field: "approved",
-    headerName: "Tudo Aprovado?",
-    renderCell: (params) => {
-      const { row } = params;
-      console.log(row);
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {/* {renderClient(params)} */}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.SocialShow?.allApproved ? "Sim" : "Não"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.1,
-    minWidth: 50,
-    headerName: "Visualizar",
-    field: "edit",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        <Button
-          onClick={() => {
-            Router.push(`${Router.asPath}/${params.row.id}`);
-          }}
-        >
-          <AiOutlineFolderView></AiOutlineFolderView>
-        </Button>
-      </Typography>
-    ),
-  },
-];
-const columnsSite = [
-  {
-    flex: 0.275,
-    minWidth: 290,
-    field: "package_name",
-    headerName: "Nome do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {/* {renderClient(params)} */}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row.id}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "status",
-    headerName: "Status do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.SiteService?.status}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "published",
-    headerName: "Publicado?",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.SiteService?.isPublished ? "Sim" : "Não"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "layoutselected",
-    headerName: "Layout Selecionado",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.SiteService?.SiteLayoutSelected &&
-              row?.SiteService?.siteLayoutSelectedId
-                ? row?.SiteService?.siteLayoutSelectedId
-                : "Nenhum"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "layoutfinished",
-    headerName: "Layout Finalizado",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.SiteService?.SiteLayoutFinished &&
-              row?.SiteService?.siteLayoutFinishedId
-                ? row?.SiteService?.siteLayoutFinishedId
-                : "Nenhum"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.1,
-    minWidth: 50,
-    headerName: "Visualizar",
-    field: "edit",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        <Button
-          onClick={() => {
-            Router.push(`${Router.asPath}/${params.row.id}`);
-          }}
-        >
-          <AiOutlineFolderView></AiOutlineFolderView>
-        </Button>
-      </Typography>
-    ),
-  },
-];
-
-export default function ServicePage({ services }) {
+export default function ServicePage({ services, token }) {
   const router = useRouter();
+
+  async function sendLayout() {
+    const data = {
+      id: 1,
+      images: [
+        {
+          name: "Teste",
+          imageId: 1,
+        },
+      ],
+    };
+
+    try {
+      const serviceData = await SiteRepo.sendLayout(data, token);
+
+      console.log(serviceData.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function sendLayoutFinished() {
+    const data = {
+      id: 1,
+      imageId: 1,
+    };
+
+    try {
+      const serviceData = await SiteRepo.sendLayoutFinished(data, token);
+      console.log(serviceData.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function setServicePublish() {
+    const data = {
+      id: 1,
+    };
+
+    try {
+      const serviceData = await SiteRepo.setServicePublished(data, token);
+      console.log(serviceData.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Serviços</Typography>}
+        title={
+          <Typography variant="h5">Serviços - {services.status}</Typography>
+        }
         subtitle={
           <Typography variant="body2">
             Aqui você pode ver, adicionar e excluir serviços!
@@ -392,6 +102,86 @@ export default function ServicePage({ services }) {
           router.push(`${router.pathname}/add`);
         }}
       />
+      {/* {JSON.stringify(services)} */}
+      {console.log(services)}
+      <Grid item>
+        <Typography>
+          Publicado: {services.isPublished ? "Sim" : "Não"}
+        </Typography>
+      </Grid>
+      {services.SiteBriefing && (
+        <Grid item>
+          <Typography fontSize={20} fontWeight={700}>
+            Briefing
+          </Typography>
+          <Typography>
+            Dados de Contato: {services.SiteBriefing.contactData}
+          </Typography>
+          <Typography>Logo: {services.SiteBriefing.logo}</Typography>
+          <Typography>
+            Referências: {services.SiteBriefing.references.join(", ")}
+          </Typography>
+          <Typography>
+            Modelo do Site: {services.SiteBriefing.siteModel}
+          </Typography>
+          <Typography>
+            Midias Sociais: {services.SiteBriefing.socialMidia}
+          </Typography>
+          <Typography>Link do Site: {services.SiteBriefing.url}</Typography>
+        </Grid>
+      )}
+      {services.SiteLayoutBase.length > 0 && (
+        <Grid item>
+          <Typography fontSize={20} fontWeight={700}>
+            Layout Enviados para Escolha:
+          </Typography>
+          {services.SiteLayoutBase.map((x) => {
+            return (
+              <Container>
+                <img src={x.Layout.url} width={300} height="auto" />
+              </Container>
+            );
+          })}
+        </Grid>
+      )}
+      {services.SiteLayoutSelected && (
+        <Grid item>
+          <Typography fontSize={20} fontWeight={700}>
+            Layout Escolhido:
+          </Typography>
+          <Container>
+            <img
+              src={services.SiteLayoutSelected.LayoutSelected.url}
+              width={300}
+              height="auto"
+            />
+          </Container>
+        </Grid>
+      )}
+      {services.SiteLayoutFinished && (
+        <Grid item>
+          <Typography fontSize={20} fontWeight={700}>
+            Layout Finalizado:
+          </Typography>
+          <Typography>
+            Aprovado: {services.SiteLayoutFinished.isApproved ? "Sim" : "Não"}
+          </Typography>
+          {services.SiteLayoutFinished.reasonRefuse &&
+            services.SiteLayoutFinished.isApproved == false && (
+              <Typography>
+                Motivo da Recusa:{" "}
+                {services.SiteLayoutFinished.isApproved ? "Sim" : "Não"}
+              </Typography>
+            )}
+          <Container>
+            <img
+              src={services.SiteLayoutFinished.LayoutFinshed.url}
+              width={300}
+              height="auto"
+            />
+          </Container>
+        </Grid>
+      )}
     </Grid>
   );
 }

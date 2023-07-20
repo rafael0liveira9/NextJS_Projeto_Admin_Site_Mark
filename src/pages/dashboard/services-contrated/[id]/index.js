@@ -133,7 +133,7 @@ const columnsLogo = [
       <Typography variant="body2" sx={{ color: "text.primary" }}>
         <Button
           onClick={() => {
-            Router.push(`${Router.asPath}/logo/${params.row.id}`);
+            Router.push(`${Router.asPath}logo/${params.row.id}`);
           }}
         >
           <AiOutlineFolderView></AiOutlineFolderView>
@@ -225,7 +225,7 @@ const columnsSocial = [
       <Typography variant="body2" sx={{ color: "text.primary" }}>
         <Button
           onClick={() => {
-            Router.push(`${Router.asPath}/social/${params.row.id}`);
+            Router.push(`${Router.asPath}social/${params.row.id}`);
           }}
         >
           <AiOutlineFolderView></AiOutlineFolderView>
@@ -366,7 +366,7 @@ const columnsSite = [
       <Typography variant="body2" sx={{ color: "text.primary" }}>
         <Button
           onClick={() => {
-            Router.push(`${Router.asPath}/site/${params.row.id}`);
+            Router.push(`${Router.asPath}site/${params.row.id}`);
           }}
         >
           <AiOutlineFolderView></AiOutlineFolderView>

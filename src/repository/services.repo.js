@@ -41,4 +41,20 @@ export class ServicesRepo {
       },
     });
   }
+
+  static async socialServiceById(token, id) {
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}social/${id}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  }
+
+  static async siteServiceById(token, id) {
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}site/${id}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  }
 }

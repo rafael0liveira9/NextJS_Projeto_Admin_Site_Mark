@@ -84,6 +84,7 @@ const AuthProvider = ({ children, cookies }) => {
         router.replace(redirectURL);
       })
       .catch((err) => {
+        console.log(err);
         if (errorCallback) errorCallback(err);
       });
   };
