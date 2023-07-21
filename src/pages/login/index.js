@@ -100,8 +100,8 @@ const schema = yup.object().shape({
 });
 
 const defaultValues = {
-  password: "senha",
-  email: "admin@admin.com.br",
+  email: "mark4pp@gmail.com",
+  password: "Matheu123th@",
 };
 
 const LoginPage = () => {
@@ -130,14 +130,21 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data) => {
-    const { email, password } = data;
-    auth.login({ email, password, rememberMe }, () => {
-      setError("email", {
-        type: "manual",
-        message: "E-mail ou Senha inválidos",
-      });
-    });
+    try {
+      const { email, password } = data;
+      auth.login({ email, password, rememberMe });
+    } catch (error) {
+      console.log("erro ao fazer login");
+      () => {
+        setError("email", {
+          type: "manual",
+          message: "E-mail ou Senha inválidos",
+        });
+      }
+    }
+
   };
+
   const imageSource =
     skin === "bordered"
       ? "auth-v2-login-illustration-bordered"
@@ -162,23 +169,23 @@ const LoginPage = () => {
           ></img>
         </Box>
       ) : // <Box
-      //   sx={{
-      //     flex: 1,
-      //     display: "flex",
-      //     position: "relative",
-      //     alignItems: "center",
-      //     justifyContent: "center",
-      //   }}
-      // >
-      //   <LoginIllustrationWrapper>
-      //     <LoginIllustration
-      //       alt="login-illustration"
-      //       src={`/mark/images/mark-image-example.png`}
-      //     />
-      //   </LoginIllustrationWrapper>
-      //   <FooterIllustrationsV2 />
-      // </Box>
-      null}
+        //   sx={{
+        //     flex: 1,
+        //     display: "flex",
+        //     position: "relative",
+        //     alignItems: "center",
+        //     justifyContent: "center",
+        //   }}
+        // >
+        //   <LoginIllustrationWrapper>
+        //     <LoginIllustration
+        //       alt="login-illustration"
+        //       src={`/mark/images/mark-image-example.png`}
+        //     />
+        //   </LoginIllustrationWrapper>
+        //   <FooterIllustrationsV2 />
+        // </Box>
+        null}
       <RightWrapper
         sx={
           skin === "bordered" && !hidden
@@ -439,7 +446,7 @@ const LoginPage = () => {
               >
                 Entrar
               </Button>
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -457,7 +464,7 @@ const LoginPage = () => {
                 >
                   Criar uma conta
                 </Typography>
-              </Box>
+              </Box> */}
             </form>
           </BoxWrapper>
         </Box>

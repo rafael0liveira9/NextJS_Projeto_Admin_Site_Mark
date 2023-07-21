@@ -6,6 +6,7 @@ import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { TextField, Button, FormControlLabel, Switch } from "@mui/material";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
+
 export async function getServerSideProps(ctx) {
   let tokenLead;
   try {
@@ -407,7 +408,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordConf === true &&
-          (errorPasswordAny === true || passwordConf !== password) ? (
+            (errorPasswordAny === true || passwordConf !== password) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> As senhas devem ser iguais
             </h3>
@@ -419,7 +420,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordEsp === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Um Caractere Especial
             </h3>
@@ -432,7 +433,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordLet === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Uma Letra Maiuscula
             </h3>
@@ -445,7 +446,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordNum === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Um Numero
             </h3>
@@ -458,7 +459,7 @@ const Register = (props) => {
             ""
           )}
           {errorPassword9c === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> 8 Caracteres
             </h3>
@@ -502,14 +503,14 @@ const Register = (props) => {
           </div>
           <div class="div-button-submit">
             {!FormCheking() ||
-            errorPasswordAny ||
-            errorName ||
-            errorCpf ||
-            errorEmail ||
-            errorPhone ||
-            !errorCheck1 ||
-            !errorCheck2 ||
-            errorPasswordConf ? (
+              errorPasswordAny ||
+              errorName ||
+              errorCpf ||
+              errorEmail ||
+              errorPhone ||
+              !errorCheck1 ||
+              !errorCheck2 ||
+              errorPasswordConf ? (
               <Button
                 variant="contained"
                 disabled
@@ -529,11 +530,11 @@ const Register = (props) => {
               </Button>
             )}
             {errorPasswordAny ||
-            errorName ||
-            errorCpf ||
-            errorEmail ||
-            errorPhone ||
-            errorPasswordConf ? (
+              errorName ||
+              errorCpf ||
+              errorEmail ||
+              errorPhone ||
+              errorPasswordConf ? (
               <h3 class="error-global">
                 Formulário incompleto, revise e tente novamente...
               </h3>
@@ -557,6 +558,6 @@ const Register = (props) => {
 };
 
 export default Register;
-Register.guestGuard = false;
-Register.authGuard = false;
+Register.guestGuard = true;
+Register.authGuard = true;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;

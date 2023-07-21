@@ -8,125 +8,184 @@ import nookies from "nookies";
 import { Button } from "@mui/material";
 import { AiOutlineCheck } from "react-icons/ai";
 import { check } from "prettier";
+import { PackagesRepo } from "src/repository/packages.repo";
+
 export async function getServerSideProps(ctx) {
   let tokenLead;
+  let packageChose;
+  let packages;
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
-  } catch {
-    tokenLead = null;
+  } catch (error) {
+    tokenLead = null
   }
+
+  try {
+    packageChose = JSON.parse(nookies.get(ctx).packageChose);
+  } catch (error) {
+    packageChose = {
+      sliderValue: 39990,
+      questionOne: true,
+      questionTwo: true,
+      questionTree: true
+    };
+  }
+
+  try {
+    packages = (await PackagesRepo.getPackagesBySearch({ packageChose }));
+
+  } catch {
+    packages = null
+  }
+
   return {
     props: {
       tokenLead: tokenLead,
+      packageChose: packageChose,
+      packages: packages,
     },
   };
 }
-const f = [
-  {
-    id: 1,
-    title: "Básico Brand",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-      "Redes Sociais 1/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "6 Meses- Contrato",
-    ],
-    price: "R$ 199",
-    recurrence: "Contrato de 6 meses",
-  },
-  {
-    id: 2,
-    title: "Site e Redes Soc",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Site Multipage 3P- WebSite com 3 paginas, Estratégia, Criação, hospedagem e dominio inclusos",
-      "R Sociais 1/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "6 Meses- Contrato",
-    ],
-    price: "R$ 299",
-    recurrence: "Contrato de 6 meses",
-  },
-  {
-    id: 3,
-    title: "PRO Site e Redes",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Site Multipage 3P- WebSite com 3 paginas, Estratégia, Criação, hospedagem e dominio inclusos",
-      "SM 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "6 Meses- Contrato",
-    ],
-    price: "R$ 399",
-    recurrence: "Contrato de 6 meses",
-  },
-  {
-    id: 4,
-    title: "Básico Site + Blog",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Site Multipage 4P- WebSite com 4 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-      "Redes Sociais 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 2x por mês.",
-      "12 Meses- Contrato",
-    ],
-    price: "R$ 499",
-    recurrence: "Contrato de 12 meses",
-  },
-  {
-    id: 5,
-    title: "Premium",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-      "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-      "Redes Sociais 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-      "12 Meses- Contrato",
-    ],
-    price: "R$ 699",
-    recurrence: "Contrato de 12 meses",
-  },
-  {
-    id: 6,
-    title: "Premium",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-      "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-      "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-      "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
-      "12 Meses- Contrato",
-    ],
-    price: "R$ 1299",
-    recurrence: "Contrato de 12 meses",
-  },
-  {
-    id: 7,
-    title: "Premium",
-    products: [
-      "Logo- Criação de uma Logo para a marca",
-      "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-      "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-      "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-      "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-      "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
-      "12 Meses- Contrato",
-    ],
-    price: "R$ 1299",
-    recurrence: "Contrato de 12 meses",
-  },
-];
 
-const Packages = ({ tokenLead }) => {
+// const xx = async ({ packageChose }) => {
+
+//   let data;
+//   console.log(packageChose)
+//   try {
+//     console.log("try", data)
+//     packages = (await PackagesRepo.getPackagesBySearch(
+//       {
+//         "value": 500,
+//         "haveLogo": {
+//           "isSelected": false,
+//           "needModification": false
+//         },
+//         "haveSite": {
+//           "isSelected": false,
+//           "needModification": false
+//         },
+//         "haveSocialMidia": {
+//           "isSelected": false,
+//           "needModification": false
+//         }
+//       }
+//     ));
+//   } catch (error) { console.log("catch", data, error), data = "NUUUMDEU" }
+
+//   return data;
+// }
+
+// const f = [
+//   {
+//     id: 1,
+//     title: "Básico Brand",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
+//       "Redes Sociais 1/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "6 Meses- Contrato",
+//     ],
+//     price: "R$ 199",
+//     recurrence: "Contrato de 6 meses",
+//   },
+//   {
+//     id: 2,
+//     title: "Site e Redes Soc",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Site Multipage 3P- WebSite com 3 paginas, Estratégia, Criação, hospedagem e dominio inclusos",
+//       "R Sociais 1/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "6 Meses- Contrato",
+//     ],
+//     price: "R$ 299",
+//     recurrence: "Contrato de 6 meses",
+//   },
+//   {
+//     id: 3,
+//     title: "PRO Site e Redes",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Site Multipage 3P- WebSite com 3 paginas, Estratégia, Criação, hospedagem e dominio inclusos",
+//       "SM 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "6 Meses- Contrato",
+//     ],
+//     price: "R$ 399",
+//     recurrence: "Contrato de 6 meses",
+//   },
+//   {
+//     id: 4,
+//     title: "Básico Site + Blog",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Site Multipage 4P- WebSite com 4 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
+//       "Redes Sociais 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 2x por mês.",
+//       "12 Meses- Contrato",
+//     ],
+//     price: "R$ 499",
+//     recurrence: "Contrato de 12 meses",
+//   },
+//   {
+//     id: 5,
+//     title: "Premium",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
+//       "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
+//       "Redes Sociais 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
+//       "12 Meses- Contrato",
+//     ],
+//     price: "R$ 699",
+//     recurrence: "Contrato de 12 meses",
+//   },
+//   {
+//     id: 6,
+//     title: "Premium",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
+//       "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
+//       "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
+//       "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
+//       "12 Meses- Contrato",
+//     ],
+//     price: "R$ 1299",
+//     recurrence: "Contrato de 12 meses",
+//   },
+//   {
+//     id: 7,
+//     title: "Premium",
+//     products: [
+//       "Logo- Criação de uma Logo para a marca",
+//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
+//       "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
+//       "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
+//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
+//       "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
+//       "12 Meses- Contrato",
+//     ],
+//     price: "R$ 1299",
+//     recurrence: "Contrato de 12 meses",
+//   },
+// ];
+
+
+
+
+const Packages = ({ tokenLead, packages, packageChose }) => {
   const router = useRouter();
   const [modalPackage, setModalPackage] = useState(false);
   const [descriptiion, setDescriptiion] = useState({});
   const [checked, setChecked] = useState({});
-  const [packageSelected, setPackageSelected] = useState({});
+  const [packageSelected, setPackageSelected] = useState(null);
+
   const ModalPackage = (e) => {
     useEffect(() => {
       descriptiion;
     }, [descriptiion]);
+
     if (modalPackage === true) {
       return (
         <div class="full-page-modal">
@@ -150,10 +209,10 @@ const Packages = ({ tokenLead }) => {
               </div>
             </div>
             <div>
-              <h1>{descriptiion.title}</h1>
+              <h1>{descriptiion.name}</h1>
               <h2>
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                  apenas{" "}
+                  apenas{" "}R$
                 </span>
                 {descriptiion.price}
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
@@ -162,8 +221,8 @@ const Packages = ({ tokenLead }) => {
                 </span>
               </h2>
               <div style={{ maxHeight: "40vh", overflow: "auto" }}>
-                {descriptiion.products.sort().map((e) => (
-                  <p class="list-product">{e}</p>
+                {descriptiion.PackagesServices.sort().map((e) => (
+                  <p class="list-product">{e.Service.ServiceType.name}</p>
                 ))}
               </div>
             </div>
@@ -171,10 +230,10 @@ const Packages = ({ tokenLead }) => {
             <div class="card-box-button">
               <Button
                 variant="contained"
-                onClick={(y) => {
+                onClick={() => {
                   setModalPackage(false);
                   setChecked(descriptiion);
-                  setPackageSelected({ descriptiion });
+                  setPackageSelected(descriptiion);
                   console.log(packageSelected);
                 }}
                 style={{ cursor: "pointer", margin: "20px" }}
@@ -199,15 +258,15 @@ const Packages = ({ tokenLead }) => {
           Planos sugeridos para você:
         </h1>
         <div class="packages-container">
-          {f.sort().map((e, y) => (
+          {packages.sort().map((e, y) => (
             <PackItens
               key={y}
               cardClass={
-                f.length <= 3
+                packages.length <= 3
                   ? "cardClass100"
-                  : f.length % 2 !== 0 && y == f.length - 1
-                  ? "cardClassLast"
-                  : "cardClass50"
+                  : packages.length % 2 !== 0 && y == packages.length - 1
+                    ? "cardClassLast"
+                    : "cardClass50"
               }
               data={e}
               style={
@@ -225,7 +284,14 @@ const Packages = ({ tokenLead }) => {
         </div>
         <Button
           variant="contained"
-          onClick={() => router.push("/start/register/")}
+          onClick={() => {
+            if (packageSelected == null) {
+              console.log("Selecione um pacote")
+            } else {
+              router.push("/start/register/")
+            }
+
+          }}
           style={{
             cursor: "pointer",
             marginTop: "20px",
@@ -273,7 +339,7 @@ const PackItens = (props) => {
         }}
         style={props.style}
       >
-        <div class="package-title">{props.data.title}</div>
+        <div class="package-title">{props.data.name}</div>
         <div class="package-midle">
           <div class="package-price">
             {props.data.price}
@@ -281,9 +347,10 @@ const PackItens = (props) => {
           </div>
         </div>
         <div class="package-products">
-          {props.data.products.sort().map((e, y) => (
+          {props.data.PackagesServices.map((e, y) => (
             <div class="tag-product" key={y}>
-              {e.substring(0, e.indexOf("-"))}
+              {/* {e.Service.ServiceType.name.substring(0, e.Service.ServiceType.name.indexOf("-"))} */}
+              {e.Service.ServiceType.name}
             </div>
           ))}
         </div>
@@ -293,7 +360,7 @@ const PackItens = (props) => {
   );
 };
 
-Packages.guestGuard = false;
-Packages.authGuard = false;
+Packages.guestGuard = true;
+Packages.authGuard = true;
 
 Packages.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;

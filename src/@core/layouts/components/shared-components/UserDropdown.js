@@ -73,7 +73,7 @@ const UserDropdown = (props) => {
     logout();
     handleDropdownClose();
   };
-
+  console.log(user)
   return (
     <Fragment>
       <Badge
@@ -139,8 +139,8 @@ const UserDropdown = (props) => {
                 {user.User.roleTypeId == 1
                   ? "Cliente"
                   : user.User.roleTypeId == 2
-                  ? "Empregado"
-                  : "Admin"}
+                    ? "Empregado"
+                    : "Admin"}
               </Typography>
             </Box>
           </Box>

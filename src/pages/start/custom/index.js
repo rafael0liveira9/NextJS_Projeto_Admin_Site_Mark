@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Button } from "@mui/material";
+
 export async function getServerSideProps(ctx) {
   let tokenLead;
   try {
@@ -52,7 +53,7 @@ const Custom = () => {
 
 export default Custom;
 
-Custom.guestGuard = false;
-Custom.authGuard = false;
+Custom.guestGuard = true;
+Custom.authGuard = true;
 
 Custom.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;

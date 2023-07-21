@@ -5,8 +5,12 @@ import StepsShow from "../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import { RadioGroup, FormControlLabel, Radio, Button } from "@mui/material";
+import nookies from "nookies";
+
 
 const Start = () => {
+
+
   const router = useRouter();
   const [sliderValue, setSliderValue] = useState(39990);
   const [questionOne, setQuestionOne] = useState(true);
@@ -127,7 +131,7 @@ const Start = () => {
             </RadioGroup>
           </div>
         </div>
-        <div class="full-content-slider">
+        {/* <div class="full-content-slider">
           <div class="checkbox-div" style={{ paddingBottom: "20px" }}>
             <div class="checkbox-div-title">
               <p>
@@ -146,29 +150,25 @@ const Start = () => {
               <FormControlLabel value={false} control={<Radio />} label="Não" />
             </RadioGroup>
           </div>
-        </div>
-        <Button
-          variant="contained"
-          onClick={() => router.push("/start/packages")}
-          style={{
-            cursor: "pointer",
-            margin: "20px",
-            width: "250px",
-            height: "50px",
-          }}
-          color="secondary"
-        >
-          AVANÇAR
+        </div> */}
+
+        <Button variant='contained' onClick={() => {
+          nookies.set(null, "packageChose", JSON.stringify({ sliderValue, questionOne, questionTwo, questionTree }), {
+            maxAge: 28800,
+            path: "/",
+          });
+          router.push("/start/packages");
+        }} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='secondary'>VER PROMOÇÕES
         </Button>
-        {/* <div onClick={() => router.push("/start/packages")}><button style={{ cursor: "pointer" }} class="custom-button" href={`/start/packages/`}>AVANÇAR</button></div> */}
       </div>
       <StepsShow step={1}></StepsShow>
     </div>
   );
 };
 
+Start.guestGuard = true;
+Start.authGuard = true;
 Start.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-Start.guestGuard = false;
-Start.authGuard = false;
+
 
 export default Start;
