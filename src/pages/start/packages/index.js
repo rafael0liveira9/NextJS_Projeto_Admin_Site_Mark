@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import { AiOutlineCheck } from "react-icons/ai";
 import { check } from "prettier";
 import { PackagesRepo } from "src/repository/packages.repo";
+import toast from "react-hot-toast";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
@@ -251,7 +252,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   return (
     <>
       <ModalPackage></ModalPackage>
-      {tokenLead ? null : <ModalLead></ModalLead>}
+      {/* {tokenLead ? null : <ModalLead></ModalLead>} */}
       <div class="full-page-start">
         {/* <div class="full-content-slider" > */}
         <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>
@@ -286,8 +287,9 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
           variant="contained"
           onClick={() => {
             if (packageSelected == null) {
-              console.log("Selecione um pacote")
+              toast.error("Você precisa escolher um Produto!");
             } else {
+              toast.success("Preparando seu Pedido...");
               router.push("/start/register/")
             }
 
@@ -298,9 +300,9 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
             width: "250px",
             height: "50px",
           }}
-          color="primary"
+          color="secondary"
         >
-          CONTRATAR AGORA
+          ESCOLHER ESTE AGORA
         </Button>
         <Button
           variant="outlined"
@@ -313,7 +315,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
           }}
           color="blackOrWhite"
         >
-          ESCOLHER OUTRO
+          VER OUTROS PRODUTOS
         </Button>
         <StepsShow step={2}></StepsShow>
       </div>

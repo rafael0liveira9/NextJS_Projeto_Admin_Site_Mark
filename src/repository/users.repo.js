@@ -15,4 +15,14 @@ export class UsersRepo {
       },
     });
   }
+
+  static async postUserClient(data) {
+
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/signup`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*"
+      },
+    });
+  }
 }

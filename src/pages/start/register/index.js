@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StepsShow from "../../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
@@ -6,14 +6,23 @@ import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { TextField, Button, FormControlLabel, Switch } from "@mui/material";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
+import { UsersRepo } from "src/repository/users.repo";
+import toast from "react-hot-toast";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
+
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch {
-    tokenLead = null;
+    tokenLead = {
+      name: "",
+      email: "",
+      phone: ""
+    };
   }
+
+
   return {
     props: {
       tokenLead: tokenLead,
@@ -31,6 +40,8 @@ const Register = (props) => {
   const [errorPhone, setErrorPhone] = useState(false);
   const [email, setEmail] = useState(props.tokenLead.email || "");
   const [errorEmail, setErrorEmail] = useState(false);
+  const [cep, setCEP] = useState("");
+  const [errorCep, setErrorCep] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
   const [errorPasswordAny, setErrorpasswordAny] = useState(false);
@@ -41,6 +52,7 @@ const Register = (props) => {
   const [errorPasswordNum, setErrorpasswordNum] = useState(false);
   const [errorCheck1, setErrorCheck1] = useState(false);
   const [errorCheck2, setErrorCheck2] = useState(false);
+
 
   const FormCheking = () => {
     if (name && cpf && email && phone && password && passwordConf) {
@@ -65,7 +77,7 @@ const Register = (props) => {
     setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
     if (e.target.value.replace(/\d/g, "").length >= 4) {
       setErrorName(false);
-      setFormCheck(null);
+      // setFormCheck(null);
     }
   };
 
@@ -93,6 +105,31 @@ const Register = (props) => {
         .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
     );
   };
+
+  const formatCEP = (e) => {
+    const regex = /(\d{5})(\d{3})/gm;
+    let m;
+
+    // Verificar se o valor do CEP é válido
+    if (e.target.value.length !== 0 && !/^\d{5}-\d{3}$/.test(e.target.value)) {
+      setErrorCep(true);
+    } else {
+      setErrorCep(false);
+    }
+
+    // Remover caracteres não numéricos e formatar o CEP
+    while ((m = regex.exec(e.target.value)) !== null) {
+      if (m.index === regex.lastIndex) {
+        regex.lastIndex++;
+      }
+      m.forEach(() => {
+        setErrorCep(false);
+      });
+    }
+
+    setCEP(e.target.value.replace(/\D/g, "").replace(/(\d{5})(\d{3})/, "$1-$2"));
+  };
+
 
   const emailReal = (e) => {
     const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
@@ -172,11 +209,36 @@ const Register = (props) => {
     setPasswordConf(e.target.value);
   };
 
+  const onSubmit = async (name, email, password, cpf, phone, cep) => {
+    const regex = /[\s_\-()[\]{}!#$%^&*+=\\|:;"'<>,?/~`]/g;
+    let newUser = "antes";
+    let data = {
+      "email": email,
+      "password": password,
+      "name": name,
+      "document": cpf,
+      "documentType": "CPF",
+      "phone": phone.replace(regex, ""),
+      "firebaseToken": "123123123",
+      "cep": cep.replace(regex, "")
+    }
+
+    try {
+      newUser = (await UsersRepo.postUserClient(data));
+      toast.success("Cadastro criado com sucesso!");
+      router.push("/start/paywall");
+    } catch (error) {
+      toast.error("Erro ao se cadastrar, tente novamente.")
+    }
+  }
+
+  useEffect(() => { cpfReal }, [name, cpf, phone, email, cep, password, passwordConf])
+
   return (
     <>
       <div class="full-page-start">
         <div class="register-lead">
-          <img src="/images/favicon.png" width={70}></img>
+          {/* <img src="/images/favicon.png" width={70}></img> */}
           <h3>Preencha o Cadastro:</h3>
           {!name && !errorName ? (
             <TextField
@@ -333,6 +395,45 @@ const Register = (props) => {
           {errorPhone ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Insira um Telefone valido
+            </h3>
+          ) : (
+            ""
+          )}
+
+          {!cep && !errorCep ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="cep"
+              label="Cep"
+              defaultValue=""
+              onChange={formatCEP}
+              value={cep}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="cep"
+              label="Cep"
+              defaultValue=""
+              onChange={formatCEP}
+              value={cep}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
+          {errorCep ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Insira um Cep valido
             </h3>
           ) : (
             ""
@@ -508,6 +609,7 @@ const Register = (props) => {
               errorCpf ||
               errorEmail ||
               errorPhone ||
+              errorCep ||
               !errorCheck1 ||
               !errorCheck2 ||
               errorPasswordConf ? (
@@ -522,7 +624,7 @@ const Register = (props) => {
             ) : (
               <Button
                 variant="contained"
-                onClick={() => router.push("/start/paywall")}
+                onClick={() => onSubmit(name, email, password, cpf, phone, cep)}
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="primary"
               >
@@ -541,14 +643,14 @@ const Register = (props) => {
             ) : (
               ""
             )}
-            <Button
+            {/* <Button
               variant="outlined"
-              onClick={() => router.push("/login/")}
+              // onClick={onSubmit({ name: { name }, email: { email }, password: { password }, document: { document }, phone: { phone }, cep: { cep } })}
               style={{ cursor: "pointer", width: "250px", height: "35px" }}
               color="primary"
             >
               FAZER LOGIN
-            </Button>
+            </Button> */}
           </div>
         </div>
         <StepsShow step={3}></StepsShow>
@@ -557,7 +659,9 @@ const Register = (props) => {
   );
 };
 
-export default Register;
 Register.guestGuard = true;
 Register.authGuard = true;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+
+export default Register;
+

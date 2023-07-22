@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import toast from "react-hot-toast";
 import Icon from "src/@core/components/icon";
 import Typography from "@mui/material/Typography";
+
 export async function getServerSideProps(ctx) {
   let tokenLead;
   try {

@@ -6,6 +6,7 @@ import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import { RadioGroup, FormControlLabel, Radio, Button } from "@mui/material";
 import nookies from "nookies";
+import toast from "react-hot-toast";
 
 
 const Start = () => {
@@ -17,6 +18,7 @@ const Start = () => {
   const [questionTwo, setQuestionTwo] = useState(true);
   const [questionTree, setQuestionTree] = useState(true);
   const [questionFour, setQuestionFour] = useState(true);
+
   const handleChangeOne = (event) => {
     setQuestionOne(event.target.value);
   };
@@ -157,6 +159,7 @@ const Start = () => {
             maxAge: 28800,
             path: "/",
           });
+          toast.success("Buscando uma Oferta para você...");
           router.push("/start/packages");
         }} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='secondary'>VER PROMOÇÕES
         </Button>
