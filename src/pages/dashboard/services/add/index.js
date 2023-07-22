@@ -12,7 +12,7 @@ import Select from "react-select";
 import { toast } from "react-hot-toast";
 import Router from "next/router";
 
-export default function ServiceAddPage({ services }) {
+export default function ServiceAddPage({ services, token }) {
   const [valuePackage, setValuePackage] = useState(0);
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(null);
@@ -46,12 +46,6 @@ export default function ServiceAddPage({ services }) {
   console.log(value);
 
   const verifyInputs = () => {
-    console.log(
-      servicesSelect == null,
-      name == null,
-      description == null,
-      value == 0
-    );
     if (
       name == null ||
       description == null ||
@@ -89,12 +83,15 @@ export default function ServiceAddPage({ services }) {
       };
 
       try {
-        let serviceCreate = await ServicesRepo.sendService(data);
-        setIsLoading(false);
-        Router.back();
+        let serviceCreate = await ServicesRepo.sendService(data, token);
+        toast.success("Serviço criado com sucesso.");
+        setTimeout(() => {
+          setIsLoading(false);
+          Router.back();
+        }, 3000);
       } catch (error) {
         setIsLoading(false);
-        toast.error("Erro ao criar serviço");
+        toast.error(`Erro ao criar serviço: ${error?.response?.data?.Message}`);
       }
     } else {
       toast.error("Preencha todos os campos");
@@ -208,9 +205,12 @@ export const getServerSideProps = async (ctx) => {
     data = await ServicesRepo.getAllServices();
   } catch (error) {}
 
+  let token = ctx.req.cookies.accessToken ?? "";
+
   return {
     props: {
       services: data,
+      token,
     },
   };
 };

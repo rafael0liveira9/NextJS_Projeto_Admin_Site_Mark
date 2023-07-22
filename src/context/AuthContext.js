@@ -27,7 +27,6 @@ const AuthProvider = ({ children, cookies }) => {
     const initAuth = async () => {
       const storedToken = cookies[authConfig.storageTokenKeyName];
       if (storedToken) {
-        setLoading(true);
         await axios
           .get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
             headers: {

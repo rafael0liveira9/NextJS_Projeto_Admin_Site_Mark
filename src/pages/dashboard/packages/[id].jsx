@@ -5,27 +5,69 @@ import { Button, Card, TextField, Typography } from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/package/PackageTable";
-import { regexMoney, reverseRegexMoney } from "src/utils/utils";
+import { regexMoney, regexMoneyText, reverseRegexMoney } from "src/utils/utils";
 import { ServicesRepo } from "src/repository/services.repo";
 
 import Select from "react-select";
 import { toast } from "react-hot-toast";
 import Router from "next/router";
 
-export default function PackageAddPage({ services, token }) {
-  const [valuePackage, setValuePackage] = useState(0);
-  const [name, setName] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [value, setValue] = useState(0);
-  const [dueDate, setDueDate] = useState(null);
-  const [servicesSelect, setServicesSelect] = useState([]);
-  const servicesData = services.map((x) => ({
+export const getServerSideProps = async (ctx) => {
+  let data;
+  let packageData;
+  try {
+    data = await ServicesRepo.getAllServices();
+  } catch (error) {}
+
+  let token = ctx.req.cookies.accessToken ?? "";
+
+  packageData = await PackagesRepo.getPackageById(ctx.query.id, token);
+
+  return {
+    props: {
+      services: data,
+      packageData: packageData,
+      token: token,
+    },
+  };
+};
+
+export default function PackageAddPage({ services, token, packageData }) {
+  console.log(packageData);
+
+  const [valuePackage, setValuePackage] = useState(
+    regexMoneyText(parseFloat(packageData?.price).toFixed(2))
+  );
+
+  const [name, setName] = useState(packageData?.name);
+  const [description, setDescription] = useState(packageData?.description);
+  const [value, setValue] = useState(packageData?.price);
+  const [dueDate, setDueDate] = useState(
+    /(^\d+\-\d+\-\d+T\d+:\d+):\d+\.\d+Z/gi.exec(
+      new Date(packageData?.dueDate).toISOString()
+    )[1]
+  );
+  const [servicesSelect, setServicesSelect] = useState(
+    packageData?.PackagesServices?.map((x) => {
+      return {
+        ...x,
+        packageId: x.id,
+        ...x.Service,
+        label: x.Service.name,
+        value: x.Service.id,
+      };
+    })
+  );
+  const servicesData = services?.map((x) => ({
     ...x,
     label: x.name,
     value: x.id,
   }));
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(dueDate);
+
+  console.log(servicesSelect);
   const [errors, setErrors] = useState({
     name: null,
     description: null,
@@ -35,12 +77,6 @@ export default function PackageAddPage({ services, token }) {
   });
 
   const verifyInputs = () => {
-    console.log(
-      errors.name == null,
-      description == null,
-      value == 0,
-      servicesSelect.length == 0
-    );
     if (
       name == null ||
       description == null ||
@@ -72,20 +108,27 @@ export default function PackageAddPage({ services, token }) {
     if (!isLoading && verifyInputs()) {
       setIsLoading(true);
       const data = {
+        id: packageData.id,
         name: name,
         price: value,
         description: description,
         dueDate: dueDate,
-        services: servicesSelect.map((x) => x.id),
+        servicesUp: servicesSelect.map((x) => ({
+          id: x.packageId ?? null,
+          service: x.value,
+        })),
       };
 
       try {
-        let packageCreate = await PackagesRepo.sendPackage(data, token);
-        setIsLoading(false);
-        Router.back();
+        let packageCreate = await PackagesRepo.updatePackage(data, token);
+        toast.success("Pacote atualizado com sucesso!");
+        setTimeout(() => {
+          setIsLoading(false);
+          Router.back();
+        }, []);
       } catch (error) {
         setIsLoading(false);
-        toast.error(`Erro ao criar pacote: ${error.response.data.Message}`);
+        toast.error(`Erro ao atualizar pacote: ${error.response.data.Message}`);
       }
     }
   };
@@ -99,7 +142,7 @@ export default function PackageAddPage({ services, token }) {
             Aqui você pode ver, adicionar e excluir pacotes!
           </Typography>
         }
-        button={"Adicionar Pacote"}
+        button={"Atualizar Pacote"}
         onTap={async () => {
           await onSubmit();
         }}
@@ -140,6 +183,7 @@ export default function PackageAddPage({ services, token }) {
           label="Data de Validade"
           onChange={(e) => {
             setDueDate(e.target.value);
+            console.log(e.target.value);
             verifyInputs();
           }}
           error={errors.dueDate}
@@ -156,7 +200,7 @@ export default function PackageAddPage({ services, token }) {
             menu: (styles) => ({ ...styles, zIndex: 999999 }),
           }}
           required
-          defaultValue={[]}
+          defaultValue={servicesSelect}
           isMulti
           placeholder="Selecione os Serviços"
           options={servicesData}
@@ -201,23 +245,6 @@ export default function PackageAddPage({ services, token }) {
           helperText={errors.value}
         ></TextField>
       </Grid>
-      {console.log(servicesSelect)}
     </Grid>
   );
 }
-
-export const getServerSideProps = async (ctx) => {
-  let data;
-  try {
-    data = await ServicesRepo.getAllServices();
-  } catch (error) {}
-
-  let token = ctx.req.cookies.accessToken ?? "";
-
-  return {
-    props: {
-      services: data,
-      token: token,
-    },
-  };
-};

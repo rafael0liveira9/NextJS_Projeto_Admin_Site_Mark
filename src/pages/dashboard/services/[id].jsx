@@ -5,25 +5,46 @@ import { Button, Card, TextField, Typography } from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/package/PackageTable";
-import { regexMoney, reverseRegexMoney } from "src/utils/utils";
+import {
+  regexMoney,
+  regexMoneyText,
+  reverseRegexMoney,
+  reverseRegexMoneyText,
+} from "src/utils/utils";
 import { ServicesRepo } from "src/repository/services.repo";
 
 import Select from "react-select";
 import { toast } from "react-hot-toast";
 import Router from "next/router";
 
-export default function PackageAddPage({ services, token }) {
-  const [valuePackage, setValuePackage] = useState(0);
-  const [name, setName] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [value, setValue] = useState(0);
-  const [dueDate, setDueDate] = useState(null);
-  const [servicesSelect, setServicesSelect] = useState([]);
-  const servicesData = services.map((x) => ({
-    ...x,
-    label: x.name,
-    value: x.id,
-  }));
+export default function ServiceAddPage({ service, token, id }) {
+  const [valuePackage, setValuePackage] = useState(
+    regexMoneyText(parseFloat(service.price).toFixed(2))
+  );
+  const servicesData = [
+    {
+      label: "Site",
+      value: 1,
+    },
+    {
+      label: "Logo",
+      value: 2,
+    },
+    {
+      label: "Social",
+      value: 3,
+    },
+  ];
+  const [name, setName] = useState(service?.name);
+  const [description, setDescription] = useState(service?.description);
+  const [value, setValue] = useState(service?.value);
+  const [dueDate, setDueDate] = useState(service?.dueDate);
+  const [servicesSelect, setServicesSelect] = useState(
+    servicesData[
+      servicesData.findIndex((e) => e.value == service.serviceTypeId)
+    ]
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState({
@@ -35,31 +56,23 @@ export default function PackageAddPage({ services, token }) {
   });
 
   const verifyInputs = () => {
-    console.log(
-      errors.name == null,
-      description == null,
-      value == 0,
-      servicesSelect.length == 0
-    );
     if (
       name == null ||
       description == null ||
       value == 0 ||
-      servicesSelect.length == 0
+      servicesSelect == null
     ) {
       setErrors({
         name:
-          name == null || name == "" ? "Coloque um nome para o pacote" : null,
+          name == null || name == "" ? "Coloque um nome para o serviço" : null,
         description:
           description == null || description == ""
-            ? "Digite uma descrição para o pacote"
+            ? "Digite uma descrição para o serviço"
             : null,
         value: value == 0 ? "Digite um valor" : null,
         dueDate: null,
         services:
-          servicesSelect.length == 0
-            ? "Selecione pelo menos um serviços"
-            : null,
+          servicesSelect == null ? "Selecione pelo menos um serviços" : null,
       });
       setIsLoading(false);
       return false;
@@ -72,34 +85,40 @@ export default function PackageAddPage({ services, token }) {
     if (!isLoading && verifyInputs()) {
       setIsLoading(true);
       const data = {
+        serviceTypeId: servicesSelect.value,
         name: name,
         price: value,
         description: description,
-        dueDate: dueDate,
-        services: servicesSelect.map((x) => x.id),
       };
 
       try {
-        let packageCreate = await PackagesRepo.sendPackage(data, token);
-        setIsLoading(false);
-        Router.back();
+        let serviceCreate = await ServicesRepo.updateService(data, id, token);
+        toast.success("Serviço atualizado com sucesso.");
+        setTimeout(() => {
+          setIsLoading(false);
+          Router.back();
+        }, 3000);
       } catch (error) {
         setIsLoading(false);
-        toast.error(`Erro ao criar pacote: ${error.response.data.Message}`);
+        toast.error(
+          `Erro ao atualizar serviço: ${error?.response?.data?.Message}`
+        );
       }
+    } else {
+      toast.error("Preencha todos os campos");
     }
   };
 
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Pacotes</Typography>}
+        title={<Typography variant="h5">Serviços</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, adicionar e excluir pacotes!
+            Aqui você pode ver, adicionar e excluir serviços!
           </Typography>
         }
-        button={"Adicionar Pacote"}
+        button={"Atualizar Serviço"}
         onTap={async () => {
           await onSubmit();
         }}
@@ -107,7 +126,7 @@ export default function PackageAddPage({ services, token }) {
       <Grid item xs={12} xl={6}>
         <TextField
           fullWidth
-          label="Nome do Pacote"
+          label="Nome do Serviço"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -122,7 +141,7 @@ export default function PackageAddPage({ services, token }) {
         <TextField
           fullWidth
           value={description}
-          label="Descrição do Pacote"
+          label="Descrição do Serviço"
           onChange={(e) => {
             setDescription(e.target.value);
             verifyInputs();
@@ -130,20 +149,6 @@ export default function PackageAddPage({ services, token }) {
           required
           error={errors.description}
           helperText={errors.description}
-        />
-      </Grid>
-      <Grid item xs={12} xl={6}>
-        <TextField
-          fullWidth
-          type="datetime-local"
-          value={dueDate}
-          label="Data de Validade"
-          onChange={(e) => {
-            setDueDate(e.target.value);
-            verifyInputs();
-          }}
-          error={errors.dueDate}
-          helperText={errors.dueDate}
         />
       </Grid>
       <Grid item xs={12} xl={6}>
@@ -156,9 +161,8 @@ export default function PackageAddPage({ services, token }) {
             menu: (styles) => ({ ...styles, zIndex: 999999 }),
           }}
           required
-          defaultValue={[]}
-          isMulti
-          placeholder="Selecione os Serviços"
+          defaultValue={servicesSelect}
+          placeholder="Selecione o tipo do serviço"
           options={servicesData}
           onChange={(a) => {
             setServicesSelect(a);
@@ -186,7 +190,7 @@ export default function PackageAddPage({ services, token }) {
               textAlign: "end",
             },
           }}
-          label="Valor do Pacote"
+          label="Valor do Serviço"
           required
           InputProps={{
             startAdornment: "R$",
@@ -207,17 +211,25 @@ export default function PackageAddPage({ services, token }) {
 }
 
 export const getServerSideProps = async (ctx) => {
-  let data;
+  let data = {};
   try {
-    data = await ServicesRepo.getAllServices();
-  } catch (error) {}
+    data = (
+      await ServicesRepo.getServiceById(
+        ctx.req.cookies.accessToken,
+        ctx.query.id
+      )
+    ).data;
+  } catch (error) {
+    console.log(error);
+  }
 
   let token = ctx.req.cookies.accessToken ?? "";
 
   return {
     props: {
-      services: data,
-      token: token,
+      service: data,
+      token,
+      id: ctx.query.id,
     },
   };
 };

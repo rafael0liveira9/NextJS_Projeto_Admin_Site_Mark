@@ -130,15 +130,15 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data) => {
-    const { email, password } = data;
-    auth.login({ email, password, rememberMe });
-    () => {
-      setError("email", {
-        type: "manual",
-        message: "E-mail ou Senha inválidos",
-      })
+    if (!auth.loading) {
+      const { email, password } = data;
+      auth.login({ email, password, rememberMe }, () => {
+        setError("email", {
+          type: "manual",
+          message: "E-mail ou Senha inválidos",
+        });
+      });
     }
-
   };
 
   const imageSource =
@@ -440,7 +440,7 @@ const LoginPage = () => {
                 variant="contained"
                 sx={{ mb: 7 }}
               >
-                Entrar
+                {auth.loading ? "Entrando..." : "Entrar"}
               </Button>
               {/* <Box
                 sx={{
