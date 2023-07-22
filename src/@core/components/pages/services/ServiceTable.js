@@ -19,6 +19,9 @@ import { getInitials } from "src/@core/utils/get-initials";
 // ** Data Import
 import { rows } from "src/@fake-db/table/static-data";
 import { regexMoney, regexMoneyText } from "src/utils/utils";
+import { Button } from "@mui/material";
+import { AiFillDelete, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import Router from "next/router";
 
 // ** renders client column
 const renderClient = (params) => {
@@ -65,75 +68,7 @@ const escapeRegExp = (value) => {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-const columns = [
-  {
-    flex: 0.275,
-    minWidth: 290,
-    field: "package_name",
-    headerName: "Nome do Serviço",
-    renderCell: (params) => {
-      const { row } = params;
-
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {renderClient(params)}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row.name}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
-  {
-    flex: 0.2,
-    minWidth: 120,
-    headerName: "Descrição do Serviço",
-    field: "description",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.description}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.2,
-    minWidth: 110,
-    field: "value",
-    headerName: "Valor",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        R$ {regexMoneyText(parseFloat(params.row.price).toFixed(2).toString())}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.125,
-    field: "duedate",
-    minWidth: 80,
-    headerName: "Data de Validade",
-    renderCell: (params) => {
-      const dueDate = new Date(Date.parse(params.row.dueDate));
-
-      return (
-        <Typography variant="body2" sx={{ color: "text.primary" }}>
-          {params.row.dueDate
-            ? `${dueDate.getDate()}/${
-                dueDate.getMonth() + 1
-              }/${dueDate.getFullYear()}`
-            : "Sem Validade"}
-        </Typography>
-      );
-    },
-  },
-];
-
-const TableColumns = ({ rowsData }) => {
+const TableColumns = ({ rowsData, removeFunction }) => {
   const [data] = useState(rowsData);
   const [pageSize, setPageSize] = useState(7);
   const [searchText, setSearchText] = useState("");
@@ -155,6 +90,101 @@ const TableColumns = ({ rowsData }) => {
       setFilteredData([]);
     }
   };
+
+  const columns = [
+    {
+      flex: 0.275,
+      minWidth: 290,
+      field: "package_name",
+      headerName: "Nome do Serviço",
+      renderCell: (params) => {
+        const { row } = params;
+
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {renderClient(params)}
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography
+                noWrap
+                variant="body2"
+                sx={{ color: "text.primary", fontWeight: 600 }}
+              >
+                {row.name}
+              </Typography>
+            </Box>
+          </Box>
+        );
+      },
+    },
+    {
+      flex: 0.2,
+      minWidth: 120,
+      headerName: "Descrição do Serviço",
+      field: "description",
+      renderCell: (params) => (
+        <Typography variant="body2" sx={{ color: "text.primary" }}>
+          {params.row.description}
+        </Typography>
+      ),
+    },
+    {
+      flex: 0.2,
+      minWidth: 110,
+      field: "value",
+      headerName: "Valor",
+      renderCell: (params) => (
+        <Typography variant="body2" sx={{ color: "text.primary" }}>
+          R${" "}
+          {regexMoneyText(parseFloat(params.row.price).toFixed(2).toString())}
+        </Typography>
+      ),
+    },
+    {
+      flex: 0.125,
+      field: "duedate",
+      minWidth: 80,
+      headerName: "Data de Validade",
+      renderCell: (params) => {
+        const dueDate = new Date(Date.parse(params.row.dueDate));
+
+        return (
+          <Typography variant="body2" sx={{ color: "text.primary" }}>
+            {params.row.dueDate
+              ? `${dueDate.getDate()}/${
+                  dueDate.getMonth() + 1
+                }/${dueDate.getFullYear()}`
+              : "Sem Validade"}
+          </Typography>
+        );
+      },
+    },
+    {
+      flex: 0.125,
+      field: "edit",
+      minWidth: 80,
+      headerName: "Editar",
+      renderCell: (params) => {
+        return (
+          <Button onClick={() => Router.push(Router.asPath + params.row.id)}>
+            <AiOutlineEdit></AiOutlineEdit>
+          </Button>
+        );
+      },
+    },
+    {
+      flex: 0.125,
+      field: "remove",
+      minWidth: 80,
+      headerName: "Apagar",
+      renderCell: (params) => {
+        return (
+          <Button onClick={() => removeFunction(params.row.id)}>
+            <AiOutlineDelete></AiOutlineDelete>
+          </Button>
+        );
+      },
+    },
+  ];
 
   return (
     <Card>

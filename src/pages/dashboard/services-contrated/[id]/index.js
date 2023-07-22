@@ -412,7 +412,7 @@ export default function ServicePage({ services }) {
           />
         </Card>
       </Grid>
-      <Grid item xs={12} sx={{ marginBottom: 10 }}>
+      {/* <Grid item xs={12} sx={{ marginBottom: 10 }}>
         <Typography
           fontSize={20}
           fontWeight={700}
@@ -431,8 +431,8 @@ export default function ServicePage({ services }) {
             columns={columnsSite}
           />
         </Card>
-      </Grid>
-      <Grid item xs={12} sx={{ marginBottom: 5 }}>
+      </Grid> */}
+      {/* <Grid item xs={12} sx={{ marginBottom: 5 }}>
         <Typography
           fontSize={20}
           marginBottom={5}
@@ -451,7 +451,7 @@ export default function ServicePage({ services }) {
             columns={columnsSocial}
           />
         </Card>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

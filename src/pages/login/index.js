@@ -130,19 +130,15 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data) => {
-    try {
+    if (!auth.loading) {
       const { email, password } = data;
-      auth.login({ email, password, rememberMe });
-    } catch (error) {
-      console.log("erro ao fazer login");
-      () => {
+      auth.login({ email, password, rememberMe }, () => {
         setError("email", {
           type: "manual",
           message: "E-mail ou Senha inválidos",
         });
-      }
+      });
     }
-
   };
 
   const imageSource =
@@ -169,23 +165,23 @@ const LoginPage = () => {
           ></img>
         </Box>
       ) : // <Box
-        //   sx={{
-        //     flex: 1,
-        //     display: "flex",
-        //     position: "relative",
-        //     alignItems: "center",
-        //     justifyContent: "center",
-        //   }}
-        // >
-        //   <LoginIllustrationWrapper>
-        //     <LoginIllustration
-        //       alt="login-illustration"
-        //       src={`/mark/images/mark-image-example.png`}
-        //     />
-        //   </LoginIllustrationWrapper>
-        //   <FooterIllustrationsV2 />
-        // </Box>
-        null}
+      //   sx={{
+      //     flex: 1,
+      //     display: "flex",
+      //     position: "relative",
+      //     alignItems: "center",
+      //     justifyContent: "center",
+      //   }}
+      // >
+      //   <LoginIllustrationWrapper>
+      //     <LoginIllustration
+      //       alt="login-illustration"
+      //       src={`/mark/images/mark-image-example.png`}
+      //     />
+      //   </LoginIllustrationWrapper>
+      //   <FooterIllustrationsV2 />
+      // </Box>
+      null}
       <RightWrapper
         sx={
           skin === "bordered" && !hidden
@@ -444,7 +440,7 @@ const LoginPage = () => {
                 variant="contained"
                 sx={{ mb: 7 }}
               >
-                Entrar
+                {auth.loading ? "Entrando..." : "Entrar"}
               </Button>
               {/* <Box
                 sx={{

@@ -20,6 +20,10 @@ export function reverseRegexMoney(i) {
   var v = parseFloat(i.value.replace(/\./g, "").replace(",", "."));
   return v;
 }
+export function reverseRegexMoneyText(i) {
+  var v = parseFloat(i.replace(/\./g, "").replace(",", "."));
+  return v;
+}
 
 export function returnDay(day) {
   const date = new Date(Date.parse(day));
