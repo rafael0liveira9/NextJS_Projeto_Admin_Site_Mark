@@ -5,7 +5,7 @@ import StepsShow from "../../../@core/pages/components/stepsShow";
 import ModalLead from "../../../@core/pages/components/modalLead";
 import { useRouter } from "next/router";
 import nookies from "nookies";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { AiOutlineCheck } from "react-icons/ai";
 import { check } from "prettier";
 import { PackagesRepo } from "src/repository/packages.repo";
@@ -15,6 +15,16 @@ export async function getServerSideProps(ctx) {
   let tokenLead;
   let packageChose;
   let packages;
+
+  if (!!ctx.req.cookies.jwt) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login"
+      }
+    }
+  }
+
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch (error) {
@@ -48,131 +58,6 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-// const xx = async ({ packageChose }) => {
-
-//   let data;
-//   console.log(packageChose)
-//   try {
-//     console.log("try", data)
-//     packages = (await PackagesRepo.getPackagesBySearch(
-//       {
-//         "value": 500,
-//         "haveLogo": {
-//           "isSelected": false,
-//           "needModification": false
-//         },
-//         "haveSite": {
-//           "isSelected": false,
-//           "needModification": false
-//         },
-//         "haveSocialMidia": {
-//           "isSelected": false,
-//           "needModification": false
-//         }
-//       }
-//     ));
-//   } catch (error) { console.log("catch", data, error), data = "NUUUMDEU" }
-
-//   return data;
-// }
-
-// const f = [
-//   {
-//     id: 1,
-//     title: "Básico Brand",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-//       "Redes Sociais 1/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "6 Meses- Contrato",
-//     ],
-//     price: "R$ 199",
-//     recurrence: "Contrato de 6 meses",
-//   },
-//   {
-//     id: 2,
-//     title: "Site e Redes Soc",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Site Multipage 3P- WebSite com 3 paginas, Estratégia, Criação, hospedagem e dominio inclusos",
-//       "R Sociais 1/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "6 Meses- Contrato",
-//     ],
-//     price: "R$ 299",
-//     recurrence: "Contrato de 6 meses",
-//   },
-//   {
-//     id: 3,
-//     title: "PRO Site e Redes",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Site Multipage 3P- WebSite com 3 paginas, Estratégia, Criação, hospedagem e dominio inclusos",
-//       "SM 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "6 Meses- Contrato",
-//     ],
-//     price: "R$ 399",
-//     recurrence: "Contrato de 6 meses",
-//   },
-//   {
-//     id: 4,
-//     title: "Básico Site + Blog",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Site Multipage 4P- WebSite com 4 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-//       "Redes Sociais 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 2x por mês.",
-//       "12 Meses- Contrato",
-//     ],
-//     price: "R$ 499",
-//     recurrence: "Contrato de 12 meses",
-//   },
-//   {
-//     id: 5,
-//     title: "Premium",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-//       "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-//       "Redes Sociais 3/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-//       "12 Meses- Contrato",
-//     ],
-//     price: "R$ 699",
-//     recurrence: "Contrato de 12 meses",
-//   },
-//   {
-//     id: 6,
-//     title: "Premium",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-//       "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-//       "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-//       "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
-//       "12 Meses- Contrato",
-//     ],
-//     price: "R$ 1299",
-//     recurrence: "Contrato de 12 meses",
-//   },
-//   {
-//     id: 7,
-//     title: "Premium",
-//     products: [
-//       "Logo- Criação de uma Logo para a marca",
-//       "Branding- Criação e estruturação do branding de marca, mockups e estratégias",
-//       "Site Multipage 5P- WebSite com 5 paginas, Blog, Estratégia, Criação, hospedagem e dominio inclusos",
-//       "Redes Sociais 4/sem- Aqui vai uma descrição sobre o serviço Redes Sociais 3x",
-//       "Blog- Criação de Conteúdo para postagem em Blog e LinkedIn, 4x por mês.",
-//       "ADS- Gerenciamento de tráfego pagoe  impusionamento de vendas",
-//       "12 Meses- Contrato",
-//     ],
-//     price: "R$ 1299",
-//     recurrence: "Contrato de 12 meses",
-//   },
-// ];
-
-
 
 
 const Packages = ({ tokenLead, packages, packageChose }) => {
@@ -181,6 +66,8 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   const [descriptiion, setDescriptiion] = useState({});
   const [checked, setChecked] = useState({});
   const [packageSelected, setPackageSelected] = useState(null);
+  const [isLoading1, setIsLoading1] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
 
   const ModalPackage = (e) => {
     useEffect(() => {
@@ -286,13 +173,16 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
         <Button
           variant="contained"
           onClick={() => {
-            if (packageSelected == null) {
-              toast.error("Você precisa escolher um Produto!");
-            } else {
-              toast.success("Preparando seu Pedido...");
-              router.push("/start/register/")
+            if (!isLoading1) {
+              setIsLoading1(true);
+              if (packageSelected == null) {
+                toast.error("Você precisa escolher um Produto!");
+                setIsLoading1(false);
+              } else {
+                toast.success("Preparando seu Pedido...");
+                router.push("/start/register/")
+              }
             }
-
           }}
           style={{
             cursor: "pointer",
@@ -302,11 +192,16 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
           }}
           color="secondary"
         >
-          ESCOLHER ESTE AGORA
+          {isLoading1 ? <CircularProgress></CircularProgress> : "ESCOLHER ESTE AGORA"}
         </Button>
         <Button
           variant="outlined"
-          onClick={() => router.push("/start/custom")}
+          onClick={() => {
+            if (!isLoading2) {
+              setIsLoading2(true);
+              router.push("/start/custom/")
+            }
+          }}
           style={{
             cursor: "pointer",
             margin: "20px",
@@ -315,10 +210,10 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
           }}
           color="blackOrWhite"
         >
-          VER OUTROS PRODUTOS
+          {isLoading2 ? <CircularProgress></CircularProgress> : "VER OUTROS PRODUTOS"}
         </Button>
         <StepsShow step={2}></StepsShow>
-      </div>
+      </div >
     </>
   );
 };

@@ -1,13 +1,14 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Icon from "src/@core/components/icon";
-import { Box, Button, Card, CardHeader, Typography } from "@mui/material";
+import { Box, Button, Card, CardHeader, Table, Typography } from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/services/ServiceContratedTable";
 import Router, { useRouter } from "next/router";
 import { ServicesRepo } from "src/repository/services.repo";
 import { AiOutlineFolderView } from "react-icons/ai";
+import spacing from "src/@core/theme/spacing";
 
 export const getServerSideProps = async (ctx) => {
   let data;
@@ -18,7 +19,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.id
       )
     ).data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {
@@ -32,7 +33,7 @@ const columnsLogo = [
     flex: 0.275,
     minWidth: 290,
     field: "package_name",
-    headerName: "Nome do Serviço",
+    headerName: "Nome da Empresa",
     renderCell: (params) => {
       const { row } = params;
 
@@ -56,7 +57,7 @@ const columnsLogo = [
     flex: 0.15,
     minWidth: 120,
     field: "status",
-    headerName: "Status do Serviço",
+    headerName: "Status",
     renderCell: (params) => {
       const { row } = params;
 
@@ -115,7 +116,7 @@ const columnsLogo = [
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
               {row?.LogoService?.LogoProof &&
-              row?.LogoService?.LogoProof.isApproved
+                row?.LogoService?.LogoProof.isApproved
                 ? "Sim"
                 : "Não"}
             </Typography>
@@ -198,7 +199,6 @@ const columnsSocial = [
     headerName: "Tudo Aprovado?",
     renderCell: (params) => {
       const { row } = params;
-      console.log(row);
 
       return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -322,7 +322,7 @@ const columnsSite = [
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
               {row?.SiteService?.SiteLayoutSelected &&
-              row?.SiteService?.siteLayoutSelectedId
+                row?.SiteService?.siteLayoutSelectedId
                 ? row?.SiteService?.siteLayoutSelectedId
                 : "Nenhum"}
             </Typography>
@@ -348,7 +348,7 @@ const columnsSite = [
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
               {row?.SiteService?.SiteLayoutFinished &&
-              row?.SiteService?.siteLayoutFinishedId
+                row?.SiteService?.siteLayoutFinishedId
                 ? row?.SiteService?.siteLayoutFinishedId
                 : "Nenhum"}
             </Typography>
@@ -378,6 +378,7 @@ const columnsSite = [
 
 export default function ServicePage({ services }) {
   const router = useRouter();
+  console.log(services)
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
@@ -392,6 +393,25 @@ export default function ServicePage({ services }) {
           router.push(`${router.pathname}/add`);
         }}
       />
+      <Grid item xs={12}>
+
+        <Card
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: 5
+          }}
+        >
+          <Typography
+            fontSize={20}
+            fontWeight={700}
+          >
+            {`Empresa Selecionada : ${services.Companies.companyName}`}
+          </Typography>
+          <Button>Trocar Empresa</Button>
+        </Card>
+      </Grid>
       <Grid item xs={12} sx={{ marginBottom: 10 }}>
         <Typography
           fontSize={20}
@@ -399,7 +419,7 @@ export default function ServicePage({ services }) {
           marginBottom={5}
           color={"#6A21AE"}
         >
-          Serviços de Logo Contratados
+          Logo
         </Typography>
         <Card
           sx={{
@@ -419,7 +439,7 @@ export default function ServicePage({ services }) {
           marginBottom={5}
           color={"#6A21AE"}
         >
-          Serviços de Site Contratados
+          Site
         </Typography>
         <Card
           sx={{
@@ -439,7 +459,7 @@ export default function ServicePage({ services }) {
           fontWeight={700}
           color={"#6A21AE"}
         >
-          Serviços de Social Media Contratados
+          Redes Sociais
         </Typography>
         <Card
           sx={{

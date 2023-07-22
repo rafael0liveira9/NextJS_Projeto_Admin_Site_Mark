@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material'
+import { TextField, Button, CircularProgress } from '@mui/material'
 import nookies from "nookies";
 import { stringify } from 'stylis';
 import { LeadsRepo } from "src/repository/leads.repo";
+import { UsersRepo } from "src/repository/users.repo";
 
 
 
@@ -15,23 +16,42 @@ const ModalLead = () => {
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPhone, setErrorPhone] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const submitLead = async () => {
-    try {
-      let data = {
-        "name": name,
-        "email": email,
-        "phone": phone
+    if (!isLoading) {
+      setIsLoading(true)
+      setErrorSubmit(false)
+
+      try {
+        let createLead;
+        let getUserByEmail = 0;
+        let data = {
+          "name": name,
+          "email": email.trim(),
+          "phone": phone.replace(/\D/g, "")
+        }
+
+        getUserByEmail = await UsersRepo.getUserByEmail(email);
+
+
+        if (getUserByEmail == 200) {
+          console.log("Usuario ja existe");
+          setModalOpen(false);
+        } else {
+          createLead = (await LeadsRepo.sendLeads(data)).data;
+          nookies.set(null, "tokenLead", JSON.stringify({ name, email, phone }), {
+            maxAge: 28800 * 3,
+            path: "/",
+          });
+          setModalOpen(false)
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error)
+        setErrorSubmit(true)
       }
-      console.log(data)
-      createLead = (await LeadsRepo.sendLeads(data));
-      nookies.set(null, "tokenLead", JSON.stringify({ name, email, phone }), {
-        maxAge: 28800,
-        path: "/",
-      });
-      setModalOpen(false)
-    } catch (error) {
-      setErrorSubmit(true)
     }
   }
 
@@ -86,7 +106,7 @@ const ModalLead = () => {
           <TextField label='Telefone' defaultValue='' name="phone" alt="input phone" onChange={phoneReal} value={phone} sx={{
             margin: "10px"
           }}></TextField>
-          <Button variant='contained' onClick={() => { submitLead() }} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='primary'>VER PROMOÇÕES
+          <Button variant='contained' onClick={() => { submitLead() }} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='primary'>{isLoading ? <CircularProgress></CircularProgress> : "VER PROMOÇÕES"}
           </Button>
           {errorSubmit ? <h3 class="error-input">Erro ao cadastrar dados, tente novamente...</h3> : ""}
         </div>

@@ -4,14 +4,14 @@ import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { TextField, Button, FormControlLabel, Switch } from "@mui/material";
+import { TextField, Button, FormControlLabel, Switch, CircularProgress } from "@mui/material";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 import { UsersRepo } from "src/repository/users.repo";
 import toast from "react-hot-toast";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
-
+  let jwt;
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch {
@@ -20,12 +20,19 @@ export async function getServerSideProps(ctx) {
       email: "",
       phone: ""
     };
-  }
+  };
+
+  try {
+    jwt = JSON.parse(nookies.get(ctx).jwt);
+  } catch {
+    jwt = null
+  };
 
 
   return {
     props: {
       tokenLead: tokenLead,
+      jwt: jwt
     },
   };
 }
@@ -52,6 +59,8 @@ const Register = (props) => {
   const [errorPasswordNum, setErrorpasswordNum] = useState(false);
   const [errorCheck1, setErrorCheck1] = useState(false);
   const [errorCheck2, setErrorCheck2] = useState(false);
+  const [isLoading1, setIsLoading1] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
 
 
   const FormCheking = () => {
@@ -63,61 +72,59 @@ const Register = (props) => {
   };
 
   const nameReal = (e) => {
-    {
-      if (e.target.value.length > 0) {
-        setErrorName(true);
-      } else {
-        setErrorName(false);
-      }
-    }
-    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
-    if (e.target.value.replace(/\d/g, "").length >= 4) {
+    if (e.target.value.length > 0) {
+      setErrorName(true);
+    } else {
       setErrorName(false);
     }
     setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
     if (e.target.value.replace(/\d/g, "").length >= 4) {
       setErrorName(false);
-      // setFormCheck(null);
+    }
+    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
+    if (e.target.value.replace(/\d/g, "").length >= 4) {
+      setErrorName(false);
     }
   };
 
   const cpfReal = (e) => {
-    const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/gm;
-    let m;
-    {
-      if (e.target.value.length > 0) {
-        setErrorCpf(true);
-      } else {
-        setErrorCpf(false);
-      }
+    if (e.target.value.length > 0) {
+      setErrorCpf(true)
+    } else {
+      setErrorCpf(false)
     }
-    while ((m = regex.exec(e.target.value)) !== null) {
-      if (m.index === regex.lastIndex) {
-        regex.lastIndex++;
-      }
-      m.forEach(() => {
-        setErrorCpf(false);
-      });
+
+    if (e.target.value.length > 11) {
+      setCpf(
+        e.target.value
+          .replace(/\D/g, "")
+          .replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+      );
+    } else {
+      setCpf(
+        e.target.value
+          .replace(/\D/g, "")
+          .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+      );
     }
-    setCpf(
-      e.target.value
-        .replace(/\D/g, "")
-        .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
-    );
   };
 
   const formatCEP = (e) => {
     const regex = /(\d{5})(\d{3})/gm;
     let m;
+    if (e.target.value.length > 0) {
+      setErrorCep(true)
+    } else {
+      setErrorCep(false)
+    }
 
-    // Verificar se o valor do CEP é válido
     if (e.target.value.length !== 0 && !/^\d{5}-\d{3}$/.test(e.target.value)) {
       setErrorCep(true);
     } else {
       setErrorCep(false);
     }
 
-    // Remover caracteres não numéricos e formatar o CEP
+
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
         regex.lastIndex++;
@@ -134,27 +141,31 @@ const Register = (props) => {
   const emailReal = (e) => {
     const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
 
-    {
-      if (e.target.value.length > 0) {
-        setErrorEmail(!regex.test(e.target.value));
-      } else {
-        setErrorEmail(false);
-      }
+    if (e.target.value.length > 0) {
+      setErrorEmail(!regex.test(e.target.value));
+    } else {
+      setErrorEmail(false);
     }
+
 
     setEmail(e.target.value);
   };
 
   const phoneReal = (e) => {
-    const regex = /(\(\d{2}\)) (\d)(\d{4})(\d{4})/gm;
+    const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
     let m;
-    {
-      if (e.target.value.length > 0) {
-        setErrorPhone(true);
-      } else {
-        setErrorPhone(false);
-      }
+    if (e.target.value.length > 0) {
+      setErrorPhone(true)
+    } else {
+      setErrorPhone(false)
     }
+
+    if (e.target.value.length !== 0 && !/\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/.test(e.target.value)) {
+      setErrorPhone(true);
+    } else {
+      setErrorPhone(false);
+    }
+
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
         regex.lastIndex++;
@@ -163,6 +174,7 @@ const Register = (props) => {
         setErrorPhone(false);
       });
     }
+
     setPhone(
       e.target.value
         .replace(/\D/g, "")
@@ -210,29 +222,43 @@ const Register = (props) => {
   };
 
   const onSubmit = async (name, email, password, cpf, phone, cep) => {
-    const regex = /[\s_\-()[\]{}!#$%^&*+=\\|:;"'<>,?/~`]/g;
-    let newUser = "antes";
-    let data = {
-      "email": email,
-      "password": password,
-      "name": name,
-      "document": cpf,
-      "documentType": "CPF",
-      "phone": phone.replace(regex, ""),
-      "firebaseToken": "123123123",
-      "cep": cep.replace(regex, "")
-    }
+    if (!isLoading1) {
+      setIsLoading1(true);
+      const regex = /[\s_\-()[\]{}!#$%^&*+=\\|:;"'<>,?/~`]/g;
+      let newUser;
+      let data = {
+        "email": email,
+        "password": password,
+        "name": name,
+        "document": cpf,
+        "documentType": cpf.length > 11 ? "CNPJ" : "CPF",
+        "phone": phone.replace(regex, ""),
+        "firebaseToken": "123123123",
+        "cep": "81730070"
+      }
 
-    try {
-      newUser = (await UsersRepo.postUserClient(data));
-      toast.success("Cadastro criado com sucesso!");
-      router.push("/start/paywall");
-    } catch (error) {
-      toast.error("Erro ao se cadastrar, tente novamente.")
+      if (props.jwt === null) {
+        try {
+          newUser = (await UsersRepo.postUserClient(data)).data;
+          nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
+            maxAge: (28800 * 3) * 7,
+            path: "/",
+          });
+          toast.success("Cadastro criado com sucesso!");
+          router.push("/start/paywall");
+        } catch (error) {
+          toast.error("Erro ao se cadastrar, tente novamente.")
+        }
+      } else {
+        router.push("/start/paywall");
+      }
     }
+    setIsLoading1(false);
   }
 
-  useEffect(() => { cpfReal }, [name, cpf, phone, email, cep, password, passwordConf])
+  useEffect(() => {
+    FormCheking()
+  }, [name, cpf, phone, email, cep, password, passwordConf])
 
   return (
     <>
@@ -290,6 +316,17 @@ const Register = (props) => {
               name="document"
               label="CPF"
               defaultValue=""
+              onKeyUp={(e) => {
+                const regex = e.target.value.length > 11 ?
+                  /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm
+                  :
+                  /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm
+
+                if (regex.test(e.target.value)) {
+                  console.log(regex)
+                  setErrorCpf(false);
+                }
+              }}
               onChange={cpfReal}
               value={cpf}
               sx={{ margin: "5px" }}
@@ -301,6 +338,23 @@ const Register = (props) => {
               name="document"
               label="CPF"
               defaultValue=""
+              onKeyUp={(e) => {
+                console.log(e.target.value.length)
+                if (e.target.value.length > 14) {
+                  const regex = /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm
+                  if (regex.test(e.target.value)) {
+                    console.log(regex)
+                    setErrorCpf(false);
+                  }
+                } else if (e.target.value.length === 14 || e.target.value.length === 11) {
+                  const regex = /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm
+                  // console.log(regex.test(e.target.value))
+                  if (regex.test(e.target.value)) {
+                    console.log(regex)
+                    setErrorCpf(false);
+                  }
+                }
+              }}
               onChange={cpfReal}
               value={cpf}
               sx={{
@@ -368,6 +422,12 @@ const Register = (props) => {
               name="phone"
               label="Telefone"
               defaultValue=""
+              onKeyUp={(e) => {
+                const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
+                if (regex.test(e.target.value)) {
+                  setErrorPhone(false);
+                }
+              }}
               onChange={phoneReal}
               value={phone}
               sx={{ margin: "5px" }}
@@ -379,6 +439,12 @@ const Register = (props) => {
               name="phone"
               label="Telefone"
               defaultValue=""
+              onKeyUp={(e) => {
+                const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
+                if (regex.test(e.target.value)) {
+                  setErrorPhone(false);
+                }
+              }}
               onChange={phoneReal}
               value={phone}
               sx={{
@@ -400,7 +466,7 @@ const Register = (props) => {
             ""
           )}
 
-          {!cep && !errorCep ? (
+          {/* {!cep && !errorCep ? (
             <TextField
               required
               id="form-props-required"
@@ -437,7 +503,7 @@ const Register = (props) => {
             </h3>
           ) : (
             ""
-          )}
+          )} */}
 
           {password && errorPasswordAny === false ? (
             <TextField
@@ -619,7 +685,7 @@ const Register = (props) => {
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="primary"
               >
-                CADASTRAR-SE
+                {isLoading1 ? <CircularProgress></CircularProgress> : "CADASRTAR-SE"}
               </Button>
             ) : (
               <Button
@@ -628,7 +694,7 @@ const Register = (props) => {
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="primary"
               >
-                CADASTRAR-SE
+                {isLoading1 ? <CircularProgress></CircularProgress> : "CADASRTAR-SE"}
               </Button>
             )}
             {errorPasswordAny ||
@@ -643,14 +709,14 @@ const Register = (props) => {
             ) : (
               ""
             )}
-            {/* <Button
+            <Button
               variant="outlined"
               // onClick={onSubmit({ name: { name }, email: { email }, password: { password }, document: { document }, phone: { phone }, cep: { cep } })}
               style={{ cursor: "pointer", width: "250px", height: "35px" }}
               color="primary"
             >
-              FAZER LOGIN
-            </Button> */}
+              {isLoading2 ? <CircularProgress></CircularProgress> : "ESCOLHER ESTE AGORA"}
+            </Button>
           </div>
         </div>
         <StepsShow step={3}></StepsShow>

@@ -130,17 +130,13 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data) => {
-    try {
-      const { email, password } = data;
-      auth.login({ email, password, rememberMe });
-    } catch (error) {
-      console.log("erro ao fazer login");
-      () => {
-        setError("email", {
-          type: "manual",
-          message: "E-mail ou Senha inválidos",
-        });
-      }
+    const { email, password } = data;
+    auth.login({ email, password, rememberMe });
+    () => {
+      setError("email", {
+        type: "manual",
+        message: "E-mail ou Senha inválidos",
+      })
     }
 
   };

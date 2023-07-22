@@ -13,7 +13,7 @@ export const getServerSideProps = async (ctx) => {
   try {
     data = (await ServicesRepo.contratedServices(ctx.req.cookies.accessToken))
       .data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {
@@ -30,8 +30,7 @@ export default function ServicePage({ services }) {
         title={<Typography variant="h5">Serviços Contratados</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, aprovar ou enviar dados para os serviços
-            contratados!
+            Aqui você pode ver, aprovar ou enviar dados para aprovação.
           </Typography>
         }
         button={"Adicionar Serviço"}

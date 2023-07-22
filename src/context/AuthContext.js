@@ -35,6 +35,7 @@ const AuthProvider = ({ children, cookies }) => {
             },
           })
           .then(async (response) => {
+            if (response.data.User.roleTypeId === 1) throw Error();
             setLoading(false);
             setUser({ ...response.data });
             setToken(storedToken);
@@ -67,6 +68,7 @@ const AuthProvider = ({ children, cookies }) => {
         password: params.password,
       })
       .then(async (response) => {
+        if (response.data.User.roleTypeId === 1) throw Error();
         nookies.set(null, authConfig.storageTokenKeyName, response.data.jwt, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
@@ -76,9 +78,9 @@ const AuthProvider = ({ children, cookies }) => {
         setToken(response.data.jwt);
         params.rememberMe
           ? nookies.set(null, "userData", JSON.stringify(response.data), {
-              maxAge: 30 * 24 * 60 * 60,
-              path: "/",
-            })
+            maxAge: 30 * 24 * 60 * 60,
+            path: "/",
+          })
           : null;
         const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
         router.replace(redirectURL);

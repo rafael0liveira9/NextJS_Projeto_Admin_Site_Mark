@@ -4,7 +4,7 @@ import SliderCustomMarks from "src/views/forms/form-elements/slider/SliderCustom
 import StepsShow from "../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
-import { RadioGroup, FormControlLabel, Radio, Button } from "@mui/material";
+import { RadioGroup, FormControlLabel, Radio, Button, CircularProgress } from "@mui/material";
 import nookies from "nookies";
 import toast from "react-hot-toast";
 
@@ -18,6 +18,7 @@ const Start = () => {
   const [questionTwo, setQuestionTwo] = useState(true);
   const [questionTree, setQuestionTree] = useState(true);
   const [questionFour, setQuestionFour] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeOne = (event) => {
     setQuestionOne(event.target.value);
@@ -50,6 +51,19 @@ const Start = () => {
       label: "R$ 1299,90",
     },
   ];
+
+  const onSubimit = () => {
+    if (!isLoading) {
+      setIsLoading(true);
+      nookies.set(null, "packageChose", JSON.stringify({ sliderValue, questionOne, questionTwo, questionTree }), {
+        maxAge: 28800 * 3,
+        path: "/",
+      });
+      toast.success("Buscando uma Oferta para você...");
+      router.push("/start/packages");
+    }
+
+  }
 
   return (
     <div class="full-page-start">
@@ -154,14 +168,7 @@ const Start = () => {
           </div>
         </div> */}
 
-        <Button variant='contained' onClick={() => {
-          nookies.set(null, "packageChose", JSON.stringify({ sliderValue, questionOne, questionTwo, questionTree }), {
-            maxAge: 28800,
-            path: "/",
-          });
-          toast.success("Buscando uma Oferta para você...");
-          router.push("/start/packages");
-        }} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='secondary'>VER PROMOÇÕES
+        <Button variant='contained' onClick={() => onSubimit()} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='secondary'>{isLoading ? <CircularProgress></CircularProgress> : "VER PROMOÇÕES"}
         </Button>
       </div>
       <StepsShow step={1}></StepsShow>
