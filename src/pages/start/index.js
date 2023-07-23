@@ -4,14 +4,17 @@ import SliderCustomMarks from "src/views/forms/form-elements/slider/SliderCustom
 import StepsShow from "../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
-import { RadioGroup, FormControlLabel, Radio, Button, CircularProgress } from "@mui/material";
+import {
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import nookies from "nookies";
 import toast from "react-hot-toast";
 
-
 const Start = () => {
-
-
   const router = useRouter();
   const [sliderValue, setSliderValue] = useState(39990);
   const [questionOne, setQuestionOne] = useState(true);
@@ -55,15 +58,19 @@ const Start = () => {
   const onSubimit = () => {
     if (!isLoading) {
       setIsLoading(true);
-      nookies.set(null, "packageChose", JSON.stringify({ sliderValue, questionOne, questionTwo, questionTree }), {
-        maxAge: 28800 * 3,
-        path: "/",
-      });
+      nookies.set(
+        null,
+        "packageChose",
+        JSON.stringify({ sliderValue, questionOne, questionTwo, questionTree }),
+        {
+          maxAge: 28800 * 3,
+          path: "/",
+        }
+      );
       toast.success("Buscando uma Oferta para você...");
       router.push("/start/packages");
     }
-
-  }
+  };
 
   return (
     <div class="full-page-start">
@@ -168,7 +175,18 @@ const Start = () => {
           </div>
         </div> */}
 
-        <Button variant='contained' onClick={() => onSubimit()} style={{ cursor: "pointer", margin: "20px", width: "200px", height: "50px" }} color='secondary'>{isLoading ? <CircularProgress></CircularProgress> : "VER PROMOÇÕES"}
+        <Button
+          variant="contained"
+          onClick={() => onSubimit()}
+          style={{
+            cursor: "pointer",
+            margin: "20px",
+            width: "200px",
+            height: "50px",
+          }}
+          color="secondary"
+        >
+          {isLoading ? <CircularProgress></CircularProgress> : "VER PROMOÇÕES"}
         </Button>
       </div>
       <StepsShow step={1}></StepsShow>
@@ -176,9 +194,8 @@ const Start = () => {
   );
 };
 
-Start.guestGuard = true;
-Start.authGuard = true;
+Start.guestGuard = false;
+Start.authGuard = false;
 Start.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
-
 
 export default Start;

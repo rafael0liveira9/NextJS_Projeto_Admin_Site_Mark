@@ -20,15 +20,15 @@ export async function getServerSideProps(ctx) {
     return {
       redirect: {
         permanent: false,
-        destination: "/login"
-      }
-    }
+        destination: "/login",
+      },
+    };
   }
 
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch (error) {
-    tokenLead = null
+    tokenLead = null;
   }
 
   try {
@@ -38,7 +38,7 @@ export async function getServerSideProps(ctx) {
       sliderValue: 39990,
       questionOne: true,
       questionTwo: true,
-      questionTree: true
+      questionTree: true,
     };
   }
 
@@ -57,8 +57,6 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-
-
 
 const Packages = ({ tokenLead, packages, packageChose }) => {
   const router = useRouter();
@@ -100,7 +98,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
               <h1>{descriptiion.name}</h1>
               <h2>
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                  apenas{" "}R$
+                  apenas R$
                 </span>
                 {descriptiion.price}
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
@@ -180,7 +178,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
                 setIsLoading1(false);
               } else {
                 toast.success("Preparando seu Pedido...");
-                router.push("/start/register/")
+                router.push("/start/register/");
               }
             }
           }}
@@ -192,14 +190,18 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
           }}
           color="secondary"
         >
-          {isLoading1 ? <CircularProgress></CircularProgress> : "ESCOLHER ESTE AGORA"}
+          {isLoading1 ? (
+            <CircularProgress></CircularProgress>
+          ) : (
+            "ESCOLHER ESTE AGORA"
+          )}
         </Button>
         <Button
           variant="outlined"
           onClick={() => {
             if (!isLoading2) {
               setIsLoading2(true);
-              router.push("/start/custom/")
+              router.push("/start/custom/");
             }
           }}
           style={{
@@ -210,10 +212,14 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
           }}
           color="blackOrWhite"
         >
-          {isLoading2 ? <CircularProgress></CircularProgress> : "VER OUTROS PRODUTOS"}
+          {isLoading2 ? (
+            <CircularProgress></CircularProgress>
+          ) : (
+            "VER OUTROS PRODUTOS"
+          )}
         </Button>
         <StepsShow step={2}></StepsShow>
-      </div >
+      </div>
     </>
   );
 };
@@ -257,7 +263,7 @@ const PackItens = (props) => {
   );
 };
 
-Packages.guestGuard = true;
-Packages.authGuard = true;
+Packages.guestGuard = false;
+Packages.authGuard = false;
 
 Packages.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;

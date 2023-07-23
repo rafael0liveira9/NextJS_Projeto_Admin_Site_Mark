@@ -4,7 +4,13 @@ import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { TextField, Button, FormControlLabel, Switch, CircularProgress } from "@mui/material";
+import {
+  TextField,
+  Button,
+  FormControlLabel,
+  Switch,
+  CircularProgress,
+} from "@mui/material";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 import { UsersRepo } from "src/repository/users.repo";
 import toast from "react-hot-toast";
@@ -18,21 +24,20 @@ export async function getServerSideProps(ctx) {
     tokenLead = {
       name: "",
       email: "",
-      phone: ""
+      phone: "",
     };
-  };
+  }
 
   try {
     jwt = JSON.parse(nookies.get(ctx).jwt);
   } catch {
-    jwt = null
-  };
-
+    jwt = null;
+  }
 
   return {
     props: {
       tokenLead: tokenLead,
-      jwt: jwt
+      jwt: jwt,
     },
   };
 }
@@ -62,7 +67,6 @@ const Register = (props) => {
   const [isLoading1, setIsLoading1] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
 
-
   const FormCheking = () => {
     if (name && cpf && email && phone && password && passwordConf) {
       return true;
@@ -89,9 +93,9 @@ const Register = (props) => {
 
   const cpfReal = (e) => {
     if (e.target.value.length > 0) {
-      setErrorCpf(true)
+      setErrorCpf(true);
     } else {
-      setErrorCpf(false)
+      setErrorCpf(false);
     }
 
     if (e.target.value.length > 11) {
@@ -113,9 +117,9 @@ const Register = (props) => {
     const regex = /(\d{5})(\d{3})/gm;
     let m;
     if (e.target.value.length > 0) {
-      setErrorCep(true)
+      setErrorCep(true);
     } else {
-      setErrorCep(false)
+      setErrorCep(false);
     }
 
     if (e.target.value.length !== 0 && !/^\d{5}-\d{3}$/.test(e.target.value)) {
@@ -123,7 +127,6 @@ const Register = (props) => {
     } else {
       setErrorCep(false);
     }
-
 
     while ((m = regex.exec(e.target.value)) !== null) {
       if (m.index === regex.lastIndex) {
@@ -134,9 +137,10 @@ const Register = (props) => {
       });
     }
 
-    setCEP(e.target.value.replace(/\D/g, "").replace(/(\d{5})(\d{3})/, "$1-$2"));
+    setCEP(
+      e.target.value.replace(/\D/g, "").replace(/(\d{5})(\d{3})/, "$1-$2")
+    );
   };
-
 
   const emailReal = (e) => {
     const regex = /^[a-z0-9.]+@[a-z0-9]{2,}\.[a-z]{2,}(\.[a-z]{2,})?$/;
@@ -147,7 +151,6 @@ const Register = (props) => {
       setErrorEmail(false);
     }
 
-
     setEmail(e.target.value);
   };
 
@@ -155,12 +158,15 @@ const Register = (props) => {
     const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
     let m;
     if (e.target.value.length > 0) {
-      setErrorPhone(true)
+      setErrorPhone(true);
     } else {
-      setErrorPhone(false)
+      setErrorPhone(false);
     }
 
-    if (e.target.value.length !== 0 && !/\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/.test(e.target.value)) {
+    if (
+      e.target.value.length !== 0 &&
+      !/\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/.test(e.target.value)
+    ) {
       setErrorPhone(true);
     } else {
       setErrorPhone(false);
@@ -227,38 +233,38 @@ const Register = (props) => {
       const regex = /[\s_\-()[\]{}!#$%^&*+=\\|:;"'<>,?/~`]/g;
       let newUser;
       let data = {
-        "email": email,
-        "password": password,
-        "name": name,
-        "document": cpf,
-        "documentType": cpf.length > 11 ? "CNPJ" : "CPF",
-        "phone": phone.replace(regex, ""),
-        "firebaseToken": "123123123",
-        "cep": "81730070"
-      }
+        email: email,
+        password: password,
+        name: name,
+        document: cpf,
+        documentType: cpf.length > 11 ? "CNPJ" : "CPF",
+        phone: phone.replace(regex, ""),
+        firebaseToken: "123123123",
+        cep: "81730070",
+      };
 
       if (props.jwt === null) {
         try {
           newUser = (await UsersRepo.postUserClient(data)).data;
           nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
-            maxAge: (28800 * 3) * 7,
+            maxAge: 28800 * 3 * 7,
             path: "/",
           });
           toast.success("Cadastro criado com sucesso!");
           router.push("/start/paywall");
         } catch (error) {
-          toast.error("Erro ao se cadastrar, tente novamente.")
+          toast.error("Erro ao se cadastrar, tente novamente.");
         }
       } else {
         router.push("/start/paywall");
       }
     }
     setIsLoading1(false);
-  }
+  };
 
   useEffect(() => {
-    FormCheking()
-  }, [name, cpf, phone, email, cep, password, passwordConf])
+    FormCheking();
+  }, [name, cpf, phone, email, cep, password, passwordConf]);
 
   return (
     <>
@@ -317,13 +323,13 @@ const Register = (props) => {
               label="CPF"
               defaultValue=""
               onKeyUp={(e) => {
-                const regex = e.target.value.length > 11 ?
-                  /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm
-                  :
-                  /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm
+                const regex =
+                  e.target.value.length > 11
+                    ? /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm
+                    : /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm;
 
                 if (regex.test(e.target.value)) {
-                  console.log(regex)
+                  console.log(regex);
                   setErrorCpf(false);
                 }
               }}
@@ -339,18 +345,22 @@ const Register = (props) => {
               label="CPF"
               defaultValue=""
               onKeyUp={(e) => {
-                console.log(e.target.value.length)
+                console.log(e.target.value.length);
                 if (e.target.value.length > 14) {
-                  const regex = /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm
+                  const regex =
+                    /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm;
                   if (regex.test(e.target.value)) {
-                    console.log(regex)
+                    console.log(regex);
                     setErrorCpf(false);
                   }
-                } else if (e.target.value.length === 14 || e.target.value.length === 11) {
-                  const regex = /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm
+                } else if (
+                  e.target.value.length === 14 ||
+                  e.target.value.length === 11
+                ) {
+                  const regex = /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm;
                   // console.log(regex.test(e.target.value))
                   if (regex.test(e.target.value)) {
-                    console.log(regex)
+                    console.log(regex);
                     setErrorCpf(false);
                   }
                 }
@@ -575,7 +585,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordConf === true &&
-            (errorPasswordAny === true || passwordConf !== password) ? (
+          (errorPasswordAny === true || passwordConf !== password) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> As senhas devem ser iguais
             </h3>
@@ -587,7 +597,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordEsp === true &&
-            (errorPasswordAny || errorPasswordConf === true) ? (
+          (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Um Caractere Especial
             </h3>
@@ -600,7 +610,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordLet === true &&
-            (errorPasswordAny || errorPasswordConf === true) ? (
+          (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Uma Letra Maiuscula
             </h3>
@@ -613,7 +623,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordNum === true &&
-            (errorPasswordAny || errorPasswordConf === true) ? (
+          (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Um Numero
             </h3>
@@ -626,7 +636,7 @@ const Register = (props) => {
             ""
           )}
           {errorPassword9c === true &&
-            (errorPasswordAny || errorPasswordConf === true) ? (
+          (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> 8 Caracteres
             </h3>
@@ -670,22 +680,26 @@ const Register = (props) => {
           </div>
           <div class="div-button-submit">
             {!FormCheking() ||
-              errorPasswordAny ||
-              errorName ||
-              errorCpf ||
-              errorEmail ||
-              errorPhone ||
-              errorCep ||
-              !errorCheck1 ||
-              !errorCheck2 ||
-              errorPasswordConf ? (
+            errorPasswordAny ||
+            errorName ||
+            errorCpf ||
+            errorEmail ||
+            errorPhone ||
+            errorCep ||
+            !errorCheck1 ||
+            !errorCheck2 ||
+            errorPasswordConf ? (
               <Button
                 variant="contained"
                 disabled
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="primary"
               >
-                {isLoading1 ? <CircularProgress></CircularProgress> : "CADASRTAR-SE"}
+                {isLoading1 ? (
+                  <CircularProgress></CircularProgress>
+                ) : (
+                  "CADASRTAR-SE"
+                )}
               </Button>
             ) : (
               <Button
@@ -694,15 +708,19 @@ const Register = (props) => {
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="primary"
               >
-                {isLoading1 ? <CircularProgress></CircularProgress> : "CADASRTAR-SE"}
+                {isLoading1 ? (
+                  <CircularProgress></CircularProgress>
+                ) : (
+                  "CADASRTAR-SE"
+                )}
               </Button>
             )}
             {errorPasswordAny ||
-              errorName ||
-              errorCpf ||
-              errorEmail ||
-              errorPhone ||
-              errorPasswordConf ? (
+            errorName ||
+            errorCpf ||
+            errorEmail ||
+            errorPhone ||
+            errorPasswordConf ? (
               <h3 class="error-global">
                 Formulário incompleto, revise e tente novamente...
               </h3>
@@ -715,7 +733,11 @@ const Register = (props) => {
               style={{ cursor: "pointer", width: "250px", height: "35px" }}
               color="primary"
             >
-              {isLoading2 ? <CircularProgress></CircularProgress> : "ESCOLHER ESTE AGORA"}
+              {isLoading2 ? (
+                <CircularProgress></CircularProgress>
+              ) : (
+                "ESCOLHER ESTE AGORA"
+              )}
             </Button>
           </div>
         </div>
@@ -725,9 +747,8 @@ const Register = (props) => {
   );
 };
 
-Register.guestGuard = true;
-Register.authGuard = true;
+Register.guestGuard = false;
+Register.authGuard = false;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 export default Register;
-
