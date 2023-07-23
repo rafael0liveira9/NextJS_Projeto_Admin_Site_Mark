@@ -53,7 +53,7 @@ const Custom = () => {
 
 export default Custom;
 
-Custom.guestGuard = true;
-Custom.authGuard = true;
+Custom.guestGuard = false;
+Custom.authGuard = false;
 
 Custom.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
