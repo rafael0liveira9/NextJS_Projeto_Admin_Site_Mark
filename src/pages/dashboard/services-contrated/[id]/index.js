@@ -36,7 +36,7 @@ const columnsLogo = [
     headerName: "Nome da Empresa",
     renderCell: (params) => {
       const { row } = params;
-
+      console.log(row);
       return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {/* {renderClient(params)} */}

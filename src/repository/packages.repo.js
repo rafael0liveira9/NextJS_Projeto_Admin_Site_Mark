@@ -15,34 +15,30 @@ export class PackagesRepo {
     const data = {
       value: packageChose.sliderValue ? packageChose.sliderValue : 39990,
       haveLogo: {
-        isSelected: packageChose.questionOne ? packageChose.questionOne : true,
-        needModification: packageChose.questionOne === true ? true : false,
+        isSelected: packageChose.questionOne,
+        needModification: packageChose.questionOne,
       },
       haveSite: {
-        isSelected: packageChose.questionTwo ? packageChose.questionOne : true,
-        needModification: packageChose.questionTwo === true ? true : false,
+        isSelected: packageChose.questionTwo,
+        needModification: packageChose.questionTwo,
       },
       haveSocialMidia: {
-        isSelected: packageChose.questionTree ? packageChose.questionOne : true,
-        needModification: packageChose.questionTree === true ? true : false,
+        isSelected: packageChose.questionTree,
+        needModification: packageChose.questionTree,
       },
     };
-    try {
-      // pack = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/package/search`, { Body: data });
-      pack = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}package/search`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    } catch (error) {
-      pack = "NUUMDEU";
-    }
 
-    return pack.data;
+    pack = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}package/search`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return pack;
   }
 
   static async sendPackage(data, token) {

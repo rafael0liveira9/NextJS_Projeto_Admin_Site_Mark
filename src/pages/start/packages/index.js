@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 export async function getServerSideProps(ctx) {
   let tokenLead;
   let packageChose;
-  let packages;
+  let packages = [];
 
   if (!!ctx.req.cookies.jwt) {
     return {
@@ -43,10 +43,10 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    packages = (await PackagesRepo.getPackagesBySearch({ packageChose }));
+    packages = (await PackagesRepo.getPackagesBySearch({ packageChose })).data;
 
   } catch {
-    packages = null
+
   }
 
   return {
@@ -122,7 +122,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
                   setModalPackage(false);
                   setChecked(descriptiion);
                   setPackageSelected(descriptiion);
-                  console.log(packageSelected);
+
                 }}
                 style={{ cursor: "pointer", margin: "20px" }}
                 color="primary"
@@ -139,14 +139,14 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   return (
     <>
       <ModalPackage></ModalPackage>
-      {/* {tokenLead ? null : <ModalLead></ModalLead>} */}
       <div class="full-page-start">
         {/* <div class="full-content-slider" > */}
         <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>
           Planos sugeridos para você:
         </h1>
         <div class="packages-container">
-          {packages.sort().map((e, y) => (
+          {!packages && <div>Olá</div>}
+          {packages?.sort().map((e, y) => (
             <PackItens
               key={y}
               cardClass={

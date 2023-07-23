@@ -18,8 +18,9 @@ import UserLayout from "src/layouts/UserLayout";
 import Spinner from "src/@core/components/spinner";
 import {
   SettingsConsumer,
-  SettingsProvider,
+  SettingsProvider
 } from "src/@core/context/settingsContext";
+import { PackagesProvider } from "src/context/PackagesContext";
 import { AuthProvider } from "src/context/AuthContext";
 import ReactHotToast from "src/@core/styles/libs/react-hot-toast";
 import { createEmotionCache } from "src/@core/utils/create-emotion-cache";
@@ -103,39 +104,41 @@ const App = (props) => {
         </Head>
 
         <AuthProvider cookies={cookies}>
-          <SettingsProvider
-            {...(setConfig ? { pageSettings: setConfig() } : {})}
-          >
-            <SettingsConsumer>
-              {({ settings }) => {
-                return (
-                  <ThemeComponent settings={settings}>
-                    <WindowWrapper>
-                      <Guard
-                        authGuard={authGuard}
-                        guestGuard={guestGuard}
-                        cookies={cookies}
-                      >
-                        <AclGuard
-                          aclAbilities={aclAbilities}
+          <PackagesProvider>
+            <SettingsProvider
+              {...(setConfig ? { pageSettings: setConfig() } : {})}
+            >
+              <SettingsConsumer>
+                {({ settings }) => {
+                  return (
+                    <ThemeComponent settings={settings}>
+                      <WindowWrapper>
+                        <Guard
+                          authGuard={authGuard}
                           guestGuard={guestGuard}
                           cookies={cookies}
                         >
-                          {getLayout(<Component {...pageProps} />)}
-                        </AclGuard>
-                      </Guard>
-                    </WindowWrapper>
-                    <ReactHotToast>
-                      <Toaster
-                        position={settings.toastPosition}
-                        toastOptions={{ className: "react-hot-toast" }}
-                      />
-                    </ReactHotToast>
-                  </ThemeComponent>
-                );
-              }}
-            </SettingsConsumer>
-          </SettingsProvider>
+                          <AclGuard
+                            aclAbilities={aclAbilities}
+                            guestGuard={guestGuard}
+                            cookies={cookies}
+                          >
+                            {getLayout(<Component {...pageProps} />)}
+                          </AclGuard>
+                        </Guard>
+                      </WindowWrapper>
+                      <ReactHotToast>
+                        <Toaster
+                          position={settings.toastPosition}
+                          toastOptions={{ className: "react-hot-toast" }}
+                        />
+                      </ReactHotToast>
+                    </ThemeComponent>
+                  );
+                }}
+              </SettingsConsumer>
+            </SettingsProvider>
+          </PackagesProvider>
         </AuthProvider>
       </CacheProvider>
     </Provider>
