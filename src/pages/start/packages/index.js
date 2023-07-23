@@ -143,13 +143,23 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
     <>
       <ModalPackage></ModalPackage>
       <div class="full-page-start">
-        {/* <div class="full-content-slider" > */}
-        <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>
-          Planos sugeridos para você:
-        </h1>
 
+        {packages.length > 0
+          ?
+
+          <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>
+            Planos sugeridos para você:
+          </h1>
+
+          :
+
+          <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>
+            Sem Planos disponiveis.
+          </h1>
+
+        }
         <div class="packages-container">
-          {!packages && <div>Olá</div>}
+
           {packages?.sort().map((e, y) => (
             <PackItens
               key={y}
@@ -174,58 +184,65 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
             ></PackItens>
           ))}
         </div>
-        <Button
-          variant="contained"
-          onClick={() => {
-            if (!isLoading1) {
-              setIsLoading1(true);
-              if (packageSelected == null) {
-                toast.error("Você precisa escolher um Produto!");
-                setIsLoading1(false);
-              } else {
-                toast.success("Preparando seu Pedido...");
-                router.push("/start/register/");
-              }
-            }
-          }}
-          style={{
-            cursor: "pointer",
-            marginTop: "20px",
-            width: "250px",
-            height: "50px",
-          }}
-          color="secondary"
-        >
-          {isLoading1 ? (
-            <CircularProgress></CircularProgress>
-          ) : (
-            "ESCOLHER ESTE AGORA"
-          )}
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            if (!isLoading2) {
-              setIsLoading2(true);
-              router.push("/start/custom/");
-            }
-          }}
-          style={{
-            cursor: "pointer",
-            margin: "20px",
-            width: "250px",
-            height: "35px",
-          }}
-          color="blackOrWhite"
-        >
-          {isLoading2 ? (
-            <CircularProgress></CircularProgress>
-          ) : (
-            "VER OUTROS PRODUTOS"
-          )}
-        </Button>
+        {packages.length > 0
+          ?
+          <>
+            <Button
+              variant="contained"
+              onClick={() => {
+                if (!isLoading1) {
+                  setIsLoading1(true);
+                  if (packageSelected == null) {
+                    toast.error("Você precisa escolher um Produto!");
+                    setIsLoading1(false);
+                  } else {
+                    toast.success("Preparando seu Pedido...");
+                    router.push("/start/register/");
+                  }
+                }
+              }}
+              style={{
+                cursor: "pointer",
+                marginTop: "20px",
+                width: "250px",
+                height: "50px",
+              }}
+              color="secondary"
+            >
+              {isLoading1 ? (
+                <CircularProgress></CircularProgress>
+              ) : (
+                "ESCOLHER ESTE AGORA"
+              )}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (!isLoading2) {
+                  setIsLoading2(true);
+                  router.push("/start/custom/");
+                }
+              }}
+              style={{
+                cursor: "pointer",
+                margin: "20px",
+                width: "250px",
+                height: "35px",
+              }}
+              color="blackOrWhite"
+            >
+              {isLoading2 ? (
+                <CircularProgress></CircularProgress>
+              ) : (
+                "VER OUTROS PRODUTOS"
+              )}
+            </Button>
+          </>
+          :
+          ""
+        }
         <StepsShow step={2}></StepsShow>
-      </div>
+      </div >
     </>
   );
 };
@@ -269,7 +286,6 @@ const PackItens = (props) => {
   );
 };
 
-Packages.guestGuard = false;
-Packages.authGuard = false;
+Packages.anonUser = true;
 
 Packages.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;

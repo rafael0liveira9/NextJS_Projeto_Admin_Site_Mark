@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export class UsersRepo {
+
+  // ******************************** GET ALL USERS
   static async getAllUsers(token) {
     return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user/all`, {
       headers: {
@@ -9,6 +11,7 @@ export class UsersRepo {
     });
   }
 
+  // ******************************** GET ALL COMPANYS
   static async getAllCompanies(token) {
     return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}companie`, {
       headers: {
@@ -17,6 +20,7 @@ export class UsersRepo {
     });
   }
 
+  // ******************************** POST CLIENTS
   static async postUserClient(data) {
     console.log(data)
     return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/signup`, data, {
@@ -26,6 +30,21 @@ export class UsersRepo {
       },
     });
   }
+
+  // ******************************** POST COMPANY CLIENTS
+
+  static async postUserCompany(auth, company) {
+
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}companie`, company, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        Authorization: auth
+      },
+    });
+  }
+
+  // ******************************** GET USER BY EMAIL (return INT 200 or INT 400 only)
 
   static async getUserByEmail(email) {
     try {

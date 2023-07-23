@@ -19,12 +19,16 @@ import { useAuth } from "src/hooks/useAuth";
 
 const AclGuard = (props) => {
   // ** Props
-  const { aclAbilities, children, guestGuard, cookies } = props;
+  const { aclAbilities, children, guestGuard, cookies, anonUser } = props;
   const [ability, setAbility] = useState(undefined);
 
   // ** Hooks
   const auth = useAuth();
   const router = useRouter();
+
+  if (anonUser) {
+    return <>{children}</>;
+  }
 
   if (
     guestGuard ||

@@ -232,6 +232,7 @@ const Register = (props) => {
       setIsLoading1(true);
       const regex = /[\s_\-()[\]{}!#$%^&*+=\\|:;"'<>,?/~`]/g;
       let newUser;
+      let newCompany;
       let data = {
         email: email,
         password: password,
@@ -246,11 +247,23 @@ const Register = (props) => {
       if (props.jwt === null) {
         try {
           newUser = (await UsersRepo.postUserClient(data)).data;
+
+          let auth = newUser.jwt;
+          let company = {
+            "companyName": data.name,
+            "document": data.document,
+            "documentType": data.documentType
+          }
+
+          newCompany = (await UsersRepo.postUserCompany(auth, company)).data;
+
           nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
             maxAge: 28800 * 3 * 7,
             path: "/",
           });
+
           toast.success("Cadastro criado com sucesso!");
+
           router.push("/start/paywall");
         } catch (error) {
           toast.error("Erro ao se cadastrar, tente novamente.");
@@ -585,7 +598,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordConf === true &&
-          (errorPasswordAny === true || passwordConf !== password) ? (
+            (errorPasswordAny === true || passwordConf !== password) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> As senhas devem ser iguais
             </h3>
@@ -597,7 +610,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordEsp === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Um Caractere Especial
             </h3>
@@ -610,7 +623,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordLet === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Uma Letra Maiuscula
             </h3>
@@ -623,7 +636,7 @@ const Register = (props) => {
             ""
           )}
           {errorPasswordNum === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Um Numero
             </h3>
@@ -636,7 +649,7 @@ const Register = (props) => {
             ""
           )}
           {errorPassword9c === true &&
-          (errorPasswordAny || errorPasswordConf === true) ? (
+            (errorPasswordAny || errorPasswordConf === true) ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> 8 Caracteres
             </h3>
@@ -680,15 +693,15 @@ const Register = (props) => {
           </div>
           <div class="div-button-submit">
             {!FormCheking() ||
-            errorPasswordAny ||
-            errorName ||
-            errorCpf ||
-            errorEmail ||
-            errorPhone ||
-            errorCep ||
-            !errorCheck1 ||
-            !errorCheck2 ||
-            errorPasswordConf ? (
+              errorPasswordAny ||
+              errorName ||
+              errorCpf ||
+              errorEmail ||
+              errorPhone ||
+              errorCep ||
+              !errorCheck1 ||
+              !errorCheck2 ||
+              errorPasswordConf ? (
               <Button
                 variant="contained"
                 disabled
@@ -716,11 +729,11 @@ const Register = (props) => {
               </Button>
             )}
             {errorPasswordAny ||
-            errorName ||
-            errorCpf ||
-            errorEmail ||
-            errorPhone ||
-            errorPasswordConf ? (
+              errorName ||
+              errorCpf ||
+              errorEmail ||
+              errorPhone ||
+              errorPasswordConf ? (
               <h3 class="error-global">
                 Formulário incompleto, revise e tente novamente...
               </h3>

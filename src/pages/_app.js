@@ -128,6 +128,7 @@ const App = (props) => {
                             aclAbilities={aclAbilities}
                             guestGuard={guestGuard}
                             cookies={cookies}
+                            anonUser={anonUser}
                           >
                             {getLayout(<Component {...pageProps} />)}
                           </AclGuard>
