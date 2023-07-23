@@ -51,9 +51,9 @@ const Custom = () => {
   );
 };
 
-export default Custom;
 
-Custom.guestGuard = false;
-Custom.authGuard = false;
 
+Custom.anonUser = true;
 Custom.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+
+export default Custom;

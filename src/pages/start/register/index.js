@@ -760,8 +760,7 @@ const Register = (props) => {
   );
 };
 
-Register.guestGuard = false;
-Register.authGuard = false;
+Register.anonUser = true;
 Register.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 export default Register;

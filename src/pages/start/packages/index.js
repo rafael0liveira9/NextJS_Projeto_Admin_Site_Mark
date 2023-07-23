@@ -33,10 +33,17 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    packageChose = JSON.parse(nookies.get(ctx).packageChose);
+    x = JSON.parse(nookies.get(ctx).packageChose);
+
+    packageChose = {
+      sliderValue: x.sliderValue * 12,
+      questionOne: true,
+      questionTwo: true,
+      questionTree: true,
+    }
   } catch (error) {
     packageChose = {
-      sliderValue: 39990,
+      sliderValue: 39990 * 12,
       questionOne: true,
       questionTwo: true,
       questionTree: true,
@@ -70,7 +77,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   const [isLoading2, setIsLoading2] = useState(false);
 
   const olamundo = PackagesHooks();
-  console.log(olamundo.returnStatus("logo", 1))
+
 
   const ModalPackage = (e) => {
     useEffect(() => {
@@ -105,7 +112,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
                   apenas R$
                 </span>
-                {descriptiion.price}
+                {((descriptiion.price / 12).toFixed(2)).replace(".", ",")}
                 <span style={{ fontSize: "14px", fontWeight: "400" }}>
                   {" "}
                   por mês
@@ -113,7 +120,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
               </h2>
               <div style={{ maxHeight: "40vh", overflow: "auto" }}>
                 {descriptiion.PackagesServices.sort().map((e) => (
-                  <p class="list-product">{e.Service.ServiceType.name}</p>
+                  <p class="list-product">{e.Service.description}</p>
                 ))}
               </div>
             </div>
@@ -160,7 +167,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
         }
         <div class="packages-container">
 
-          {packages?.sort().map((e, y) => (
+          {packages?.sort((a, b) => a.price - b.price).map((e, y) => (
             <PackItens
               key={y}
               cardClass={
@@ -250,6 +257,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
 export default Packages;
 
 const PackItens = (props) => {
+
   return (
     <div class={props.cardClass}>
       {props.icon ? (
@@ -268,7 +276,7 @@ const PackItens = (props) => {
         <div class="package-title">{props.data.name}</div>
         <div class="package-midle">
           <div class="package-price">
-            {props.data.price}
+            {((props.data.price / 12).toFixed(2)).replace(".", ",")}
             <span class="text-small"> /mês</span>
           </div>
         </div>
@@ -276,7 +284,7 @@ const PackItens = (props) => {
           {props.data.PackagesServices.map((e, y) => (
             <div class="tag-product" key={y}>
               {/* {e.Service.ServiceType.name.substring(0, e.Service.ServiceType.name.indexOf("-"))} */}
-              {e.Service.ServiceType.name}
+              {e.Service.name}
             </div>
           ))}
         </div>

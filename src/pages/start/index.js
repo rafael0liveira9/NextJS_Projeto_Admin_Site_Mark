@@ -38,21 +38,21 @@ const Start = () => {
 
   const marks = [
     {
+      value: 19990,
+      label: "R$ 399,90",
+    },
+    {
       value: 39990,
       label: "R$ 399,90",
     },
     {
-      value: 69990,
-      label: "R$ 699,90",
+      value: 59990,
+      label: "R$ 599,90",
     },
     {
-      value: 99990,
-      label: "R$ 999,90",
-    },
-    {
-      value: 129990,
-      label: "R$ 1299,90",
-    },
+      value: 79990,
+      label: "R$ 799,90",
+    }
   ];
 
   const onSubimit = () => {
@@ -76,17 +76,17 @@ const Start = () => {
     <div class="full-page-start">
       <div class="full-content-slider" style={{ marginTop: 20 }}>
         <div class="checkbox-div-title">
-          <p>Qual valor deseja investir em Marketing Digital?</p>
+          <p>Qual valor mensal deseja investir em Marketing Digital?</p>
         </div>
         <div style={{ width: "75%", marginBottom: 20 }}>
           <SliderCustomMarks
             sx={{ '& input[type="range"]': { margin: "10px" } }}
             step={null}
             marks={marks}
-            defaultValue={39990}
+            defaultValue={19990}
             variable=""
-            min={39990}
-            max={129990}
+            min={19990}
+            max={79990}
             valueLabelFormat={(x) =>
               `${x.toString().replace(/^(\d*)(\d{2})$/g, "R$ $1,$2")}`
             }
@@ -102,7 +102,7 @@ const Start = () => {
           <div class="checkbox-div" style={{ paddingBottom: "20px" }}>
             <div class="checkbox-div-title">
               <p>
-                Deseja a criação ou modificação de uma Logo para a sua Marca?
+                Deseja a criação ou melhoria de uma Logo para a sua Marca?
               </p>
             </div>
             <RadioGroup
