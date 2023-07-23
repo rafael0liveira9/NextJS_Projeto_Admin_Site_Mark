@@ -194,8 +194,7 @@ const Start = () => {
   );
 };
 
-Start.guestGuard = false;
-Start.authGuard = false;
+Start.anonUser = true;
 Start.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 export default Start;

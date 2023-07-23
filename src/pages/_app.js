@@ -49,7 +49,10 @@ if (themeConfig.routingLoader) {
   });
 }
 
-const Guard = ({ children, authGuard, guestGuard, cookies }) => {
+const Guard = ({ children, authGuard, guestGuard, cookies, anonUser }) => {
+  if (anonUser) {
+    return <>{children}</>;
+  }
   if (guestGuard) {
     return (
       <GuestGuard cookies={cookies} fallback={<Spinner />}>
@@ -65,6 +68,7 @@ const Guard = ({ children, authGuard, guestGuard, cookies }) => {
       </AuthGuard>
     );
   }
+
 };
 
 const App = (props) => {
@@ -84,6 +88,7 @@ const App = (props) => {
     ));
   const setConfig = Component.setConfig ?? undefined;
   const authGuard = Component.authGuard ?? true;
+  const anonUser = Component.anonUser ?? false;
   const guestGuard = Component.guestGuard ?? false;
   const aclAbilities = Component.acl ?? defaultACLObj;
 
@@ -117,6 +122,7 @@ const App = (props) => {
                           authGuard={authGuard}
                           guestGuard={guestGuard}
                           cookies={cookies}
+                          anonUser={anonUser}
                         >
                           <AclGuard
                             aclAbilities={aclAbilities}

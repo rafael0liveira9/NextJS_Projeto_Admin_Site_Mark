@@ -10,6 +10,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { check } from "prettier";
 import { PackagesRepo } from "src/repository/packages.repo";
 import toast from "react-hot-toast";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
@@ -58,6 +59,7 @@ export async function getServerSideProps(ctx) {
   };
 }
 
+
 const Packages = ({ tokenLead, packages, packageChose }) => {
   const router = useRouter();
   const [modalPackage, setModalPackage] = useState(false);
@@ -66,6 +68,9 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   const [packageSelected, setPackageSelected] = useState(null);
   const [isLoading1, setIsLoading1] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
+
+  const olamundo = PackagesHooks();
+  console.log(olamundo.returnStatus("logo", 1))
 
   const ModalPackage = (e) => {
     useEffect(() => {
@@ -142,6 +147,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
         <h1 style={{ fontSize: "22px", color: "#FFFFFF" }}>
           Planos sugeridos para você:
         </h1>
+
         <div class="packages-container">
           {!packages && <div>Olá</div>}
           {packages?.sort().map((e, y) => (

@@ -2,14 +2,33 @@
 import { createContext, useContext } from 'react'
 
 export const PackagesContext = createContext({
-
+    status: null,
+    returnStatus: null
 })
 
 export const PackagesProvider = ({ children }) => {
-    const auth = useFirebaseAuth()
-
     const status = {
         logo: [
+            "Aguardando Briefing",
+            "Briefing Enviado",
+            "Em Criação",
+            "Provas enviadas",
+            "Provas Recusadas",
+            "Provas Aprovadas",
+            "Aguardando Arquivos",
+            "Arquivos Enviados"
+        ],
+        social: [
+            "Aguardando Briefing",
+            "Briefing Enviado",
+            "Em Criação",
+            "Provas enviadas",
+            "Provas Recusadas",
+            "Provas Aprovadas",
+            "Aguardando Arquivos",
+            "Arquivos Enviados"
+        ],
+        site: [
             "Aguardando Briefing",
             "Briefing Enviado",
             "Em Criação",
