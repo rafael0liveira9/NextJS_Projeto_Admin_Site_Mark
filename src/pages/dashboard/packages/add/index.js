@@ -35,12 +35,12 @@ export default function PackageAddPage({ services, token }) {
   });
 
   const verifyInputs = () => {
-    console.log(
-      errors.name == null,
-      description == null,
-      value == 0,
-      servicesSelect.length == 0
-    );
+    // console.log(
+    //   errors.name == null,
+    //   description == null,
+    //   value == 0,
+    //   servicesSelect.length == 0
+    // );
     if (
       name == null ||
       description == null ||
@@ -210,7 +210,7 @@ export const getServerSideProps = async (ctx) => {
   let data;
   try {
     data = await ServicesRepo.getAllServices();
-  } catch (error) {}
+  } catch (error) { }
 
   let token = ctx.req.cookies.accessToken ?? "";
 

@@ -92,7 +92,7 @@ export default function ServicePage({ services, token }) {
         <TableFilter
           rowsData={services}
           removeFunction={(id) => {
-            console.log(id);
+            // console.log(id);
             setId(id);
             handleClickOpen2();
           }}
@@ -106,7 +106,7 @@ export const getServerSideProps = async (ctx) => {
   let data;
   try {
     data = await ServicesRepo.getAllServices();
-  } catch (error) {}
+  } catch (error) { }
   let token = ctx.req.cookies.accessToken ?? "";
 
   return {

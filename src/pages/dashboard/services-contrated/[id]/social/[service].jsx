@@ -26,7 +26,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.service
       )
     ).data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {
@@ -201,7 +201,7 @@ export default function ServicePage({ services, token }) {
           router.push(`${router.pathname}/add`);
         }}
       />
-      {console.log(services)}
+      {/* {console.log(services)} */}
       {services.SocialBriefing && (
         <Grid item>
           <Typography fontSize={22} fontWeight={700}>

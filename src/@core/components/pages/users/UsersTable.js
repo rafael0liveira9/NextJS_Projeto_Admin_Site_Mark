@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import { DataGrid } from "@mui/x-data-grid";
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 
 // ** Custom Components
 import CustomChip from "src/@core/components/mui/chip";
@@ -19,6 +20,7 @@ import { getInitials } from "src/@core/utils/get-initials";
 // ** Data Import
 import { rows } from "src/@fake-db/table/static-data";
 import { regexMoney, regexMoneyText } from "src/utils/utils";
+import { Button } from "@mui/material";
 
 // ** renders client column
 const renderClient = (params) => {
@@ -100,19 +102,8 @@ const columns = [
         {params.row.roleTypeId == 1
           ? "Cliente"
           : params.row.roleTypeId == 2
-          ? "Empregado"
-          : "Admin"}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.2,
-    minWidth: 110,
-    field: "notifications",
-    headerName: "Notificações",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.notification ? "Sim" : "Não"}
+            ? "Empregado"
+            : "Admin"}
       </Typography>
     ),
   },
@@ -127,13 +118,38 @@ const columns = [
       return (
         <Typography variant="body2" sx={{ color: "text.primary" }}>
           {params.row.createdAt
-            ? `${dueDate.getDate()}/${
-                dueDate.getMonth() + 1
-              }/${dueDate.getFullYear()}`
+            ? `${dueDate.getDate()}/${dueDate.getMonth() + 1
+            }/${dueDate.getFullYear()}`
             : "Sem Data"}
         </Typography>
       );
     },
+  },
+  // {
+  //   flex: 0.01,
+  //   minWidth: 10,
+  //   field: "remove",
+  //   headerName: "Editar",
+  //   renderCell: () => (
+  //     <Typography variant="body2" sx={{ color: "text.primary" }}>
+  //       <Button>
+  //         <AiOutlineDelete></AiOutlineDelete>
+  //       </Button>
+  //     </Typography>
+  //   ),
+  // },
+  {
+    flex: 0.125,
+    minWidth: 30,
+    field: "remove",
+    headerName: "Remover",
+    renderCell: () => (
+      <Typography variant="body2" sx={{ color: "text.primary" }}>
+        <Button>
+          <AiOutlineDelete></AiOutlineDelete>
+        </Button>
+      </Typography>
+    ),
   },
 ];
 

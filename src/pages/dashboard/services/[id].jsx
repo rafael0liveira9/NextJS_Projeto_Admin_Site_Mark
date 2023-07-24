@@ -41,7 +41,7 @@ export default function ServiceAddPage({ service, token, id }) {
   const [dueDate, setDueDate] = useState(service?.dueDate);
   const [servicesSelect, setServicesSelect] = useState(
     servicesData[
-      servicesData.findIndex((e) => e.value == service.serviceTypeId)
+    servicesData.findIndex((e) => e.value == service.serviceTypeId)
     ]
   );
 
@@ -205,7 +205,7 @@ export default function ServiceAddPage({ service, token, id }) {
           helperText={errors.value}
         ></TextField>
       </Grid>
-      {console.log(servicesSelect)}
+      {/* {console.log(servicesSelect)} */}
     </Grid>
   );
 }

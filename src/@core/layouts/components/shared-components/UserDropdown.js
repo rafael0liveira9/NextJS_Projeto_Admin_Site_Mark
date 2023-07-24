@@ -73,7 +73,7 @@ const UserDropdown = (props) => {
     logout();
     handleDropdownClose();
   };
-  console.log(user)
+
   return (
     <Fragment>
       <Badge

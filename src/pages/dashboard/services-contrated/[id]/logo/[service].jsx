@@ -26,7 +26,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.service
       )
     ).data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {
@@ -67,17 +67,25 @@ export default function ServicePage({ service, token, serviceId }) {
     }
   }
 
-  console.log(service);
+  // console.log(service);
 
   return (
     <Grid container spacing={6} className="match-height">
+      <Grid sx={{ display: "flex", justifyContent: "flex-end", marginTop: 10, width: "100%" }}>
+        <Button
+          sx={{ padding: "15px" }}
+          onClick={() => {
+            router.push(`/dashboard/services-contrated/`);
+          }}>Visualizar outra Empresa</Button>
+      </Grid>
+
       <PageHeader
         title={
-          <Typography variant="h5">Serviços - {service.status}</Typography>
+          <Typography variant="h5">Logo - {service.LogoBriefing.titlefirst ? service.LogoBriefing.titlefirst : "Sem Titulo"} - {service.status}</Typography>
         }
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, adicionar e excluir serviços!
+            Aqui você pode gerenciar o andamento desse serviço.
           </Typography>
         }
         button={
@@ -86,13 +94,13 @@ export default function ServicePage({ service, token, serviceId }) {
             : service.status == "PROVAS" &&
               service.LogoProof.isApproved == false &&
               service.LogoProof.userSended == false
-            ? "Aguardando revisão"
-            : (service.status == "AVALIACAO" || service.status == "PROVAS") &&
-              service.LogoProof.isApproved == true
-            ? "Enviar Arquivos da Logo"
-            : service.status == "CONCLUSAO"
-            ? "Finalizado!"
-            : "Aguardando Briefing"
+              ? "Aguardando revisão"
+              : (service.status == "AVALIACAO" || service.status == "PROVAS") &&
+                service.LogoProof.isApproved == true
+                ? "Enviar Arquivos da Logo"
+                : service.status == "CONCLUSAO"
+                  ? "Finalizado!"
+                  : "Aguardando Briefing"
         }
         onTap={async () => {
           if (service.status == "CRIACAO") {
@@ -101,28 +109,34 @@ export default function ServicePage({ service, token, serviceId }) {
         }}
       />
       {service.LogoBriefing ? (
-        <Grid item>
+        <Grid item sx={{ backgroundColor: "#FFFFFF", margin: "15px", borderRadius: "12px", boxShadow: "0px 2px 10px 0px rgba(76, 78, 100, 0.22)", padding: "10px 10px 20px 10px" }}>
           <Typography fontSize={24} fontWeight={600}>
             Briefing do Usuário:
           </Typography>
           {/* {JSON.stringify(service.LogoBriefing)} */}
           <Typography fontSize={18}>
-            Formato: {service.LogoBriefing.format}
+            Titulo: {service.LogoBriefing.titlefirst ? service.LogoBriefing.titlefirst : "Não Preencheu"}
           </Typography>
           <Typography fontSize={18}>
-            Tipografia Escolhida: {service.LogoBriefing.typography}
+            SubTitulo: {service.LogoBriefing.titlefirst ? service.LogoBriefing.titlefirst : "Não Preencheu"}
           </Typography>
           <Typography fontSize={18}>
-            Especificação Escolhida: {service.LogoBriefing.especification}
+            Formato: {service.LogoBriefing.format ? service.LogoBriefing.format : "Não Preencheu"}
           </Typography>
           <Typography fontSize={18}>
-            Descrição: {service.LogoBriefing.description}
+            Tipografia Escolhida: {service.LogoBriefing.typography ? service.LogoBriefing.typography : "Não Preencheu"}
           </Typography>
           <Typography fontSize={18}>
-            Referências: {service.LogoBriefing.references}
+            Especificação Escolhida: {service.LogoBriefing.especification ? service.LogoBriefing.especification : "Não Preencheu"}
           </Typography>
           <Typography fontSize={18}>
-            Mockups: {service.LogoBriefing.mockups}
+            Descrição: {service.LogoBriefing.description ? service.LogoBriefing.description : "Não Preencheu"}
+          </Typography>
+          <Typography fontSize={18}>
+            Referências: {service.LogoBriefing.references ? service.LogoBriefing.references : "Não Preencheu"}
+          </Typography>
+          <Typography fontSize={18}>
+            Mockups: {service.LogoBriefing.mockups ? service.LogoBriefing.mockups : "Não Preencheu"}
           </Typography>
         </Grid>
       ) : (

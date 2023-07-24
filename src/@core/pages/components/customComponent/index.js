@@ -112,7 +112,7 @@ const PaywallComponent = () => {
             setCvc(target.value)
         }
     }
-    console.log(custom);
+
     return (
         <form onSubmit={e => e.preventDefault()} style={{ maxWidth: "90% !important" }}>
             <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
@@ -139,11 +139,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center"}}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Logo Simples</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>249,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Logo Simples</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>249,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de criação da Arte para Logo Marca; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de criação da Arte para Logo Marca; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -158,11 +158,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Logo com Brand</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>399,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Logo com Brand</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>399,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de criação da Arte para Logo Marca, Mockups e identidade visual para Marca; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de criação da Arte para Logo Marca, Mockups e identidade visual para Marca; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
                         </Box>
                     </BoxWrapper>
                     <Box sx={{ width: '100%', marginTop: 10 }}>
@@ -197,11 +197,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Site One-Page</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>999,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Site One-Page</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>999,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de criação de Site, Uma pagina, isntitucional, Promocional ou de Divulgação; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de criação de Site, Uma pagina, isntitucional, Promocional ou de Divulgação; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -216,11 +216,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Site Multi-Page</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>1.299,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Site Multi-Page</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>1.299,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de criação de Site, até 3 paginas, isntitucional, Promocional ou de Divulgação; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de criação de Site, até 3 paginas, isntitucional, Promocional ou de Divulgação; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -235,11 +235,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Site Completo</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>1.499,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Site Completo</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>1.499,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de criação de Site, até 5 paginas, isntitucional, Promocional, de Divulgação ou Blog; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de criação de Site, até 5 paginas, isntitucional, Promocional, de Divulgação ou Blog; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -254,11 +254,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Site Completo com Loja</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>1.799,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Site Completo com Loja</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>1.799,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de criação de Site, 5 paginas ou mais, isntitucional, Promocional, de Divulgação, Blog, E-commerce e DropShippping; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de criação de Site, 5 paginas ou mais, isntitucional, Promocional, de Divulgação, Blog, E-commerce e DropShippping; Valor a Vista, pode ser parcelado dentro de um Plano.</Typography>
                         </Box>
                     </BoxWrapper>
                     <Box sx={{ width: '100%', marginTop: 10 }}>
@@ -293,11 +293,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 1x por Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>199,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 1x por Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>199,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -312,11 +312,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 2x por Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>299,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 2x por Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>299,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -331,11 +331,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 3x por Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>399,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 3x por Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>399,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -350,11 +350,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 4x por Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>499,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 4x por Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>499,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Redes Sociais, Instagram e Facebook, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <Box sx={{ width: '100%', marginTop: 10 }}>
@@ -389,11 +389,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 1x por Mês</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>99,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 1x por Mês</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>99,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -408,11 +408,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 2x por Mês</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>149,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 2x por Mês</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>149,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -427,11 +427,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 1x por Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>199,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 1x por Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>199,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -446,11 +446,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Postagem 2x por Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>299,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Postagem 2x por Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>299,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de postagens em Blog, em Site ou LinkedIn, Disponibilizamos a Arte, a Redação e fazemos a postagem; Valor Mensal, Contrato minimo de 6 meses.</Typography>
                         </Box>
                     </BoxWrapper>
                     <Box sx={{ width: '100%', marginTop: 10 }}>
@@ -486,10 +486,10 @@ const PaywallComponent = () => {
                         />
                         <Box sx={{ width: '100%' }}>
                             <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Impulcionamento 1x Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>199,00</span></Typography>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Impulcionamento 1x Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>199,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de impulcionamento de propagandas e postagens,  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  ; Valor mensal, apenas pelo gerenciamento, valor a ser inserido é por conta do cliente.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de impulcionamento de propagandas e postagens,  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  ; Valor mensal, apenas pelo gerenciamento, valor a ser inserido é por conta do cliente.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -504,11 +504,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Impulcionamento 2x Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>299,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Impulcionamento 2x Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>299,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de impulcionamento de propagandas e postagens,  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  ; Valor mensal, apenas pelo gerenciamento, valor a ser inserido é por conta do cliente.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de impulcionamento de propagandas e postagens,  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  ; Valor mensal, apenas pelo gerenciamento, valor a ser inserido é por conta do cliente.</Typography>
                         </Box>
                     </BoxWrapper>
                     <BoxWrapper
@@ -523,11 +523,11 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600, fontSize:"12px"}}>Impulcionamento 3x Semana</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ <span style={{ fontSize:"16px" }}>399,00</span></Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: "12px" }}>Impulcionamento 3x Semana</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}> R$ <span style={{ fontSize: "16px" }}>399,00</span></Typography>
                             </Box>
-                            <Typography sx={{ fontWeight: 600, fontSize:"12px"}} variant='body2'>Serviço de impulcionamento de propagandas e postagens,  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  ; Valor mensal, apenas pelo gerenciamento, valor a ser inserido é por conta do cliente.</Typography>
+                            <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>Serviço de impulcionamento de propagandas e postagens,  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  Lorem Ipsum  ; Valor mensal, apenas pelo gerenciamento, valor a ser inserido é por conta do cliente.</Typography>
                         </Box>
                     </BoxWrapper>
                     <Box sx={{ width: '100%', marginTop: 10 }}>
@@ -545,9 +545,9 @@ const PaywallComponent = () => {
                 <div class="price-cart">R$ <span style={{ fontSize: "22px", fontWeight: "600" }}>0,00</span></div>
             </div>
             <div class="services-cart">
-                <Chip label='Logo Simples' color='primary' variant='outlined' onDelete={chipsDelete} sx={{margin: "3px", fontSize:"11px"}}/>
-                <Chip label='Redes Sociais 1x Sem' color='primary' variant='outlined' onDelete={chipsDelete} sx={{margin: "3px", fontSize:"11px"}}/>
-                <Chip label='Impulcionamento 1x Semana' color='primary' variant='outlined' onDelete={chipsDelete} sx={{margin: "3px", fontSize:"11px"}}/>
+                <Chip label='Logo Simples' color='primary' variant='outlined' onDelete={chipsDelete} sx={{ margin: "3px", fontSize: "11px" }} />
+                <Chip label='Redes Sociais 1x Sem' color='primary' variant='outlined' onDelete={chipsDelete} sx={{ margin: "3px", fontSize: "11px" }} />
+                <Chip label='Impulcionamento 1x Semana' color='primary' variant='outlined' onDelete={chipsDelete} sx={{ margin: "3px", fontSize: "11px" }} />
             </div>
 
         </form>

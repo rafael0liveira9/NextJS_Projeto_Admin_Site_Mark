@@ -43,7 +43,7 @@ export default function ServiceAddPage({ services, token }) {
     services: null,
   });
 
-  console.log(value);
+  // console.log(value);
 
   const verifyInputs = () => {
     if (
@@ -52,7 +52,7 @@ export default function ServiceAddPage({ services, token }) {
       value == 0 ||
       servicesSelect == null
     ) {
-      console.log("Caiu Aqui");
+
       setErrors({
         name:
           name == null || name == "" ? "Coloque um nome para o serviço" : null,
@@ -194,7 +194,7 @@ export default function ServiceAddPage({ services, token }) {
           helperText={errors.value}
         ></TextField>
       </Grid>
-      {console.log(servicesSelect)}
+      {/* {console.log(servicesSelect)} */}
     </Grid>
   );
 }
@@ -203,7 +203,7 @@ export const getServerSideProps = async (ctx) => {
   let data;
   try {
     data = await ServicesRepo.getAllServices();
-  } catch (error) {}
+  } catch (error) { }
 
   let token = ctx.req.cookies.accessToken ?? "";
 

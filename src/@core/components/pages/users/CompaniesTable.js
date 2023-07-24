@@ -72,10 +72,10 @@ const columns = [
     flex: 0.2,
     minWidth: 150,
     field: "company_name",
-    headerName: "Nome da Companhia",
+    headerName: "Nome da Empresa",
     renderCell: (params) => {
       const { row } = params;
-      console.log(row);
+
 
       return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -93,17 +93,17 @@ const columns = [
       );
     },
   },
-  {
-    flex: 0.2,
-    minWidth: 110,
-    field: "client",
-    headerName: "Cliente",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.Client.name}
-      </Typography>
-    ),
-  },
+  // {
+  //   flex: 0.2,
+  //   minWidth: 110,
+  //   field: "client",
+  //   headerName: "Cliente",
+  //   renderCell: (params) => (
+  //     <Typography variant="body2" sx={{ color: "text.primary" }}>
+  //       {params.row.Client.name}
+  //     </Typography>
+  //   ),
+  // },
   {
     flex: 0.2,
     minWidth: 120,
@@ -122,7 +122,7 @@ const columns = [
     field: "document_type",
     renderCell: (params) => (
       <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.document}
+        {params.row.documentType}
       </Typography>
     ),
   },
@@ -137,29 +137,28 @@ const columns = [
       return (
         <Typography variant="body2" sx={{ color: "text.primary" }}>
           {params.row.createdAt
-            ? `${dueDate.getDate()}/${
-                dueDate.getMonth() + 1
-              }/${dueDate.getFullYear()}`
+            ? `${dueDate.getDate()}/${dueDate.getMonth() + 1
+            }/${dueDate.getFullYear()}`
             : "Sem Data"}
         </Typography>
       );
     },
   },
-  {
-    flex: 0.125,
-    field: "details",
-    minWidth: 80,
-    headerName: "Detalhes",
-    renderCell: (params) => {
-      return (
-        <Typography variant="body2" sx={{ color: "text.primary" }}>
-          <Button>
-            <AiOutlineEye></AiOutlineEye>
-          </Button>
-        </Typography>
-      );
-    },
-  },
+  // {
+  //   flex: 0.125,
+  //   field: "details",
+  //   minWidth: 80,
+  //   headerName: "Detalhes",
+  //   renderCell: (params) => {
+  //     return (
+  //       <Typography variant="body2" sx={{ color: "text.primary" }}>
+  //         <Button>
+  //           <AiOutlineEye></AiOutlineEye>
+  //         </Button>
+  //       </Typography>
+  //     );
+  //   },
+  // },
   {
     flex: 0.125,
     field: "edit",

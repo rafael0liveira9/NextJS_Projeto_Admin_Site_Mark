@@ -84,6 +84,7 @@ const Navigation = props => {
   }
 
   const shadowBgColor = () => {
+
     if (mode === 'light') {
       return `linear-gradient(${theme.palette.customColors.lightBg} 5%,${hexToRGBA(
         theme.palette.customColors.lightBg,
@@ -115,14 +116,14 @@ const Navigation = props => {
         <ScrollWrapper
           {...(hidden
             ? {
-                onScroll: container => scrollMenu(container),
-                sx: { height: '100%', overflowY: 'auto', overflowX: 'hidden' }
-              }
+              onScroll: container => scrollMenu(container),
+              sx: { height: '100%', overflowY: 'auto', overflowX: 'hidden' }
+            }
             : {
-                options: { wheelPropagation: false },
-                onScrollY: container => scrollMenu(container),
-                containerRef: ref => handleInfiniteScroll(ref)
-              })}
+              options: { wheelPropagation: false },
+              onScrollY: container => scrollMenu(container),
+              containerRef: ref => handleInfiniteScroll(ref)
+            })}
         >
           {beforeNavMenuContent && beforeVerticalNavMenuContentPosition === 'static'
             ? beforeNavMenuContent(props)

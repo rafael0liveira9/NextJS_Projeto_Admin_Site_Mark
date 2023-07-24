@@ -68,22 +68,25 @@ const escapeRegExp = (value) => {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
+
 const columns = [
   {
     flex: 0.275,
     minWidth: 290,
     field: "package_name",
-    headerName: "Nome do Serviço",
+    headerName: "Nome da Empresa",
     renderCell: (params) => {
       const { row } = params;
 
-      console.log(row);
 
       return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {renderClient(params)}
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
+              onClick={() => {
+                Router.push(`${Router.asPath}/${params.row.id}`);
+              }}
               noWrap
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
@@ -98,10 +101,14 @@ const columns = [
   {
     flex: 0.2,
     minWidth: 120,
-    headerName: "Serviço de Logo Contratados",
+    headerName: "Logo Contratados",
     field: "servicelogo",
     renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
+      <Typography
+        onClick={() => {
+          Router.push(`${Router.asPath}/${params.row.id}`);
+        }}
+        variant="body2" sx={{ color: "text.primary" }}>
         {params.row.LogoContratedItems.length}
       </Typography>
     ),
@@ -110,10 +117,14 @@ const columns = [
   {
     flex: 0.2,
     minWidth: 120,
-    headerName: "Serviço de Social Media Contratados",
+    headerName: "Redes Sociais Contratados",
     field: "servicesocialmedia",
     renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
+      <Typography
+        onClick={() => {
+          Router.push(`${Router.asPath}/${params.row.id}`);
+        }}
+        variant="body2" sx={{ color: "text.primary" }}>
         {params.row.SocialContratedItems.length}
       </Typography>
     ),
@@ -121,10 +132,14 @@ const columns = [
   {
     flex: 0.2,
     minWidth: 120,
-    headerName: "Serviço de Site Contratados",
+    headerName: "Site Contratados",
     field: "servicesite",
     renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
+      <Typography
+        onClick={() => {
+          Router.push(`${Router.asPath}/${params.row.id}`);
+        }}
+        variant="body2" sx={{ color: "text.primary" }}>
         {params.row.SiteContratedItems.length}
       </Typography>
     ),
@@ -132,7 +147,7 @@ const columns = [
   {
     flex: 0.1,
     minWidth: 50,
-    headerName: "Visualizar",
+    headerName: "Gerenciar",
     field: "edit",
     renderCell: (params) => (
       <Typography variant="body2" sx={{ color: "text.primary" }}>
@@ -141,14 +156,15 @@ const columns = [
             Router.push(`${Router.asPath}/${params.row.id}`);
           }}
         >
-          <AiOutlineFolderView></AiOutlineFolderView>
+          <AiOutlineFolderView size={25}></AiOutlineFolderView>
         </Button>
       </Typography>
     ),
   },
 ];
 
-const TableColumns = ({ rowsData }) => {
+const TableColumns = ({ rowsData, params }) => {
+
   const [data] = useState(rowsData);
   const [pageSize, setPageSize] = useState(7);
   const [searchText, setSearchText] = useState("");

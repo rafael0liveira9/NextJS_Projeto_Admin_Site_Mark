@@ -106,7 +106,7 @@ export const getServerSideProps = async (ctx) => {
   const cookies = nookies.get(ctx);
   try {
     data = (await PackagesRepo.getAllPackages(cookies.accessToken)).data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {

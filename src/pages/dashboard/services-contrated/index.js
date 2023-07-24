@@ -8,6 +8,7 @@ import TableFilter from "src/@core/components/pages/services/ContratedServiceTab
 import { useRouter } from "next/router";
 import { ServicesRepo } from "src/repository/services.repo";
 
+
 export const getServerSideProps = async (ctx) => {
   let data;
   try {
@@ -30,7 +31,7 @@ export default function ServicePage({ services }) {
         title={<Typography variant="h5">Serviços Contratados</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, aprovar ou enviar dados para aprovação.
+            Aqui você pode ver as Empresas, acessar, aprovar ou enviar dados para aprovação.
           </Typography>
         }
         button={"Adicionar Serviço"}

@@ -9,6 +9,9 @@ import Router, { useRouter } from "next/router";
 import { ServicesRepo } from "src/repository/services.repo";
 import { AiOutlineFolderView } from "react-icons/ai";
 import spacing from "src/@core/theme/spacing";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
+import { status } from "nprogress";
+
 
 export const getServerSideProps = async (ctx) => {
   let data;
@@ -19,6 +22,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.id
       )
     ).data;
+
   } catch (error) { }
 
   return {
@@ -33,12 +37,16 @@ const columnsLogo = [
     flex: 0.275,
     minWidth: 290,
     field: "package_name",
-    headerName: "Nome da Empresa",
+    headerName: "Titulo",
     renderCell: (params) => {
       const { row } = params;
-      console.log(row);
+
       return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          onClick={() => {
+            Router.push(`${Router.asPath}logo/${params.row.id}`);
+          }}
+          sx={{ display: "flex", alignItems: "center" }}>
           {/* {renderClient(params)} */}
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
@@ -62,7 +70,11 @@ const columnsLogo = [
       const { row } = params;
 
       return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          onClick={() => {
+            Router.push(`${Router.asPath}logo/${params.row.id}`);
+          }}
+          sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               noWrap
@@ -75,30 +87,32 @@ const columnsLogo = [
         </Box>
       );
     },
-  },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    field: "feedback",
-    headerName: "Feedback enviado?",
-    renderCell: (params) => {
-      const { row } = params;
+  }
+  // ,
+  // {
+  //   flex: 0.15,
+  //   minWidth: 120,
+  //   field: "feedback",
+  //   headerName: "Feedback?",
+  //   renderCell: (params) => {
+  //     const { row } = params;
 
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row?.LogoService?.feedbackSended ? "Sim" : "Não"}
-            </Typography>
-          </Box>
-        </Box>
-      );
-    },
-  },
+  //     return (
+  //       <Box sx={{ display: "flex", alignItems: "center" }}>
+  //         <Box sx={{ display: "flex", flexDirection: "column" }}>
+  //           <Typography
+  //             noWrap
+  //             variant="body2"
+  //             sx={{ color: "text.primary", fontWeight: 600 }}
+  //           >
+  //             {row?.LogoService?.feedbackSended ? "Sim" : "Não"}
+  //           </Typography>
+  //         </Box>
+  //       </Box>
+  //     );
+  //   },
+  // }
+  ,
   {
     flex: 0.15,
     minWidth: 120,
@@ -108,7 +122,11 @@ const columnsLogo = [
       const { row } = params;
 
       return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          onClick={() => {
+            Router.push(`${Router.asPath}logo/${params.row.id}`);
+          }}
+          sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               noWrap
@@ -128,7 +146,7 @@ const columnsLogo = [
   {
     flex: 0.1,
     minWidth: 50,
-    headerName: "Editar",
+    headerName: "Gerenciar",
     field: "edit",
     renderCell: (params) => (
       <Typography variant="body2" sx={{ color: "text.primary" }}>
@@ -137,7 +155,7 @@ const columnsLogo = [
             Router.push(`${Router.asPath}logo/${params.row.id}`);
           }}
         >
-          <AiOutlineFolderView></AiOutlineFolderView>
+          <AiOutlineFolderView size={25}></AiOutlineFolderView>
         </Button>
       </Typography>
     ),
@@ -228,7 +246,7 @@ const columnsSocial = [
             Router.push(`${Router.asPath}social/${params.row.id}`);
           }}
         >
-          <AiOutlineFolderView></AiOutlineFolderView>
+          <AiOutlineFolderView size={25}></AiOutlineFolderView>
         </Button>
       </Typography>
     ),
@@ -369,19 +387,25 @@ const columnsSite = [
             Router.push(`${Router.asPath}site/${params.row.id}`);
           }}
         >
-          <AiOutlineFolderView></AiOutlineFolderView>
+          <AiOutlineFolderView size={25}></AiOutlineFolderView>
         </Button>
       </Typography>
     ),
   },
 ];
 
+// const statusFy = PackagesHooks();
+
+// const x = statusFy.returnStatus({ data: "logo", value: "1" });
+
+// console.log(x);
+
 export default function ServicePage({ services }) {
   const router = useRouter();
-  console.log(services)
+
   return (
     <Grid container spacing={6} className="match-height">
-      <PageHeader
+      {/* <PageHeader
         title={<Typography variant="h5">Serviços</Typography>}
         subtitle={
           <Typography variant="body2">
@@ -392,7 +416,7 @@ export default function ServicePage({ services }) {
         onTap={() => {
           router.push(`${router.pathname}/add`);
         }}
-      />
+      /> */}
       <Grid item xs={12}>
 
         <Card
@@ -409,18 +433,24 @@ export default function ServicePage({ services }) {
           >
             {`Empresa Selecionada : ${services.Companies.companyName}`}
           </Typography>
-          <Button>Trocar Empresa</Button>
+          <Button
+            onClick={() => {
+              router.push(`/dashboard/services-contrated/`);
+            }}>Visualizar outra Empresa</Button>
         </Card>
       </Grid>
       <Grid item xs={12} sx={{ marginBottom: 10 }}>
-        <Typography
-          fontSize={20}
-          fontWeight={700}
-          marginBottom={5}
-          color={"#6A21AE"}
-        >
-          Logo
-        </Typography>
+        <Grid sx={{ backgroundColor: "#FFFFFF", boxShadow: "0px 2px 10px 0px rgba(76, 78, 100, 0.22)", borderRadius: "12px" }}>
+          <Typography
+            sx={{ padding: "15px" }}
+            fontSize={20}
+            fontWeight={700}
+            marginBottom={5}
+            color={"#6A21AE"}
+          >
+            Serviços de Logo
+          </Typography>
+        </Grid>
         <Card
           sx={{
             width: "100%",
@@ -472,6 +502,6 @@ export default function ServicePage({ services }) {
           />
         </Card>
       </Grid> */}
-    </Grid>
+    </Grid >
   );
 }

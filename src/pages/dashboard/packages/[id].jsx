@@ -17,7 +17,7 @@ export const getServerSideProps = async (ctx) => {
   let packageData;
   try {
     data = await ServicesRepo.getAllServices();
-  } catch (error) {}
+  } catch (error) { }
 
   let token = ctx.req.cookies.accessToken ?? "";
 
@@ -33,7 +33,7 @@ export const getServerSideProps = async (ctx) => {
 };
 
 export default function PackageAddPage({ services, token, packageData }) {
-  console.log(packageData);
+
 
   const [valuePackage, setValuePackage] = useState(
     regexMoneyText(parseFloat(packageData?.price).toFixed(2))
@@ -65,9 +65,9 @@ export default function PackageAddPage({ services, token, packageData }) {
   }));
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(dueDate);
 
-  console.log(servicesSelect);
+
+
   const [errors, setErrors] = useState({
     name: null,
     description: null,
@@ -183,7 +183,7 @@ export default function PackageAddPage({ services, token, packageData }) {
           label="Data de Validade"
           onChange={(e) => {
             setDueDate(e.target.value);
-            console.log(e.target.value);
+
             verifyInputs();
           }}
           error={errors.dueDate}

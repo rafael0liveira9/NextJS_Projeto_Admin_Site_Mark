@@ -22,7 +22,7 @@ export class UsersRepo {
 
   // ******************************** POST CLIENTS
   static async postUserClient(data) {
-    console.log(data)
+
     return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/signup`, data, {
       headers: {
         "Content-Type": "application/json",

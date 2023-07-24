@@ -342,7 +342,6 @@ const Register = (props) => {
                     : /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm;
 
                 if (regex.test(e.target.value)) {
-                  console.log(regex);
                   setErrorCpf(false);
                 }
               }}
@@ -358,12 +357,12 @@ const Register = (props) => {
               label="CPF"
               defaultValue=""
               onKeyUp={(e) => {
-                console.log(e.target.value.length);
+
                 if (e.target.value.length > 14) {
                   const regex =
                     /(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})/gm;
                   if (regex.test(e.target.value)) {
-                    console.log(regex);
+
                     setErrorCpf(false);
                   }
                 } else if (
@@ -371,9 +370,9 @@ const Register = (props) => {
                   e.target.value.length === 11
                 ) {
                   const regex = /(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})/gm;
-                  // console.log(regex.test(e.target.value))
+
                   if (regex.test(e.target.value)) {
-                    console.log(regex);
+
                     setErrorCpf(false);
                   }
                 }

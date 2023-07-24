@@ -10,7 +10,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { check } from "prettier";
 import { PackagesRepo } from "src/repository/packages.repo";
 import toast from "react-hot-toast";
-import { PackagesHooks } from "src/hooks/PackagesHooks";
+
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
@@ -76,7 +76,6 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   const [isLoading1, setIsLoading1] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
 
-  const olamundo = PackagesHooks();
 
 
   const ModalPackage = (e) => {

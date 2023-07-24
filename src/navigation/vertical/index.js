@@ -22,12 +22,12 @@ const navigation = () => {
       sectionTitle: "Serviços e Pacotes",
     },
     {
-      title: "Serviços",
+      title: "Gerenciar Serviços",
       icon: "mdi:checkbox-multiple-outline",
       path: "/dashboard/services",
     },
     {
-      title: "Pacotes",
+      title: "Gerenciar Planos",
       icon: "mdi:package-variant-closed",
       path: "/dashboard/packages",
     },
@@ -45,7 +45,7 @@ const navigation = () => {
       path: "/dashboard/users",
     },
     {
-      title: "Companhias",
+      title: "Empresas",
       icon: "mdi:company",
       path: "/dashboard/companies",
     },

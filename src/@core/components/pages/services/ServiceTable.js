@@ -150,9 +150,8 @@ const TableColumns = ({ rowsData, removeFunction }) => {
         return (
           <Typography variant="body2" sx={{ color: "text.primary" }}>
             {params.row.dueDate
-              ? `${dueDate.getDate()}/${
-                  dueDate.getMonth() + 1
-                }/${dueDate.getFullYear()}`
+              ? `${dueDate.getDate()}/${dueDate.getMonth() + 1
+              }/${dueDate.getFullYear()}`
               : "Sem Validade"}
           </Typography>
         );
@@ -175,7 +174,7 @@ const TableColumns = ({ rowsData, removeFunction }) => {
       flex: 0.125,
       field: "remove",
       minWidth: 80,
-      headerName: "Apagar",
+      headerName: "Remover",
       renderCell: (params) => {
         return (
           <Button onClick={() => removeFunction(params.row.id)}>

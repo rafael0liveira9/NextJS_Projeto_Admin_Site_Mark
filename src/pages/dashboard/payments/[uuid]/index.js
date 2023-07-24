@@ -11,7 +11,7 @@ import { regexMoneyText, returnDay } from "src/utils/utils";
 
 export default function PaymentsByUUIDPage({ payment, uuid }) {
   const router = useRouter();
-  console.log(payment);
+  // console.log(payment);
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
@@ -23,10 +23,10 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
             Aqui você pode ver, exportar e modificar pagamentos!
           </Typography>
         }
-        // button={"Adicionar Compania"}
-        // onTap={() => {
-        //   router.push(`${router.pathname}/add`);
-        // }}
+      // button={"Adicionar Compania"}
+      // onTap={() => {
+      //   router.push(`${router.pathname}/add`);
+      // }}
       />
       <Grid item width={"50%"}>
         <Card>
@@ -49,8 +49,8 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
                     {payment.status == "FINISHED_PAYMENT"
                       ? "Pagamento Finalizado"
                       : payment.status == "SEND_TO_ASANA"
-                      ? "Enviado para o Asana"
-                      : "Aguardando Pagamento"}
+                        ? "Enviado para o Asana"
+                        : "Aguardando Pagamento"}
                   </Typography>
                 </Container>
               </Grid>

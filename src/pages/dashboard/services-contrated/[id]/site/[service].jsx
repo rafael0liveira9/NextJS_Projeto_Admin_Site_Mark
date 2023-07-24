@@ -26,7 +26,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.service
       )
     ).data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {
@@ -103,7 +103,7 @@ export default function ServicePage({ services, token }) {
         }}
       />
       {/* {JSON.stringify(services)} */}
-      {console.log(services)}
+      {/* {console.log(services)} */}
       <Grid item>
         <Typography>
           Publicado: {services.isPublished ? "Sim" : "Não"}
