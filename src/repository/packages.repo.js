@@ -14,18 +14,9 @@ export class PackagesRepo {
 
     const data = {
       value: packageChose.sliderValue ? packageChose.sliderValue : 39990,
-      haveLogo: {
-        isSelected: packageChose.questionOne,
-        needModification: packageChose.questionOne,
-      },
-      haveSite: {
-        isSelected: packageChose.questionTwo,
-        needModification: packageChose.questionTwo,
-      },
-      haveSocialMidia: {
-        isSelected: packageChose.questionTree,
-        needModification: packageChose.questionTree,
-      },
+      haveLogo: packageChose.questionOne,
+      haveSite: packageChose.questionTwo,
+      haveSocialMidia: packageChose.questionTree,
     };
 
     pack = await axios.post(

@@ -88,7 +88,7 @@ const PaywallComponent = (Pack) => {
             setCvc(target.value)
         }
     }
-    console.log(Pack)
+    // console.log(User)
     const clientChoice = Pack.Pack.clientChoice
 
     return (

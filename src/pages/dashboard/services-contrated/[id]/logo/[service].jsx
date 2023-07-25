@@ -67,7 +67,7 @@ export default function ServicePage({ service, token, serviceId }) {
     }
   }
 
-  // console.log(service);
+
 
   return (
     <Grid container spacing={6} className="match-height">

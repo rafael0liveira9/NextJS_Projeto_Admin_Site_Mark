@@ -261,7 +261,7 @@ const Register = (props) => {
         try {
 
           newUser = (await UsersRepo.postUserClient(data)).data;
-          console.log("newUser OK")
+
 
 
           let auth = newUser.jwt;
@@ -275,7 +275,7 @@ const Register = (props) => {
 
           newCompany = (await UsersRepo.postUserCompany(auth, company)).data;
 
-          console.log("newCompany OK")
+
 
 
           nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
@@ -292,9 +292,8 @@ const Register = (props) => {
 
           router.push("/start/paywall");
         } catch (error) {
-          console.log(error)
-          console.log(errorRegister)
-          toast.error("Erro ao se cadastrar, tente novamente.", errorRegister);
+
+          toast.error("Erro ao se cadastrar, tente novamente.");
         }
       } else {
         router.push("/start/paywall");
@@ -382,7 +381,7 @@ const Register = (props) => {
               required
               id="form-props-required"
               name="document"
-              label="CPF"
+              label="CPF / CNPJ"
               defaultValue=""
               onKeyUp={(e) => {
 

@@ -16,6 +16,7 @@ import { UsersRepo } from "src/repository/users.repo";
 export async function getServerSideProps(ctx) {
   let tokenLead;
   let jwt;
+  let getNewUser;
 
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
@@ -29,10 +30,25 @@ export async function getServerSideProps(ctx) {
     jwt = null;
   }
 
+  if (jwt !== null) {
+    try {
+      getNewUser = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
+        headers: {
+          Authorization: jwt,
+        },
+      })
+    } catch {
+      getNewUser = null;
+    }
+  } else {
+    getNewUser = null;
+    console.log("Sem jwt")
+  }
   return {
     props: {
       tokenLead: tokenLead,
       jwt: jwt,
+      getNewUser: getNewUser
     },
   };
 }
@@ -41,7 +57,7 @@ export async function getServerSideProps(ctx) {
 
 const Paywall = (props) => {
   const router = useRouter();
-
+  console.log(props.getNewUser);
   const contextPackage = PackagesHooks();
 
 
@@ -68,7 +84,7 @@ const Paywall = (props) => {
       <div class="full-page-start">
         <div class="section-paywall">
           <div>
-            <PaywallComponent Pack={contextPackage} />
+            <PaywallComponent Pack={contextPackage} User={props.getNewUser} />
           </div>
           <Button
             onClick={handleClick}
