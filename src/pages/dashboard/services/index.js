@@ -56,7 +56,7 @@ export default function ServicePage({ services, token }) {
             Aqui você pode ver, adicionar e excluir serviços!
           </Typography>
         }
-        button={"Adicionar Serviço"}
+        button={"Adicionar Novo Serviço"}
         onTap={() => {
           router.push(`${router.pathname}/add`);
         }}

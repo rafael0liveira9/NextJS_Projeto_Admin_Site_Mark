@@ -93,13 +93,13 @@ export default function PackageAddPage({ services, token }) {
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Pacotes</Typography>}
+        title={<Typography variant="h5">Planos Promocionais</Typography>}
         subtitle={
           <Typography variant="body2">
             Aqui você pode ver, adicionar e excluir pacotes!
           </Typography>
         }
-        button={"Adicionar Pacote"}
+        button={"Adicionar Plano Promocional"}
         onTap={async () => {
           await onSubmit();
         }}
@@ -135,7 +135,7 @@ export default function PackageAddPage({ services, token }) {
       <Grid item xs={12} xl={6}>
         <TextField
           fullWidth
-          type="datetime-local"
+          // type="datetime-local"
           value={dueDate}
           label="Data de Validade"
           onChange={(e) => {

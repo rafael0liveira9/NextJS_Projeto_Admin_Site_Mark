@@ -107,7 +107,7 @@ export default function ServiceAddPage({ services, token }) {
             Aqui você pode ver, adicionar e excluir serviços!
           </Typography>
         }
-        button={"Adicionar Serviço"}
+        button={"Adicionar Novo Serviço"}
         onTap={async () => {
           await onSubmit();
         }}

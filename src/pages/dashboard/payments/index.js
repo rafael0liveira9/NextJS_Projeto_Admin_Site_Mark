@@ -16,13 +16,13 @@ export default function PaymentsPage({ payments }) {
         title={<Typography variant="h5">Pagamentos</Typography>}
         subtitle={
           <Typography variant="body2">
-            Aqui você pode ver, exportar e modificar pagamentos!
+            Aqui você pode ver todos os pagamentos pendentes e concluidos.
           </Typography>
         }
-        // button={"Adicionar Compania"}
-        // onTap={() => {
-        //   router.push(`${router.pathname}/add`);
-        // }}
+      // button={"Adicionar Compania"}
+      // onTap={() => {
+      //   router.push(`${router.pathname}/add`);
+      // }}
       />
       <Grid item xs={12}>
         <TableFilter

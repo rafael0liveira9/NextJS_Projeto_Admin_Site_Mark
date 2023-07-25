@@ -351,14 +351,14 @@ const Customizer = () => {
                 <Typography>Menu Collapsed</Typography>
                 <Switch
                   name='navCollapsed'
-                  checked={navCollapsed}
+                  checked={!navCollapsed}
                   onChange={e => handleChange('navCollapsed', e.target.checked)}
                 />
               </Box>
             )}
 
             {layout === 'horizontal' && appBar === 'hidden' ? null : (
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: "#FFFFFF" }}>
                 <Typography>Menu Hidden</Typography>
                 <Switch
                   name='navHidden'

@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import toast from "react-hot-toast";
 import Icon from "src/@core/components/icon";
 import Typography from "@mui/material/Typography";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
@@ -27,6 +28,9 @@ export async function getServerSideProps(ctx) {
 
 const Paywall = (props) => {
   const router = useRouter();
+  const contextPackage = PackagesHooks();
+
+  console.log("contextpackage", contextPackage.clientChoice);
 
   const handleClick = () => {
     const myPromise = new Promise((resolve, reject) => {
@@ -45,6 +49,7 @@ const Paywall = (props) => {
       error: "Erro ao concluir solicitação.",
     });
   };
+
 
   return (
     <>

@@ -39,14 +39,22 @@ export default function PackageAddPage({ services, token, packageData }) {
     regexMoneyText(parseFloat(packageData?.price).toFixed(2))
   );
 
+  const DateValue = (packageData) => {
+    let x = packageData.dueDate;
+    if (x) {
+      return /(^\d+\-\d+\-\d+T\d+:\d+):\d+\.\d+Z/gi.exec(new Date(packageData?.dueDate).toISOString())[1]
+    }
+  }
+  const [validateSelect, setValidateSelect] = useState("")
   const [name, setName] = useState(packageData?.name);
   const [description, setDescription] = useState(packageData?.description);
   const [value, setValue] = useState(packageData?.price);
-  const [dueDate, setDueDate] = useState(
-    /(^\d+\-\d+\-\d+T\d+:\d+):\d+\.\d+Z/gi.exec(
-      new Date(packageData?.dueDate).toISOString()
-    )[1]
-  );
+  // const [dueDate, setDueDate] = useState(
+  //   /(^\d+\-\d+\-\d+T\d+:\d+):\d+\.\d+Z/gi.exec(
+  //     new Date(packageData?.dueDate).toISOString()
+  //   )[1]
+  // );
+  const [dueDate, setDueDate] = useState(DateValue(packageData));
   const [servicesSelect, setServicesSelect] = useState(
     packageData?.PackagesServices?.map((x) => {
       return {
@@ -136,13 +144,13 @@ export default function PackageAddPage({ services, token, packageData }) {
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Pacotes</Typography>}
+        title={<Typography variant="h5">Planos Promocionais</Typography>}
         subtitle={
           <Typography variant="body2">
             Aqui você pode ver, adicionar e excluir pacotes!
           </Typography>
         }
-        button={"Atualizar Pacote"}
+        button={"Adicionar Plano Promocional"}
         onTap={async () => {
           await onSubmit();
         }}
@@ -178,9 +186,10 @@ export default function PackageAddPage({ services, token, packageData }) {
       <Grid item xs={12} xl={6}>
         <TextField
           fullWidth
-          type="datetime-local"
+          type={"datetime-local"}
           value={dueDate}
-          label="Data de Validade"
+          onFo
+          label={"Data de Validade"}
           onChange={(e) => {
             setDueDate(e.target.value);
 

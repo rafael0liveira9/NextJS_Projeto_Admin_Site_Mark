@@ -50,13 +50,13 @@ export default function PackagePage({ packages, token }) {
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
-        title={<Typography variant="h5">Pacotes</Typography>}
+        title={<Typography variant="h5">Planos Promocionais</Typography>}
         subtitle={
           <Typography variant="body2">
             Aqui você pode ver, adicionar e excluir pacotes!
           </Typography>
         }
-        button={"Adicionar Pacote"}
+        button={"Adicionar Plano Promocional"}
         onTap={() => {
           router.push(`${router.pathname}/add`);
         }}

@@ -34,10 +34,10 @@ export default function ServicePage({ services }) {
             Aqui você pode ver as Empresas, acessar, aprovar ou enviar dados para aprovação.
           </Typography>
         }
-        button={"Adicionar Serviço"}
-        onTap={() => {
-          router.push(`${router.pathname}/add`);
-        }}
+      // button={"Adicionar Serviço"}
+      // onTap={() => {
+      //   router.push(`${router.pathname}/add`);
+      // }}
       />
       <Grid item xs={12}>
         <TableFilter rowsData={services} />

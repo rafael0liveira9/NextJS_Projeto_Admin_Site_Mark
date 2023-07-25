@@ -10,6 +10,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { check } from "prettier";
 import { PackagesRepo } from "src/repository/packages.repo";
 import toast from "react-hot-toast";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
 
 
 export async function getServerSideProps(ctx) {
@@ -69,12 +70,43 @@ export async function getServerSideProps(ctx) {
 
 const Packages = ({ tokenLead, packages, packageChose }) => {
   const router = useRouter();
+  const contextPackage = PackagesHooks();
+
+
+
   const [modalPackage, setModalPackage] = useState(false);
   const [descriptiion, setDescriptiion] = useState({});
   const [checked, setChecked] = useState({});
   const [packageSelected, setPackageSelected] = useState(null);
   const [isLoading1, setIsLoading1] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
+
+
+  function maxInstallments(valor) {
+    const minValue = 100;
+    const maxValue = 12;
+
+    if (valor < minValue) {
+      return 0;
+    }
+
+    const installments = Math.floor(valor / minValue);
+    const maxInstallments = Math.min(installments, maxValue);
+
+    return maxInstallments;
+  }
+
+  function sendDataPack(descriptiion) {
+    contextPackage.setClientChoice({
+      packageType: "package",
+      packageId: descriptiion?.id,
+      packageName: descriptiion?.name,
+      totalValue: descriptiion?.price,
+      maxInstallments: maxInstallments(descriptiion?.price),
+      services: descriptiion?.PackagesServices
+    });
+  }
+
 
 
 
@@ -131,7 +163,7 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
                   setModalPackage(false);
                   setChecked(descriptiion);
                   setPackageSelected(descriptiion);
-
+                  sendDataPack(descriptiion);
                 }}
                 style={{ cursor: "pointer", margin: "20px" }}
                 color="primary"
@@ -144,6 +176,9 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
       );
     }
   };
+
+
+
 
   return (
     <>

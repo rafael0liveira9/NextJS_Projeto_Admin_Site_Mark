@@ -20,7 +20,7 @@ const FooterContent = () => {
       <Typography sx={{ mr: 2 }}>
         {`© ${new Date().getFullYear()}, Criado por `}
         <Link target="_blank" href="https://google.com">
-          Mark
+          Mark App
         </Link>
       </Typography>
       {/* {hidden ? null : (

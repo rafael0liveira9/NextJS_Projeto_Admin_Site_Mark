@@ -6,22 +6,36 @@ import { useRouter } from "next/router";
 import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Button } from "@mui/material";
+import { ServicesRepo } from "src/repository/services.repo";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
+  let servicesList = [];
+
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch {
     tokenLead = null;
   }
+
+  try {
+    servicesList = await ServicesRepo.getAllServices();
+
+  } catch {
+    servicesList = [{
+      numdeu: "um"
+    }];
+  }
+
   return {
     props: {
       tokenLead: tokenLead,
+      servicesList: servicesList
     },
   };
 }
 
-const Custom = () => {
+const Custom = ({ servicesList }) => {
   const router = useRouter();
 
   return (
@@ -29,7 +43,7 @@ const Custom = () => {
       <div class="full-page-start">
         <div class="section-paywall">
           <div>
-            <PaywallComponent />
+            <PaywallComponent servicesList={servicesList} />
           </div>
           <Button
             variant="contained"

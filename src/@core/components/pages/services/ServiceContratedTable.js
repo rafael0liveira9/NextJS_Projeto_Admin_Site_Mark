@@ -22,6 +22,7 @@ import { regexMoney, regexMoneyText } from "src/utils/utils";
 import { Button } from "@mui/material";
 import { AiOutlineEdit, AiOutlineFolderView } from "react-icons/ai";
 import Router from "next/router";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
 
 // ** renders client column
 const renderClient = (params) => {
@@ -90,6 +91,8 @@ const TableColumns = ({ rowsData, columns }) => {
       setFilteredData([]);
     }
   };
+
+
 
   return (
     <Card>

@@ -140,10 +140,10 @@ const TableColumns = ({ rowsData, onEdit, onView, onDelete }) => {
       renderCell: (params) => (
         <Typography variant="body2" sx={{ color: "text.primary" }}>
           {params.row.status == "FINISHED_PAYMENT"
-            ? "Pagamento Finalizado"
+            ? <p style={{ color: "#16C100" }}>Pagamento Recebido</p>
             : params.row.status == "SENDED_TO_ASANA"
-            ? "Enviado para Asana"
-            : "Aguardando"}
+              ? <p>Enviado para Asana</p>
+              : <p style={{ color: "#C13000" }}>Pagamento Pendente</p>}
         </Typography>
       ),
     },
@@ -158,9 +158,8 @@ const TableColumns = ({ rowsData, onEdit, onView, onDelete }) => {
         return (
           <Typography variant="body2" sx={{ color: "text.primary" }}>
             {params.row.createdAt
-              ? `${dueDate.getDate()}/${
-                  dueDate.getMonth() + 1
-                }/${dueDate.getFullYear()}`
+              ? `${dueDate.getDate()}/${dueDate.getMonth() + 1
+              }/${dueDate.getFullYear()}`
               : "Sem Data"}
           </Typography>
         );

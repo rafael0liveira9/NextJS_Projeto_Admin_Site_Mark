@@ -6,12 +6,7 @@ const navigation = () => {
       path: "/dashboard/",
     },
     {
-      sectionTitle: "Financeiro e Dados",
-    },
-    {
-      title: "Histórico de Pagamentos",
-      icon: "mdi:money",
-      path: "/dashboard/payments",
+      sectionTitle: "Adminitrativo",
     },
     {
       title: "Relatórios",
@@ -19,25 +14,30 @@ const navigation = () => {
       path: "/dashboard/big-data",
     },
     {
-      sectionTitle: "Serviços e Pacotes",
-    },
-    {
-      title: "Gerenciar Serviços",
-      icon: "mdi:checkbox-multiple-outline",
-      path: "/dashboard/services",
-    },
-    {
-      title: "Gerenciar Planos",
-      icon: "mdi:package-variant-closed",
-      path: "/dashboard/packages",
-    },
-    {
       title: "Serviços Contratados",
       icon: "mdi:checkbox-multiple-outline",
       path: "/dashboard/services-contrated",
     },
     {
-      sectionTitle: "Usuários e Companhias",
+      title: "Histórico de Pagamentos",
+      icon: "mdi:money",
+      path: "/dashboard/payments",
+    },
+    {
+      sectionTitle: "Gerenciar Planos",
+    },
+    {
+      title: "Cadastrar Serviços",
+      icon: "mdi:checkbox-multiple-outline",
+      path: "/dashboard/services",
+    },
+    {
+      title: "Cadastrar Planos",
+      icon: "mdi:package-variant-closed",
+      path: "/dashboard/packages",
+    },
+    {
+      sectionTitle: "Usuários e Empresas",
     },
     {
       title: "Usuários",

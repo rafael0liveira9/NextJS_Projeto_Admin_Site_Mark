@@ -1,12 +1,23 @@
 // ** React Imports
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 export const PackagesContext = createContext({
     status: null,
-    returnStatus: null
+    returnStatus: null,
+    clientChoice: null,
+    setClientChoice: null
 })
 
 export const PackagesProvider = ({ children }) => {
+    const [clientChoice, setClientChoice] = useState({
+        packageType: "",
+        packageId: 0,
+        packageName: "",
+        totalValue: 0,
+        maxInstallments: 0,
+        services: {}
+    });
+
     const status = {
         logo: [
             "Aguardando Briefing",
@@ -39,13 +50,16 @@ export const PackagesProvider = ({ children }) => {
             "Arquivos Enviados"
         ]
     }
+
     function returnStatus(data, value) {
         return status[data][value - 1]
     }
 
     const values = {
         status,
-        returnStatus
+        returnStatus,
+        clientChoice,
+        setClientChoice
     }
 
     return <PackagesContext.Provider value={values}>{children}</PackagesContext.Provider>

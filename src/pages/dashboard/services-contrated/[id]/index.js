@@ -40,6 +40,7 @@ const columnsLogo = [
     headerName: "Titulo",
     renderCell: (params) => {
       const { row } = params;
+      const type = row.serviceTypeId == 1 ? "Logo" : "Logo + Brand"
 
       return (
         <Box
@@ -54,7 +55,7 @@ const columnsLogo = [
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
-              {row.id}
+              {row.LogoService.LogoBriefing.titlefirst ? type + " / Titulo: " + row.LogoService.LogoBriefing.titlefirst : "Não preencheu"}
             </Typography>
           </Box>
         </Box>
@@ -68,6 +69,8 @@ const columnsLogo = [
     headerName: "Status",
     renderCell: (params) => {
       const { row } = params;
+      const statusFy = PackagesHooks();
+
 
       return (
         <Box
@@ -81,10 +84,22 @@ const columnsLogo = [
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
-              {row?.LogoService?.status}
+              {row?.LogoService?.status == 1
+                ?
+                <p style={{ color: "#C13000" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
+                :
+                row?.LogoService?.status == 9
+                  ?
+                  < p style={{ color: "#16C100" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
+                  :
+                  <p style={{ color: "#CAD037" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
+              }
+
+
+
             </Typography>
           </Box>
-        </Box>
+        </Box >
       );
     },
   }
@@ -135,8 +150,10 @@ const columnsLogo = [
             >
               {row?.LogoService?.LogoProof &&
                 row?.LogoService?.LogoProof.isApproved
-                ? "Sim"
-                : "Não"}
+                ?
+                <p style={{ color: "#16C100" }}>Sim</p>
+                :
+                <p style={{ color: "#C13000" }}>Não</p>}
             </Typography>
           </Box>
         </Box>
@@ -394,11 +411,6 @@ const columnsSite = [
   },
 ];
 
-// const statusFy = PackagesHooks();
-
-// const x = statusFy.returnStatus({ data: "logo", value: "1" });
-
-// console.log(x);
 
 export default function ServicePage({ services }) {
   const router = useRouter();
