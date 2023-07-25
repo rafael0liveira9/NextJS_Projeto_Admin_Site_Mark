@@ -60,7 +60,7 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
     }
 }))
 
-const PaywallComponent = () => {
+const PaywallComponent = (Pack) => {
     const router = useRouter();
     const [cvc, setCvc] = useState('')
     const [name, setName] = useState('')
@@ -88,37 +88,39 @@ const PaywallComponent = () => {
             setCvc(target.value)
         }
     }
+    console.log(Pack)
+    const clientChoice = Pack.Pack.clientChoice
 
     return (
-        <form onSubmit={e => e.preventDefault()} style={{maxWidth:"90% !important"}}>
+        <form onSubmit={e => e.preventDefault()} style={{ maxWidth: "90% !important" }}>
 
             {/* ******************************************************************************** CONTA */}
 
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                 <AccordionSummary
                     expandIcon={<Icon icon='mdi:chevron-down' />}
                     id='form-layouts-collapsible-header-2'
                     aria-controls='form-layouts-collapsible-content-2'
                 >
                     <Typography variant='subtitle1' sx={{ fontWeight: 500 }}>
-                        Olá, <span style={{color:"#751fc5", fontSize: "22px"}}>Rafael</span>
+                        Olá, <span style={{ color: "#751fc5", fontSize: "22px" }}>Rafael</span>
                     </Typography>
                 </AccordionSummary>
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
-                    <Box sx={{ width: '100%', display:"flex", justifyContent:"space-around", backgroundColor:" #eeeeee", padding:"5px", borderTopRightRadius:"45px" }}>
-                        <Box sx={{ width: '70%'}}>
+                    <Box sx={{ width: '100%', display: "flex", justifyContent: "space-around", backgroundColor: " #eeeeee", padding: "5px", borderTopRightRadius: "45px" }}>
+                        <Box sx={{ width: '70%' }}>
                             <span class="profile-paywall-section"><h1>Nome: </h1><h2>Rafael Mariano de Oliveira</h2></span>
                             <span class="profile-paywall-section"><h1>CPF: </h1><h2>064.738.469-80</h2></span>
                             <span class="profile-paywall-section"><h1>E-mail: </h1><h2>rafaelde0liveira@hotmail.com</h2></span>
                             <span class="profile-paywall-section"><h1>Telefone: </h1><h2>(41) 9 9273-0204</h2></span>
                         </Box>
-                        <Box sx={{ width: '30%', display:"flex", justifyContent:"center"}}> 
-                            <Avatar src={"/images/avatars/1.png"} sx={{ mb: 4, width: 80, height: 80}} />
+                        <Box sx={{ width: '30%', display: "flex", justifyContent: "center" }}>
+                            <Avatar src={"/images/avatars/1.png"} sx={{ mb: 4, width: 80, height: 80 }} />
                         </Box>
                     </Box>
-                    <Box sx={{ width: '100%', marginTop:10}}>
-                        <Button size='large' type='submit' variant='contained' sx={{ mr: 4, fontSize:12, width:"100%" }}>
+                    <Box sx={{ width: '100%', marginTop: 10 }}>
+                        <Button size='large' type='submit' variant='contained' sx={{ mr: 4, fontSize: 12, width: "100%" }}>
                             Logout
                         </Button>
                     </Box>
@@ -133,8 +135,8 @@ const PaywallComponent = () => {
                     id='form-layouts-collapsible-header-2'
                     aria-controls='form-layouts-collapsible-content-2'
                 >
-                    <Typography variant='subtitle1' sx={{ fontWeight: 500, fontSize:"14px" }}>
-                        Plano Selecionado: PREMIUM
+                    <Typography variant='subtitle1' sx={{ fontWeight: 500, fontSize: "14px" }}>
+                        {`Plano Selecionado: ${clientChoice.packageName}`}
                     </Typography>
                 </AccordionSummary>
                 <Divider sx={{ m: '0 !important' }} />
@@ -151,56 +153,21 @@ const PaywallComponent = () => {
                             sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
                         />
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600 }}>Pagar em 12X</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ 499,00</Typography>
+                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: 600 }}>{`Pagar em ${clientChoice.maxInstallments}`}</Typography>
+                                <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}>
+                                    {`R$${clientChoice.totalValue}`}
+                                </Typography>
                             </Box>
-                            <Typography variant='body2'>Contrato de 12 meses de prestação de Serviços.</Typography>
+                            <Typography variant='body2'>{`O Plano ${clientChoice.packageName} é composto por: `}</Typography>
+                            {/* {clientChoice.} */}
                         </Box>
                     </BoxWrapper>
-                    <BoxWrapper
-                        onClick={() => setOption('standard')}
-                        sx={option === 'standard' ? { borderColor: 'primary.main' } : {}}
-                    >
-                        <Radio
-                            value='standard'
-                            checked={option === 'standard'}
-                            name='form-layouts-collapsible-options-radio'
-                            inputProps={{ 'aria-label': 'Standard Delivery' }}
-                            sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
-                        />
-                        <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600 }}>Pagar em 6X</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ 899,00</Typography>
-                            </Box>
-                            <Typography variant='body2'>Desconto de 5%. Contrato de 12 meses de prestação de Serviços.</Typography>
-                        </Box>
-                    </BoxWrapper>
-                    <BoxWrapper
-                        onClick={() => setOption('overnight')}
-                        sx={option === 'overnight' ? { borderColor: 'primary.main' } : {}}
-                    >
-                        <Radio
-                            value='overnight'
-                            checked={option === 'overnight'}
-                            name='form-layouts-collapsible-options-radio'
-                            inputProps={{ 'aria-label': 'Overnight Delivery' }}
-                            sx={{ mr: 2, ml: -2.5, mt: -2.5, alignItems: 'flex-start' }}
-                        />
-                        <Box sx={{ width: '100%' }}>
-                            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems:"center" }}>
-                                <Typography sx={{ fontWeight: 600 }}>Pagar a Vista</Typography>
-                                <Typography sx={{ fontWeight: 700, fontSize:"12px", minWidth:96, backgroundColor:"#751fc5", borderRadius:30, color:"#FFFFFF", textAlign:"center" }}> R$ 4.999,00</Typography>
-                            </Box>
-                            <Typography variant='body2'>Desconto de 10%. Contrato de 12 meses de prestação de Serviços.</Typography>
-                        </Box>
-                    </BoxWrapper>
-                    <Box sx={{ width: '100%', marginTop:10 }}>
-                        <Button size='large' type='submit' variant='contained' sx={{ mr: 4, fontSize:12, width:"100%" }}>
+                    <Box sx={{ width: '100%', marginTop: 10 }}>
+                        <Button size='large' type='submit' variant='contained' sx={{ mr: 4, fontSize: 12, width: "100%" }}>
                             Informações do Plano
                         </Button>
-                        <Button onClick={() => router.push("/start/packages/")} type='reset' size='large' variant='outlined' color='primary' sx={{ fontSize:12, width:"100%", marginTop:"10px" }}>
+                        <Button onClick={() => router.push("/start/packages/")} type='reset' size='large' variant='outlined' color='primary' sx={{ fontSize: 12, width: "100%", marginTop: "10px" }}>
                             Escolher Outro
                         </Button>
                     </Box>
@@ -215,7 +182,7 @@ const PaywallComponent = () => {
                     id='form-layouts-collapsible-header-3'
                     aria-controls='form-layouts-collapsible-content-3'
                 >
-                    <Typography variant='subtitle1' sx={{ fontWeight: 500, fontSize:"14px" }}>
+                    <Typography variant='subtitle1' sx={{ fontWeight: 500, fontSize: "14px" }}>
                         Método de Pagamento
                     </Typography>
                 </AccordionSummary>

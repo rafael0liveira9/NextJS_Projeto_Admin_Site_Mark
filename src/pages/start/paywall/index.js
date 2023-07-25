@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import PaywallComponent from "../../../@core/pages/components/paywallComponent";
 import StepsShow from "../../../@core/pages/components/stepsShow";
@@ -11,26 +11,39 @@ import toast from "react-hot-toast";
 import Icon from "src/@core/components/icon";
 import Typography from "@mui/material/Typography";
 import { PackagesHooks } from "src/hooks/PackagesHooks";
+import { UsersRepo } from "src/repository/users.repo";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
+  let jwt;
+
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch {
     tokenLead = null;
   }
+
+  try {
+    jwt = JSON.parse(nookies.get(ctx).jwt);
+  } catch {
+    jwt = null;
+  }
+
   return {
     props: {
       tokenLead: tokenLead,
+      jwt: jwt,
     },
   };
 }
 
+
+
 const Paywall = (props) => {
   const router = useRouter();
+
   const contextPackage = PackagesHooks();
 
-  console.log("contextpackage", contextPackage.clientChoice);
 
   const handleClick = () => {
     const myPromise = new Promise((resolve, reject) => {
@@ -50,13 +63,12 @@ const Paywall = (props) => {
     });
   };
 
-
   return (
     <>
       <div class="full-page-start">
         <div class="section-paywall">
           <div>
-            <PaywallComponent />
+            <PaywallComponent Pack={contextPackage} />
           </div>
           <Button
             onClick={handleClick}

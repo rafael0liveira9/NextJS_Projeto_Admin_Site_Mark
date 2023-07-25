@@ -18,6 +18,8 @@ import toast from "react-hot-toast";
 export async function getServerSideProps(ctx) {
   let tokenLead;
   let jwt;
+  let newUserToken;
+
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
   } catch {
@@ -26,6 +28,12 @@ export async function getServerSideProps(ctx) {
       email: "",
       phone: "",
     };
+  }
+
+  try {
+    newUserToken = JSON.parse(nookies.get(ctx).newUser);
+  } catch {
+    newUserToken = null;
   }
 
   try {
@@ -38,6 +46,7 @@ export async function getServerSideProps(ctx) {
     props: {
       tokenLead: tokenLead,
       jwt: jwt,
+      newUserToken: newUserToken
     },
   };
 }
@@ -195,7 +204,6 @@ const Register = (props) => {
     const regexEsp = /[\$\*&@#]/gm;
     const regexLet = /[A-Z]/gm;
     const regexNum = /\d/gm;
-    let m;
 
     {
       if (e.target.value.length !== 0) {
@@ -227,12 +235,17 @@ const Register = (props) => {
     setPasswordConf(e.target.value);
   };
 
-  const onSubmit = async (name, email, password, cpf, phone, cep) => {
+  const onSubmit = async (name, email, password, cpf, phone) => {
     if (!isLoading1) {
+
       setIsLoading1(true);
+
       const regex = /[\s_\-()[\]{}!#$%^&*+=\\|:;"'<>,?/~`]/g;
+
+      let errorRegister;
       let newUser;
       let newCompany;
+
       let data = {
         email: email,
         password: password,
@@ -244,20 +257,33 @@ const Register = (props) => {
         cep: "81730070",
       };
 
-      if (props.jwt === null) {
+      if (props.newUserToken === null) {
         try {
+
           newUser = (await UsersRepo.postUserClient(data)).data;
+          console.log("newUser OK")
+
 
           let auth = newUser.jwt;
+
           let company = {
             "companyName": data.name,
             "document": data.document,
             "documentType": data.documentType
           }
 
+
           newCompany = (await UsersRepo.postUserCompany(auth, company)).data;
 
+          console.log("newCompany OK")
+
+
           nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
+            maxAge: 28800 * 3 * 7,
+            path: "/",
+          });
+
+          nookies.set(null, "newUserToken", JSON.stringify(newUser), {
             maxAge: 28800 * 3 * 7,
             path: "/",
           });
@@ -266,7 +292,9 @@ const Register = (props) => {
 
           router.push("/start/paywall");
         } catch (error) {
-          toast.error("Erro ao se cadastrar, tente novamente.");
+          console.log(error)
+          console.log(errorRegister)
+          toast.error("Erro ao se cadastrar, tente novamente.", errorRegister);
         }
       } else {
         router.push("/start/paywall");

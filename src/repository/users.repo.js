@@ -46,6 +46,8 @@ export class UsersRepo {
 
   // ******************************** GET USER BY EMAIL (return INT 200 or INT 400 only)
 
+
+
   static async getUserByEmail(email) {
     try {
       const x = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}user/search-user/${email}`, {
