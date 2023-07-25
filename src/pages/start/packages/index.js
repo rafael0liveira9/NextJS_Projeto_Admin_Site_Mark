@@ -37,14 +37,14 @@ export async function getServerSideProps(ctx) {
     x = JSON.parse(nookies.get(ctx).packageChose);
 
     packageChose = {
-      sliderValue: x.sliderValue * 12,
+      sliderValue: x.sliderValue / 100,
       questionOne: true,
       questionTwo: true,
       questionTree: true,
     }
   } catch (error) {
     packageChose = {
-      sliderValue: 39990 * 12,
+      sliderValue: 39990 / 100,
       questionOne: true,
       questionTwo: true,
       questionTree: true,
