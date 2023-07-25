@@ -3,7 +3,7 @@ import StepsShow from "../../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
-import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineCheck, AiOutlineClose, AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import {
   TextField,
   Button,
@@ -75,6 +75,8 @@ const Register = (props) => {
   const [errorCheck2, setErrorCheck2] = useState(false);
   const [isLoading1, setIsLoading1] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
+  const [passMask, setPassMask] = useState(false);
+  const [passConfMask, setConfPassMask] = useState(false);
 
   const FormCheking = () => {
     if (name && cpf && email && phone && password && passwordConf) {
@@ -555,67 +557,131 @@ const Register = (props) => {
           )} */}
 
           {password && errorPasswordAny === false ? (
-            <TextField
-              required
-              id="form-props-required"
-              name="password"
-              label="Senha"
-              defaultValue=""
-              onChange={passwordReal}
-              value={password}
-              sx={{
-                margin: "5px",
-                "& .MuiOutlinedInput-root": {
-                  "& > fieldset": {
-                    borderColor: "#83E542",
-                    borderWidth: "2px",
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <TextField
+                required
+                id="form-props-required"
+                name="password"
+                type={passConfMask ? "" : "password"}
+                label="Senha"
+                defaultValue=""
+                onChange={passwordReal}
+                value={password}
+                sx={{
+                  margin: "5px 0", maxWidth: "80%",
+                  "& .MuiOutlinedInput-root": {
+                    "& > fieldset": {
+                      borderColor: "#83E542",
+                      borderWidth: "2px",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              <div
+                onClick={() => passMask === false ? setPassMask(true) : setPassMask(false)}
+                style={{
+                  maxWidth: "15%",
+                  padding: "0px 2.5%",
+                  borderRadius: "10px",
+                  height: "50px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}>
+                {passMask ? <AiFillEyeInvisible fill="red" size={20}></AiFillEyeInvisible> : <AiFillEye size={20}></AiFillEye>}
+              </div>
+            </div>
           ) : (
-            <TextField
-              required
-              id="form-props-required"
-              name="password"
-              label="Senha"
-              defaultValue=""
-              onChange={passwordReal}
-              value={password}
-              sx={{ margin: "5px" }}
-            />
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <TextField
+                required
+                id="form-props-required"
+                name="password"
+                type={passMask ? "" : "password"}
+                label="Senha"
+                defaultValue=""
+                onChange={passwordReal}
+                value={password}
+                sx={{ margin: "5px 0", maxWidth: "80%" }}
+              />
+              <div
+                onClick={() => passMask === false ? setPassMask(true) : setPassMask(false)}
+                style={{
+                  maxWidth: "15%",
+                  padding: "0px 2.5%",
+                  borderRadius: "10px",
+                  height: "50px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}>
+                {passMask ? <AiFillEyeInvisible fill="red" size={20}></AiFillEyeInvisible> : <AiFillEye size={20}></AiFillEye>}
+              </div>
+            </div>
           )}
 
           {passwordConf && errorPasswordConf === false ? (
-            <TextField
-              required
-              id="form-props-required"
-              name="passwordConfirm"
-              label="Confirmar Senha"
-              defaultValue=""
-              onChange={passwordRealConf}
-              value={passwordConf}
-              sx={{
-                margin: "5px",
-                "& .MuiOutlinedInput-root": {
-                  "& > fieldset": {
-                    borderColor: "#83E542",
-                    borderWidth: "2px",
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <TextField
+                required
+                id="form-props-required"
+                name="passwordConfirm"
+                type={passMask ? "" : "password"}
+                label="Confirmar Senha"
+                defaultValue=""
+                onChange={passwordRealConf}
+                value={passwordConf}
+                sx={{
+                  margin: "5px 0", maxWidth: "80%",
+                  "& .MuiOutlinedInput-root": {
+                    "& > fieldset": {
+                      borderColor: "#83E542",
+                      borderWidth: "2px",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              <div
+                onClick={() => passConfMask === false ? setConfPassMask(true) : setConfPassMask(false)}
+                style={{
+                  maxWidth: "15%",
+                  padding: "0px 2.5%",
+                  borderRadius: "10px",
+                  height: "50px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}>
+                {passConfMask ? <AiFillEyeInvisible fill="red" size={20}></AiFillEyeInvisible> : <AiFillEye size={20}></AiFillEye>}
+              </div>
+            </div>
           ) : (
-            <TextField
-              required
-              id="form-props-required"
-              name="passwordConfirm"
-              label="Confirmar Senha"
-              defaultValue=""
-              onChange={passwordRealConf}
-              value={passwordConf}
-              sx={{ margin: "5px" }}
-            />
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <TextField
+                required
+                id="form-props-required"
+                name="passwordConfirm"
+                type={passConfMask ? "" : "password"}
+                label="Confirmar Senha"
+                defaultValue=""
+                onChange={passwordRealConf}
+                value={passwordConf}
+                sx={{ margin: "5px 0", maxWidth: "80%" }}
+              />
+              <div
+                onClick={() => passConfMask === false ? setConfPassMask(true) : setConfPassMask(false)}
+                style={{
+                  maxWidth: "15%",
+                  padding: "0px 2.5%",
+                  borderRadius: "10px",
+                  height: "50px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}>
+                {passConfMask ? <AiFillEyeInvisible fill="red" size={20}></AiFillEyeInvisible> : <AiFillEye size={20}></AiFillEye>}
+              </div>
+            </div>
           )}
 
           {errorPasswordAny || errorPasswordConf ? (
