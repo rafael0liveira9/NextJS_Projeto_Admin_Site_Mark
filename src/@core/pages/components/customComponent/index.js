@@ -44,6 +44,7 @@ import 'react-credit-cards/es/styles-compiled.css'
 import Link from 'src/@core/theme/overrides/link'
 
 // Styled component for the Box wrappers in Delivery Options' accordion
+
 const BoxWrapper = styled(Box)(({ theme }) => ({
     borderWidth: 1,
     display: 'flex',
@@ -61,21 +62,11 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
     }
 }))
 
-function sendDataPack(services) {
-    contextPackage.setClientChoice({
-        packageType: services.length > 1 ? "Custom" : "Only",
-        packageId: "",
-        packageName: "Personalizado",
-        totalValue: "",
-        maxInstallments: maxInstallments(totalValue),
-        services: ""
-    });
-}
 
 const PaywallComponent = (servicesList) => {
     const router = useRouter();
     const contextPackage = PackagesHooks();
-    // console.log("Client Choice", contextPackage.clientChoice)
+    console.log("Client Choice", contextPackage.clientChoice)
 
     const [cardNumber, setCardNumber] = useState('');
     const [expanded, setExpanded] = useState('');
@@ -104,22 +95,7 @@ const PaywallComponent = (servicesList) => {
 
     const [services, setServices] = useState([]);
     const [servicesValue, setServicesValue] = useState(0);
-    const [useEffectControl, setUseEffectControl] = useState(0);
 
-    const chipsDelete = (x, y) => {
-        // let a = logoactiveValue ? parseInt(logoactiveValue) : 0;
-        // let b = siteactiveValue ? parseInt(siteactiveValue) : 0;
-        // let c = rsactiveValue ? parseInt(rsactiveValue) : 0;
-        // let total = a + b + c;
-
-        // y('');
-        // valuesMath(logoactiveValue, siteactiveValue, rsactiveValue);
-
-
-
-        console.log((servicesValue / maxInstallments(servicesValue)).toFixed(2).replace(".", ","))
-
-    }
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false)
     }
@@ -129,6 +105,8 @@ const PaywallComponent = (servicesList) => {
         let b = siteactiveValue ? parseInt(siteactiveValue) : 0;
         let c = rsactiveValue ? parseInt(rsactiveValue) : 0;
         let total = a + b + c;
+
+
 
         setServicesValue(total);
     }
@@ -144,8 +122,10 @@ const PaywallComponent = (servicesList) => {
         const installments = Math.floor(valor / minValue);
         const maxInstallments = Math.min(installments, maxValue);
 
+
         return maxInstallments;
     }
+
     useEffect(() => {
 
         setServices(
@@ -154,84 +134,57 @@ const PaywallComponent = (servicesList) => {
                 logo: logoactive.length > 0 ? logoactive : null,
                 value: logoactiveValue !== 0 ? logoactiveValue : 0,
                 name: logoactiveName.length > 0 ? logoactiveName : null,
-                function: setLogoActive,
-                deleteSelf:
-                    [{
-                        insert: 0,
-                        logo: null,
-                        value: 0,
-                        name: null,
-                    },
-                    {
-                        insert: siteactive.length > 0 ? 1 : 0,
-                        Site: siteactive > 0 ? siteactive : null,
-                        value: siteactiveValue !== 0 ? siteactiveValue : 0,
-                        name: siteactiveName.length > 0 ? siteactiveName : null,
-                    },
-                    {
-                        insert: rsactive.length > 0 ? 1 : 0,
-                        redes: rsactive > 0 ? rsactive : null,
-                        value: rsactiveValue !== 0 ? rsactiveValue : 0,
-                        name: rsactiveName.length > 0 ? rsactiveName : null,
-                    }]
+                functionAct: setLogoActive,
+                functionVle: setLogoActiveValue,
             },
             {
                 insert: siteactive.length > 0 ? 1 : 0,
                 Site: siteactive > 0 ? siteactive : null,
                 value: siteactiveValue !== 0 ? siteactiveValue : 0,
                 name: siteactiveName.length > 0 ? siteactiveName : null,
-                function: setSiteActive,
-                deleteSelf:
-                    [{
-                        insert: logoactive.length > 0 ? 1 : 0,
-                        logo: logoactive.length > 0 ? logoactive : null,
-                        value: logoactiveValue !== 0 ? logoactiveValue : 0,
-                        name: logoactiveName.length > 0 ? logoactiveName : null,
-                    },
-                    {
-                        insert: 0,
-                        logo: null,
-                        value: 0,
-                        name: null,
-                    },
-                    {
-                        insert: rsactive.length > 0 ? 1 : 0,
-                        redes: rsactive > 0 ? rsactive : null,
-                        value: rsactiveValue !== 0 ? rsactiveValue : 0,
-                        name: rsactiveName.length > 0 ? rsactiveName : null,
-                    }]
+                functionAct: setSiteActive,
+                functionVle: setSiteActiveValue,
             },
             {
                 insert: rsactive.length > 0 ? 1 : 0,
                 redes: rsactive > 0 ? rsactive : null,
                 value: rsactiveValue !== 0 ? rsactiveValue : 0,
                 name: rsactiveName.length > 0 ? rsactiveName : null,
-                function: setRsActive,
-                deleteSelf:
-                    [{
-                        insert: logoactive.length > 0 ? 1 : 0,
-                        logo: logoactive.length > 0 ? logoactive : null,
-                        value: logoactiveValue !== 0 ? logoactiveValue : 0,
-                        name: logoactiveName.length > 0 ? logoactiveName : null,
-                    },
-                    {
-                        insert: siteactive.length > 0 ? 1 : 0,
-                        Site: siteactive > 0 ? siteactive : null,
-                        value: siteactiveValue !== 0 ? siteactiveValue : 0,
-                        name: siteactiveName.length > 0 ? siteactiveName : null,
-                    },
-                    {
-                        insert: 0,
-                        logo: null,
-                        value: 0,
-                        name: null,
-                    }]
+                functionAct: setRsActive,
+                functionVle: setRsActiveValue,
             }]
         );
 
         valuesMath(logoactiveValue, siteactiveValue, rsactiveValue);
 
-    }, [logoactive, siteactive, rsactive, useEffectControl])
+
+        contextPackage.setClientChoice({
+            packageType: "Custom",
+            packageId: '',
+            packageName: "Custom",
+            totalValue: servicesValue,
+            maxInstallments: maxInstallments(servicesValue),
+            services: [{
+                insert: logoactive.length > 0 ? 1 : 0,
+                logo: logoactive.length > 0 ? logoactive : null,
+                value: logoactiveValue !== 0 ? logoactiveValue : 0,
+                name: logoactiveName.length > 0 ? logoactiveName : null,
+            },
+            {
+                insert: siteactive.length > 0 ? 1 : 0,
+                Site: siteactive > 0 ? siteactive : null,
+                value: siteactiveValue !== 0 ? siteactiveValue : 0,
+                name: siteactiveName.length > 0 ? siteactiveName : null,
+            },
+            {
+                insert: rsactive.length > 0 ? 1 : 0,
+                redes: rsactive > 0 ? rsactive : null,
+                value: rsactiveValue !== 0 ? rsactiveValue : 0,
+                name: rsactiveName.length > 0 ? rsactiveName : null,
+            }]
+        });
+
+    }, [logoactive, siteactive, rsactive, servicesValue])
 
 
     return (
@@ -476,7 +429,12 @@ const PaywallComponent = (servicesList) => {
                     if (e.insert === 1) {
 
                         return (
-                            <Chip key={y} label={e.name} color='primary' variant='outlined' onDelete={() => chipsDelete(e.deleteSelf, e.function)} sx={{ margin: "20px 5px", fontSize: "11px" }} />
+                            <Chip key={y} label={e.name} color='primary' variant='outlined'
+                                onDelete={
+                                    () => {
+                                        e.functionVle(0), e.functionAct(''), valuesMath(logoactiveValue, siteactiveValue, rsactiveValue)
+                                    }
+                                } sx={{ margin: "20px 5px", fontSize: "11px" }} />
                         )
                     }
                 })}
