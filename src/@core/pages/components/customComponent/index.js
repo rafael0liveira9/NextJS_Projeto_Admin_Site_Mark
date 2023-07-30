@@ -43,6 +43,8 @@ import { formatCVC, formatExpirationDate, formatCreditCardNumber } from 'src/@co
 import 'react-credit-cards/es/styles-compiled.css'
 import Link from 'src/@core/theme/overrides/link'
 
+import toast from "react-hot-toast";
+
 // Styled component for the Box wrappers in Delivery Options' accordion
 
 const BoxWrapper = styled(Box)(({ theme }) => ({
@@ -63,12 +65,11 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
 }))
 
 
-const PaywallComponent = (servicesList) => {
+const PaywallComponent = (servicesList, checkT, checkF) => {
     const router = useRouter();
     const contextPackage = PackagesHooks();
-    console.log("Client Choice", contextPackage.clientChoice)
 
-    const [cardNumber, setCardNumber] = useState('');
+
     const [expanded, setExpanded] = useState('');
 
     const [logoselected, setLogoSelected] = useState('');
@@ -127,6 +128,7 @@ const PaywallComponent = (servicesList) => {
     }
 
     useEffect(() => {
+        servicesList.servicesList.length <= 1 ? toast.error("Erro, tente novamente mais tarde!") : "";
 
         setServices(
             [{
@@ -184,11 +186,27 @@ const PaywallComponent = (servicesList) => {
             }]
         });
 
+        if (logoactive.length > 0 || siteactive.length > 0 || rsactive.length > 0) {
+            contextPackage.setCheckCustom(true);
+        } else {
+            contextPackage.setCheckCustom(false);
+        }
+
     }, [logoactive, siteactive, rsactive, servicesValue])
 
 
     return (
         <form onSubmit={e => e.preventDefault()} style={{ maxWidth: "90% !important" }}>
+
+            {servicesList.servicesList.length <= 1 ?
+                < div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                    <Typography variant='subtitle1' sx={{ fontWeight: "bold", fontSize: "22px", color: "#E29300" }}>
+                        Nenhum serviço encontrado
+                    </Typography>
+                </div>
+                :
+                ""
+            }
 
             {/* ****************************** LOGO FORM */}
 
@@ -205,7 +223,7 @@ const PaywallComponent = (servicesList) => {
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
                     {servicesList.servicesList.map((e) => {
-                        if (e.name.startsWith("Logo")) {
+                        if (e?.name?.startsWith("Logo")) {
                             return (
                                 <BoxWrapper
                                     key={e.id}
@@ -281,7 +299,7 @@ const PaywallComponent = (servicesList) => {
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
                     {servicesList.servicesList.map((e) => {
-                        if (e.name.startsWith("Site")) {
+                        if (e?.name?.startsWith("Site")) {
                             return (
                                 <BoxWrapper
                                     key={e.id}
@@ -357,7 +375,7 @@ const PaywallComponent = (servicesList) => {
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
                     {servicesList.servicesList.map((e) => {
-                        if (e.name.startsWith("Redes")) {
+                        if (e?.name?.startsWith("Redes")) {
                             return (
                                 <BoxWrapper
                                     key={e.id}

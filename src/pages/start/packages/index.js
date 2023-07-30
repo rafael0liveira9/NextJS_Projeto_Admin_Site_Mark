@@ -17,15 +17,16 @@ export async function getServerSideProps(ctx) {
   let tokenLead;
   let packageChose;
   let packages = [];
+  let x;
 
-  if (!!ctx.req.cookies.jwt) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login",
-      },
-    };
-  }
+  // if (!!ctx.req.cookies.jwt) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: "/login",
+  //     },
+  //   };
+  // }
 
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
@@ -49,6 +50,7 @@ export async function getServerSideProps(ctx) {
       questionTwo: true,
       questionTree: true,
     };
+    console.log("Catch packageChose")
   }
 
   try {
@@ -57,6 +59,7 @@ export async function getServerSideProps(ctx) {
   } catch {
 
   }
+
 
   return {
     props: {
@@ -68,7 +71,7 @@ export async function getServerSideProps(ctx) {
 }
 
 
-const Packages = ({ tokenLead, packages, packageChose }) => {
+const Packages = ({ packages }) => {
   const router = useRouter();
   const contextPackage = PackagesHooks();
 
@@ -97,14 +100,32 @@ const Packages = ({ tokenLead, packages, packageChose }) => {
   }
 
   function sendDataPack(descriptiion) {
-    contextPackage.setClientChoice({
-      packageType: "package",
-      packageId: descriptiion?.id,
-      packageName: descriptiion?.name,
-      totalValue: descriptiion?.price,
-      maxInstallments: maxInstallments(descriptiion?.price),
-      services: descriptiion?.PackagesServices
-    });
+    try {
+      nookies.set(null, "clientChoice", JSON.stringify({
+        packageType: "package",
+        packageId: descriptiion?.id,
+        packageName: descriptiion?.name,
+        totalValue: descriptiion?.price,
+        maxInstallments: maxInstallments(descriptiion?.price),
+        services: descriptiion?.PackagesServices
+      }), {
+        maxAge: 28800 * 3 * 7,
+        path: "/",
+      });
+
+      contextPackage.setClientChoice({
+        packageType: "package",
+        packageId: descriptiion?.id,
+        packageName: descriptiion?.name,
+        totalValue: descriptiion?.price,
+        maxInstallments: maxInstallments(descriptiion?.price),
+        services: descriptiion?.PackagesServices
+      });
+      console.log("clientChoice OK, ctx e cookie")
+    } catch (error) {
+      console.log("clientChoice Error, cookie")
+    }
+
   }
 
 

@@ -15,4 +15,13 @@ export class PaymentsRepo {
       },
     });
   }
+  static async buyNewPackage(data, jwt) {
+    return (
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}payment/checkout`, data, {
+        headers: {
+          Authorization: jwt,
+        },
+      })
+    ).data;
+  }
 }

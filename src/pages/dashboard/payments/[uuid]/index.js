@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { Card, CardContent, Container, Typography } from "@mui/material";
+import { Card, CardContent, Container, Typography, Button } from "@mui/material";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/payments/PaymentsTable";
 import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ import { regexMoneyText, returnDay } from "src/utils/utils";
 
 export default function PaymentsByUUIDPage({ payment, uuid }) {
   const router = useRouter();
-  // console.log(payment);
+  console.log(payment);
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader
@@ -28,10 +28,10 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
       //   router.push(`${router.pathname}/add`);
       // }}
       />
-      <Grid item width={"50%"}>
+      <Grid item width={"100%"}>
         <Card>
           <CardContent>
-            <Grid container>
+            <Grid container sx={{ justifyContent: "space-between", paddingRight: "100px" }}>
               <Grid item>
                 <Container>
                   <Typography fontSize={20} fontWeight={700}>
@@ -45,9 +45,9 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
                   <Typography fontSize={20} fontWeight={700}>
                     Status de Pagamento:{" "}
                   </Typography>
-                  <Typography>
+                  <Typography color={payment.status == "WAITING" ? "#C13000" : "#16C100"}>
                     {payment.status == "FINISHED_PAYMENT"
-                      ? "Pagamento Finalizado"
+                      ? "Pagamento Recebido"
                       : payment.status == "SEND_TO_ASANA"
                         ? "Enviado para o Asana"
                         : "Aguardando Pagamento"}
@@ -58,68 +58,98 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item width={"50%"}>
+      <Grid item width={"100%"}>
         <Card>
           <CardContent>
-            <Grid container>
+            <Grid container sx={{ gap: "50px", justifyContent: "space-between", paddingRight: "5%" }}>
               <Grid item>
                 <Container>
-                  <Typography fontSize={18} fontWeight={700}>
-                    Nome do Cliente:
+                  <Typography fontSize={14} fontWeight={700}>
+                    Cliente:
                   </Typography>
                   <Typography>{payment.Client.name}</Typography>
                 </Container>
               </Grid>
               <Grid item>
                 <Container>
-                  <Typography fontSize={18} fontWeight={700}>
-                    Nome da Compania:
+                  <Typography fontSize={14} fontWeight={700}>
+                    Empresa:
                   </Typography>
                   <Typography>{payment.Companies.companyName}</Typography>
+                </Container>
+              </Grid>
+              <Grid item>
+                <Container>
+                  <Typography fontSize={14} fontWeight={700}>
+                    {payment.Client.documentType}:
+                  </Typography>
+                  <Typography>{payment.Client.document}</Typography>
+                </Container>
+              </Grid>
+              <Grid item>
+                <Container>
+                  <Typography fontSize={14} fontWeight={700}>
+                    Telefone:
+                  </Typography>
+                  <Typography>{payment.Client.phone}</Typography>
+                </Container>
+              </Grid>
+              <Grid item>
+                <Container>
+                  <Typography fontSize={14} fontWeight={700}>
+                    E-mail:
+                  </Typography>
+                  <Typography>{payment.Client.User.email}</Typography>
                 </Container>
               </Grid>
             </Grid>
           </CardContent>
         </Card>
       </Grid>
-      {payment.PaymentsServices.length > 0 && (
-        <Grid item width={"100%"}>
-          <Card>
-            <CardContent>
-              {payment.PaymentsServices.map((x, y) => {
-                return (
-                  <Grid container>
-                    {!!x.Service && (
-                      <Grid item>
-                        <Container>
-                          <Typography fontSize={18} fontWeight={700}>
-                            Nome do Serviço:
-                          </Typography>
-                          <Typography>{x.Service.name}</Typography>
-                        </Container>
-                      </Grid>
-                    )}
-                    {!!x.Package && (
-                      <Grid item display={"flex"}>
-                        <Container>
-                          <Typography fontSize={18} fontWeight={700}>
-                            Nome do Pacote:
-                          </Typography>
-                          <Typography>{x.Package.name}</Typography>
-                        </Container>
-                        {x.Package.PackagesServices.map((x, y) => {
-                          return (
-                            <Container>
-                              <Typography fontSize={18} fontWeight={700}>
-                                Serviços do Pacote:
-                              </Typography>
-                              <Typography>{x.Service.name}</Typography>
-                            </Container>
-                          );
-                        })}
-                      </Grid>
-                    )}
-                    {!!x.Package && (
+
+
+      {
+        payment.PaymentsServices.length > 0 && (
+          <Grid item width={"100%"}>
+            <Card>
+              <CardContent>
+                {payment.PaymentsServices.map((x, y) => {
+                  return (
+                    <Grid container>
+                      {!!x.Package && (
+                        <Grid item display={"flex"}>
+                          <Container>
+                            <Typography fontSize={14} fontWeight={700}>
+                              Nome do Pacote:
+                            </Typography>
+                            <Typography>{x.Package.name}</Typography>
+                          </Container>
+                          {x.Package.PackagesServices.map((x, y) => {
+                            return (
+                              <Container>
+                                <Typography fontSize={14} fontWeight={700}>
+                                  Serviços do Pacote:
+                                </Typography>
+                                <Typography>{x.Service.name}</Typography>
+                              </Container>
+                            );
+                          })}
+                        </Grid>
+                      )}
+                      {!!x.Service && (
+                        <Grid item>
+                          <Container>
+                            <Typography fontSize={14} fontWeight={700}>
+                              Nome do Serviço:
+                            </Typography>
+                            <Typography>
+                              {x.Service.name}
+                            </Typography>
+                          </Container>
+                        </Grid>
+                      )}
+
+                      {/* {!!x.Package && (
                       <Grid item display={"flex"}>
                         <Container>
                           <Typography fontSize={18} fontWeight={700}>
@@ -133,18 +163,29 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
                           </Typography>
                         </Container>
                       </Grid>
-                    )}
-                  </Grid>
-                );
-              })}
-            </CardContent>
-          </Card>
-        </Grid>
-      )}
-      <Grid item>
+                    )} */}
+                    </Grid>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </Grid>
+        )
+      }
+      <Grid item width={"25%"}>
         <Card>
           <CardContent>
-            <Typography fontSize={18} fontWeight={700}>
+            <Typography fontSize={14} fontWeight={700}>
+              Data da Compra:
+            </Typography>
+            <Typography>{returnDay(payment.createdAt)}</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item width={"25%"}>
+        <Card>
+          <CardContent>
+            <Typography fontSize={14} fontWeight={700}>
               Valor do Pagamento:
             </Typography>
             <Typography>
@@ -154,17 +195,37 @@ export default function PaymentsByUUIDPage({ payment, uuid }) {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item>
+      <Grid item width={"25%"}>
         <Card>
           <CardContent>
-            <Typography fontSize={18} fontWeight={700}>
-              Data de criação do pagamento:
+            <Typography fontSize={14} fontWeight={700}>
+              Valor do Desconto:
             </Typography>
-            <Typography>{returnDay(payment.createdAt)}</Typography>
+            <Typography>
+              R${" "}
+              {regexMoneyText(parseFloat(payment.discount).toFixed(2).toString())}
+            </Typography>
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
+      <Grid item width={"25%"} sx={{ justifyContent: "center", alignItems: "center" }}>
+        <Card>
+          <CardContent>
+            {payment.status === "WAITING"
+              ?
+              <Button color="secondary" variant="contained">
+                Pagamento recebido
+              </Button>
+              :
+              <Button disabled color="primary" variant="outlined">
+                Pagamento recebido
+              </Button>
+            }
+          </CardContent>
+        </Card>
+      </Grid>
+
+    </Grid >
   );
 }
 

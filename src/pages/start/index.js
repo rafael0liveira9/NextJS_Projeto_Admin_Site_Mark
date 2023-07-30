@@ -39,7 +39,7 @@ const Start = () => {
   const marks = [
     {
       value: 19990,
-      label: "R$ 399,90",
+      label: "R$ 199,90",
     },
     {
       value: 39990,
@@ -186,7 +186,7 @@ const Start = () => {
           }}
           color="secondary"
         >
-          {isLoading ? <CircularProgress></CircularProgress> : "VER PROMOÇÕES"}
+          {isLoading ? <CircularProgress></CircularProgress> : "VER PLANOS"}
         </Button>
       </div>
       <StepsShow step={1}></StepsShow>

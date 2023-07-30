@@ -75,8 +75,8 @@ const TableColumns = ({ rowsData, onEdit, onView, onDelete }) => {
 
   const columns = [
     {
-      flex: 0.2,
-      minWidth: 150,
+      flex: 0.1,
+      minWidth: 100,
       field: "order_id",
       headerName: "ID do Pedido",
       renderCell: (params) => {
@@ -100,7 +100,7 @@ const TableColumns = ({ rowsData, onEdit, onView, onDelete }) => {
     },
     {
       flex: 0.2,
-      minWidth: 110,
+      minWidth: 150,
       field: "client",
       headerName: "Cliente",
       renderCell: (params) => (
@@ -178,32 +178,32 @@ const TableColumns = ({ rowsData, onEdit, onView, onDelete }) => {
         );
       },
     },
-    {
-      flex: 0.125,
-      field: "edit",
-      minWidth: 80,
-      headerName: "Editar",
-      renderCell: (params) => {
-        return (
-          <Button onClick={() => onEdit()}>
-            <AiOutlineEdit></AiOutlineEdit>
-          </Button>
-        );
-      },
-    },
-    {
-      flex: 0.125,
-      field: "remove",
-      minWidth: 80,
-      headerName: "Remover",
-      renderCell: (params) => {
-        return (
-          <Button onClick={() => onDelete()}>
-            <AiOutlineDelete></AiOutlineDelete>
-          </Button>
-        );
-      },
-    },
+    // {
+    //   flex: 0.125,
+    //   field: "edit",
+    //   minWidth: 80,
+    //   headerName: "Em breve",
+    //   renderCell: (params) => {
+    //     return (
+    //       <Button onClick={() => onEdit()}>
+    //         <AiOutlineEdit></AiOutlineEdit>
+    //       </Button>
+    //     );
+    //   },
+    // },
+    // {
+    //   flex: 0.125,
+    //   field: "remove",
+    //   minWidth: 80,
+    //   headerName: "Remover",
+    //   renderCell: (params) => {
+    //     return (
+    //       <Button onClick={() => onDelete()}>
+    //         <AiOutlineDelete></AiOutlineDelete>
+    //       </Button>
+    //     );
+    //   },
+    // },
   ];
 
   const handleSearch = (searchValue) => {

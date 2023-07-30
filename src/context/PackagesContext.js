@@ -5,10 +5,37 @@ export const PackagesContext = createContext({
     status: null,
     returnStatus: null,
     clientChoice: null,
-    setClientChoice: null
+    setClientChoice: null,
+    newClient: null,
+    setNewClient: null,
+    checkCustom: null,
+    setCheckCustom: null,
+    checkPaywall: null,
+    setCheckPaywall: null,
+    finalClientData: null,
+    setFinalClientData: null
 })
 
 export const PackagesProvider = ({ children }) => {
+    const [checkCustom, setCheckCustom] = useState(false)
+    const [checkPaywall, setCheckPaywall] = useState(false)
+    const [finalClientData, setFinalClientData] = useState({
+        clientName: "",
+        document: "",
+        email: "",
+        company: 0,
+        packageId: 0,
+        packageName: "",
+        packageType: "",
+        services: [],
+        totalValue: 0,
+        maxInstallments: 0,
+        ccName: "",
+        ccExpiry: 0,
+        ccNumber: 0,
+        ccCode: 0
+    })
+
     const [clientChoice, setClientChoice] = useState({
         packageType: "",
         packageId: 0,
@@ -16,6 +43,14 @@ export const PackagesProvider = ({ children }) => {
         totalValue: 0,
         maxInstallments: 0,
         services: {}
+    });
+
+    const [newClient, setNewClient] = useState({
+        name: "",
+        document: "",
+        documentType: "",
+        email: "",
+        phone: null
     });
 
     const status = {
@@ -27,7 +62,7 @@ export const PackagesProvider = ({ children }) => {
             "Provas Recusadas",
             "Provas Aprovadas",
             "Aguardando Arquivos",
-            "Arquivos Enviados"
+            "Serviço Concluido"
         ],
         social: [
             "Aguardando Briefing",
@@ -59,7 +94,15 @@ export const PackagesProvider = ({ children }) => {
         status,
         returnStatus,
         clientChoice,
-        setClientChoice
+        setClientChoice,
+        newClient,
+        setNewClient,
+        checkCustom,
+        setCheckCustom,
+        checkPaywall,
+        setCheckPaywall,
+        finalClientData,
+        setFinalClientData
     }
 
     return <PackagesContext.Provider value={values}>{children}</PackagesContext.Provider>

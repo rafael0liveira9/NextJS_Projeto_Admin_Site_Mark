@@ -84,11 +84,11 @@ const columnsLogo = [
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
-              {row?.LogoService?.status == 1
+              {row?.LogoService?.status == 1 || row?.LogoService?.status == 5
                 ?
                 <p style={{ color: "#C13000" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
                 :
-                row?.LogoService?.status == 9
+                row?.LogoService?.status == 8
                   ?
                   < p style={{ color: "#16C100" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
                   :

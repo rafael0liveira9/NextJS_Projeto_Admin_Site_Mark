@@ -6,17 +6,19 @@ import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
 import Icon from "src/@core/components/icon";
 import Typography from "@mui/material/Typography";
 import { PackagesHooks } from "src/hooks/PackagesHooks";
-import { UsersRepo } from "src/repository/users.repo";
+import { PaymentsRepo } from "src/repository/payments.repo";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
   let jwt;
-  let getNewUser;
+  let clientChoice;
+  let newUserToken;
+  let newCompanyToken;
 
   try {
     tokenLead = JSON.parse(nookies.get(ctx).tokenLead);
@@ -30,61 +32,163 @@ export async function getServerSideProps(ctx) {
     jwt = null;
   }
 
-  if (jwt !== null) {
-    try {
-      getNewUser = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
-        headers: {
-          Authorization: jwt,
-        },
-      })
-    } catch {
-      getNewUser = null;
-    }
-  } else {
-    getNewUser = null;
-    console.log("Sem jwt")
+  try {
+    newUserToken = JSON.parse(nookies.get(ctx).newUserToken);
+  } catch {
+    newUserToken = null;
   }
+
+  try {
+    newCompanyToken = JSON.parse(nookies.get(ctx).newCompanyToken);
+  } catch {
+    newCompanyToken = null;
+  }
+
+  try {
+    clientChoice = JSON.parse(nookies.get(ctx).clientChoice);
+  } catch {
+    clientChoice = null;
+  }
+
+
+
+
+  // try {
+  //   getNewUser = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
+  //     headers: {
+  //       Authorization: jwt,
+  //     },
+  //   })
+  // } catch {
+  //   getNewUser = null;
+  //   console.log("catch getNewuser")
+  // }
+
+
+
+
   return {
     props: {
       tokenLead: tokenLead,
       jwt: jwt,
-      getNewUser: getNewUser
+      clientChoice: clientChoice,
+      newUserToken: newUserToken,
+      newCompanyToken: newCompanyToken
     },
   };
 }
 
 
 
-const Paywall = (props) => {
+const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }) => {
   const router = useRouter();
-  console.log(props.getNewUser);
   const contextPackage = PackagesHooks();
 
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleClick = () => {
-    const myPromise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() < 0.5) {
-          resolve("foo");
-        } else {
-          reject("fox");
+  const handleClick = async () => {
+
+    if (!isLoading) {
+      setIsLoading(true);
+
+      let finalData = contextPackage.finalClientData;
+
+      if (finalData.packageType === "package") {
+        try {
+          const myPromise = await PaymentsRepo.buyNewPackage(
+            {
+              "package": finalData.packageId,
+              "companieId": finalData.company,
+              "contratedServiceId": 1,
+              "paymentMethod": {
+                "creditCard": {
+                  "holderName": "Rafael Teste",
+                  "number": "5162306219378829",
+                  "expiryMonth": "05",
+                  "expiryYear": "2024",
+                  "ccv": "318"
+                }
+              }
+            },
+            jwt
+          )
+          toast.success(`Plano ${finalData.packageName} contratado com sucesso`);
+          console.log(myPromise)
+          return myPromise;
+
+        } catch (error) {
+          toast.error(`Erro ao contratar plano`)
+          console.log(error)
         }
-      }, 1000);
-    });
+      } else if (finalData.packageType === "custom") {
+        try {
+          const myPromise = await PaymentsRepo.buyNewPackage(
+            {
+              "services": [
+                finalData.services.map((e) => (e.id))
+              ],
+              "companieId": finalData.company,
+              "contratedServiceId": 1,
+              "paymentMethod": {
+                "creditCard": {
+                  "holderName": "Rafael Teste",
+                  "number": "5162306219378829",
+                  "expiryMonth": "05",
+                  "expiryYear": "2024",
+                  "ccv": "318"
+                }
+              }
+            },
+            jwt
+          )
+          toast.success(`Plano ${finalData.packageName} contratado com sucesso`);
+          console.log(myPromise)
+          return myPromise;
 
-    return toast.promise(myPromise, {
-      loading: "Carregando",
-      success: "Obrigado pela compra!",
-      error: "Erro ao concluir solicitação.",
-    });
-  };
+        } catch (error) {
+          toast.error(`Erro ao contratar plano`)
+          console.log(error)
+        }
+      } else {
+        try {
+          const myPromise = await PaymentsRepo.buyNewPackage(
+            {
+              "service": finalData.services[0].id,
+              "contratedServiceId": 1,
+              "installments": finalData.maxInstallments,
+              "paymentMethod": {
+                "creditCard": {
+                  "holderName": "Rafael Teste",
+                  "number": "5162306219378829",
+                  "expiryMonth": "05",
+                  "expiryYear": "2024",
+                  "ccv": "318"
+                }
+              }
+            },
+            jwt
+          )
+          toast.success(`Serviço ${finalData.packageName} contratado com sucesso`);
+          console.log(myPromise)
+          return myPromise;
+
+        } catch (error) {
+          toast.error(`Erro ao contratar Serviço`)
+          console.log(error)
+        }
+      }
+    }
+    setIsLoading(false);
+  }
+
+
 
   return (
     <>
       <div class="full-page-start">
         <div class="section-paywall">
           <div>
-            <PaywallComponent Pack={contextPackage} User={props.getNewUser} />
+            <PaywallComponent ctx={contextPackage} userToken={newUserToken} companyToken={newCompanyToken} clientToken={clientChoice} />
           </div>
           <Button
             onClick={handleClick}
@@ -97,7 +201,7 @@ const Paywall = (props) => {
             }}
             color="secondary"
           >
-            CONCLUIR PAGAMENTO
+            {isLoading ? <CircularProgress></CircularProgress> : "CONCLUIR PAGAMENTO"}
           </Button>
         </div>
         <StepsShow step={4}></StepsShow>

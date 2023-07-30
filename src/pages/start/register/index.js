@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Cookies } from "next/dist/server/web/spec-extension/cookies";
 import { UsersRepo } from "src/repository/users.repo";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
 import toast from "react-hot-toast";
 
 export async function getServerSideProps(ctx) {
@@ -53,6 +54,7 @@ export async function getServerSideProps(ctx) {
 
 const Register = (props) => {
   const router = useRouter();
+  const packagesHooks = PackagesHooks();
   const [name, setName] = useState(props.tokenLead.name || "");
   const [errorName, setErrorName] = useState(false);
   const [cpf, setCpf] = useState("");
@@ -92,11 +94,7 @@ const Register = (props) => {
     } else {
       setErrorName(false);
     }
-    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
-    if (e.target.value.replace(/\d/g, "").length >= 4) {
-      setErrorName(false);
-    }
-    setName(e.target.value.replace(/\d/g, "").replace(/(\D{1})(\D*)/, "$1$2"));
+    setName(e.target.value.replace(/(\D{1})(\D*)/, "$1$2"));
     if (e.target.value.replace(/\d/g, "").length >= 4) {
       setErrorName(false);
     }
@@ -109,18 +107,20 @@ const Register = (props) => {
       setErrorCpf(false);
     }
 
-    if (e.target.value.length > 11) {
+    if (e.target.value.length <= 11) {
+      setCpf(
+        e.target.value
+          .replace(/\D/g, "")
+          .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+      );
+    } else if (e.target.value.length > 11 && e.target.value.length < 19) {
       setCpf(
         e.target.value
           .replace(/\D/g, "")
           .replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
       );
     } else {
-      setCpf(
-        e.target.value
-          .replace(/\D/g, "")
-          .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
-      );
+      return ""
     }
   };
 
@@ -192,13 +192,22 @@ const Register = (props) => {
       });
     }
 
-    setPhone(
-      e.target.value
-        .replace(/\D/g, "")
-        .replace(/(\d{2})(\d)/, "($1) $2")
-        .replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4")
-    );
-  };
+    if (e.target.value.length <= 10) {
+      setPhone(
+        e.target.value
+          .replace(/\D/g, "")
+          .replace(/(\d{2})(\d)/, "($1) $2")
+          .replace(/(\(\d{2}\))(\d{4})(\d{4})/, "$1 $2-$3")
+      );
+    } else if (e.target.value.length > 10 && e.target.value.length <= 15) {
+      setPhone(
+        e.target.value
+          .replace(/\D/g, "")
+          .replace(/(\d{2})(\d)/, "($1) $2")
+          .replace(/(\(\d{2}\)) (\d)(\d{4})(\d{4})/, "$1 $2 $3-$4")
+      );
+    } else { ("") };
+  }
 
   const passwordReal = (e) => {
     const regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/gm;
@@ -253,18 +262,18 @@ const Register = (props) => {
         password: password,
         name: name,
         document: cpf,
-        documentType: cpf.length > 11 ? "CNPJ" : "CPF",
+        documentType: cpf.length > 14 ? "CNPJ" : "CPF",
         phone: phone.replace(regex, ""),
         firebaseToken: "123123123",
         cep: "81730070",
       };
 
       if (props.newUserToken === null) {
+
+
         try {
 
           newUser = (await UsersRepo.postUserClient(data)).data;
-
-
 
           let auth = newUser.jwt;
 
@@ -274,11 +283,8 @@ const Register = (props) => {
             "documentType": data.documentType
           }
 
-
           newCompany = (await UsersRepo.postUserCompany(auth, company)).data;
-
-
-
+          console.log(newCompany)
 
           nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
             maxAge: 28800 * 3 * 7,
@@ -290,7 +296,21 @@ const Register = (props) => {
             path: "/",
           });
 
-          toast.success("Cadastro criado com sucesso!");
+          nookies.set(null, "newCompanyToken", JSON.stringify(newCompany), {
+            maxAge: 28800 * 3 * 7,
+            path: "/",
+          });
+
+          packagesHooks.setNewClient({
+            name: newUser.name,
+            document: newUser.document,
+            documentType: newUser.documentType,
+            email: newUser.User.email,
+            phone: newUser.phone,
+            companyID: newCompany.id
+          })
+
+          toast.success("Cadastro criado com sucesso, redirecionando...");
 
           router.push("/start/paywall");
         } catch (error) {
@@ -298,6 +318,7 @@ const Register = (props) => {
           toast.error("Erro ao se cadastrar, tente novamente.");
         }
       } else {
+        toast.error("Usuário ja cacastrado no nosso sistema.")
         router.push("/start/paywall");
       }
     }
@@ -307,6 +328,7 @@ const Register = (props) => {
   useEffect(() => {
     FormCheking();
   }, [name, cpf, phone, email, cep, password, passwordConf]);
+
 
   return (
     <>
@@ -427,6 +449,57 @@ const Register = (props) => {
             ""
           )}
 
+          {!phone && !errorPhone ? (
+            <TextField
+              required
+              id="form-props-required"
+              name="phone"
+              label="Telefone Celular"
+              defaultValue=""
+              onKeyUp={(e) => {
+                const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
+                if (regex.test(e.target.value)) {
+                  setErrorPhone(false);
+                }
+              }}
+              onChange={phoneReal}
+              value={phone}
+              sx={{ margin: "5px" }}
+            />
+          ) : (
+            <TextField
+              required
+              id="form-props-required"
+              name="phone"
+              label="Telefone Celular"
+              defaultValue=""
+              onKeyUp={(e) => {
+                const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
+                if (regex.test(e.target.value)) {
+                  setErrorPhone(false);
+                }
+              }}
+              onChange={phoneReal}
+              value={phone}
+              sx={{
+                margin: "5px",
+                "& .MuiOutlinedInput-root": {
+                  "& > fieldset": {
+                    borderColor: "#83E542",
+                    borderWidth: "2px",
+                  },
+                },
+              }}
+            />
+          )}
+          {errorPhone ? (
+            <h3 class="error-input">
+              <AiOutlineClose size={9} /> Insira um Telefone valido
+            </h3>
+          ) : (
+            ""
+          )}
+
           {!email && !errorEmail ? (
             <TextField
               required
@@ -461,57 +534,6 @@ const Register = (props) => {
           {errorEmail ? (
             <h3 class="error-input">
               <AiOutlineClose size={9} /> Insira um E-mail valido
-            </h3>
-          ) : (
-            ""
-          )}
-
-          {!phone && !errorPhone ? (
-            <TextField
-              required
-              id="form-props-required"
-              name="phone"
-              label="Telefone"
-              defaultValue=""
-              onKeyUp={(e) => {
-                const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
-                if (regex.test(e.target.value)) {
-                  setErrorPhone(false);
-                }
-              }}
-              onChange={phoneReal}
-              value={phone}
-              sx={{ margin: "5px" }}
-            />
-          ) : (
-            <TextField
-              required
-              id="form-props-required"
-              name="phone"
-              label="Telefone"
-              defaultValue=""
-              onKeyUp={(e) => {
-                const regex = /\(?(\(\d{2}\))\)?\ ?(\d)\ ?(\d{4})\-?(\d{4})/gm;
-                if (regex.test(e.target.value)) {
-                  setErrorPhone(false);
-                }
-              }}
-              onChange={phoneReal}
-              value={phone}
-              sx={{
-                margin: "5px",
-                "& .MuiOutlinedInput-root": {
-                  "& > fieldset": {
-                    borderColor: "#83E542",
-                    borderWidth: "2px",
-                  },
-                },
-              }}
-            />
-          )}
-          {errorPhone ? (
-            <h3 class="error-input">
-              <AiOutlineClose size={9} /> Insira um Telefone valido
             </h3>
           ) : (
             ""
@@ -765,7 +787,11 @@ const Register = (props) => {
               }
             />
             <p>
-              Concordo com os <a href="#">Termos de Utilização</a>
+              Concordo com os &nbsp;
+              <a href="/mark/documents/termos-de-uso-mark-digital-2023.pdf" target="_blank"
+                download="termos-de-uso-mark-digital-2023.pdf">
+                Termos de Uso
+              </a>.
             </p>
           </div>
           <div class="div-checkbox2">
@@ -780,7 +806,11 @@ const Register = (props) => {
               }
             />
             <p>
-              Concordo com a <a href="#">Politica de Privacidade</a>
+              Concordo com a &nbsp;
+              <a href="/mark/documents/politica-de-privacidade-mark-digital-2023.pdf" target="_blank"
+                download="politica-de-privacidade-mark-digital-2023.pdf">
+                Política de Privacidade
+              </a>.
             </p>
           </div>
           <div class="div-button-submit">
@@ -798,7 +828,7 @@ const Register = (props) => {
                 variant="contained"
                 disabled
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
-                color="primary"
+                color="secondary"
               >
                 {isLoading1 ? (
                   <CircularProgress></CircularProgress>
@@ -811,7 +841,7 @@ const Register = (props) => {
                 variant="contained"
                 onClick={() => onSubmit(name, email, password, cpf, phone, cep)}
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
-                color="primary"
+                color="secondary"
               >
                 {isLoading1 ? (
                   <CircularProgress></CircularProgress>
@@ -832,7 +862,7 @@ const Register = (props) => {
             ) : (
               ""
             )}
-            <Button
+            {/* <Button
               variant="outlined"
               // onClick={onSubmit({ name: { name }, email: { email }, password: { password }, document: { document }, phone: { phone }, cep: { cep } })}
               style={{ cursor: "pointer", width: "250px", height: "35px" }}
@@ -843,7 +873,7 @@ const Register = (props) => {
               ) : (
                 "ESCOLHER ESTE AGORA"
               )}
-            </Button>
+            </Button> */}
           </div>
         </div>
         <StepsShow step={3}></StepsShow>

@@ -7,6 +7,7 @@ import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Button } from "@mui/material";
 import { ServicesRepo } from "src/repository/services.repo";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
 
 export async function getServerSideProps(ctx) {
   let tokenLead;
@@ -37,6 +38,8 @@ export async function getServerSideProps(ctx) {
 
 const Custom = ({ servicesList }) => {
   const router = useRouter();
+  const check = PackagesHooks();
+
 
   return (
     <>
@@ -45,19 +48,38 @@ const Custom = ({ servicesList }) => {
           <div>
             <PaywallComponent servicesList={servicesList} />
           </div>
-          <Button
-            variant="contained"
-            style={{
-              cursor: "pointer",
-              marginTop: "20px",
-              width: "250px",
-              height: "50px",
-            }}
-            color="secondary"
-            onClick={() => router.push("/start/paywall/")}
-          >
-            IR PARA PAGAMENTO
-          </Button>
+          {check.checkCustom === true
+            ?
+            <Button
+              variant="contained"
+              style={{
+                cursor: "pointer",
+                marginTop: "20px",
+                width: "250px",
+                height: "50px",
+              }}
+              color="secondary"
+              onClick={() => router.push("/start/register")}
+            >
+              IR PARA PAGAMENTO
+            </Button>
+            :
+            <Button
+              variant="contained"
+              disabled
+              style={{
+                cursor: "pointer",
+                marginTop: "20px",
+                width: "250px",
+                height: "50px",
+              }}
+              color="secondary"
+              onClick={() => router.push("/start/register")}
+            >
+              IR PARA PAGAMENTO
+            </Button>
+          }
+
         </div>
         <StepsShow step={4}></StepsShow>
       </div>

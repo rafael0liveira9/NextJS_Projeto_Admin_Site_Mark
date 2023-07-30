@@ -20,7 +20,7 @@ export class UsersRepo {
     });
   }
 
-  // ******************************** POST CLIENTS
+  // ******************************** POST NEW CLIENTS
   static async postUserClient(data) {
 
     return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/signup`, data, {
@@ -28,6 +28,21 @@ export class UsersRepo {
         "Content-Type": "application/json",
         "Accept": "*/*"
       },
+    });
+  }
+
+  // ******************************** LOGIN NEW CLIENTS
+  static async postLogin(email, password) {
+    let dataLogin = {
+      email: email,
+      password: password
+    }
+
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/signin/`, dataLogin, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*"
+      }
     });
   }
 

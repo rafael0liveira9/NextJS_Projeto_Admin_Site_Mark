@@ -20,7 +20,7 @@ const QuickSearchToolbar = props => {
       }}
     >
       <GridToolbarFilterButton />
-      <TextField
+      {/* <TextField
         size='small'
         value={props.value}
         onChange={props.onChange}
@@ -46,7 +46,7 @@ const QuickSearchToolbar = props => {
             mr: 2
           }
         }}
-      />
+      /> */}
     </Box>
   )
 }
