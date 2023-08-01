@@ -38,19 +38,20 @@ export async function getServerSideProps(ctx) {
     x = JSON.parse(nookies.get(ctx).packageChose);
 
     packageChose = {
-      sliderValue: x.sliderValue / 100,
+      sliderValue: x.sliderValue,
       questionOne: true,
       questionTwo: true,
       questionTree: true,
     }
+
   } catch (error) {
     packageChose = {
-      sliderValue: 39990 / 100,
+      sliderValue: 399,
       questionOne: true,
       questionTwo: true,
       questionTree: true,
     };
-    console.log("Catch packageChose")
+
   }
 
   try {
@@ -121,9 +122,9 @@ const Packages = ({ packages }) => {
         maxInstallments: maxInstallments(descriptiion?.price),
         services: descriptiion?.PackagesServices
       });
-      console.log("clientChoice OK, ctx e cookie")
+
     } catch (error) {
-      console.log("clientChoice Error, cookie")
+      return error
     }
 
   }

@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 
 const Start = () => {
   const router = useRouter();
-  const [sliderValue, setSliderValue] = useState(39990);
+  const [sliderValue, setSliderValue] = useState(399);
   const [questionOne, setQuestionOne] = useState(true);
   const [questionTwo, setQuestionTwo] = useState(true);
   const [questionTree, setQuestionTree] = useState(true);
@@ -38,19 +38,19 @@ const Start = () => {
 
   const marks = [
     {
-      value: 19990,
+      value: 199,
       label: "R$ 199,90",
     },
     {
-      value: 39990,
+      value: 399,
       label: "R$ 399,90",
     },
     {
-      value: 59990,
+      value: 599,
       label: "R$ 599,90",
     },
     {
-      value: 79990,
+      value: 799,
       label: "R$ 799,90",
     }
   ];
@@ -83,12 +83,12 @@ const Start = () => {
             sx={{ '& input[type="range"]': { margin: "10px" } }}
             step={null}
             marks={marks}
-            defaultValue={19990}
+            defaultValue={199}
             variable=""
-            min={19990}
-            max={79990}
+            min={199}
+            max={799}
             valueLabelFormat={(x) =>
-              `${x.toString().replace(/^(\d*)(\d{2})$/g, "R$ $1,$2")}`
+              `${x.toString().replace(/^(\d*)$/g, "R$ $1,90")}`
             }
             value={sliderValue}
             onChange={(e, v) => {

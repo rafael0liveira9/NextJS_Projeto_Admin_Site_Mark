@@ -22,12 +22,12 @@ let m = [
 ]
 
 
-const SliderCustomMarks = ({ marks, defaultValue, step, variable, min, max, valueLabelFormat, value, onChange}) => {
-  if (!!marks) m=marks
+const SliderCustomMarks = ({ marks, defaultValue, step, variable, min, max, valueLabelFormat, value, onChange }) => {
+  if (!!marks) m = marks
   return (
-    
+
     <Slider
-      step={step !== undefined ? step : 10}
+      step={step !== undefined ? step : 200}
       marks={m}
       defaultValue={defaultValue || 20}
       valueLabelDisplay='auto'

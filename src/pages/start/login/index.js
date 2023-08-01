@@ -200,7 +200,10 @@ const Login = (props) => {
             )}
             <Button
               variant="outlined"
-              onClick={() => router.push('/start/register')}
+              onClick={() => {
+                toast.success("Por favor, faça o Cadastro.")
+                router.push('/start/register')
+              }}
               style={{ cursor: "pointer", width: "250px", height: "50px" }}
               color="secondary"
             >

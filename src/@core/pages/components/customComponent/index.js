@@ -246,7 +246,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                                         <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>
                                             {
                                                 e.description +
-                                                "por apenas " +
+                                                " por apenas " +
                                                 maxInstallments(e.price) +
                                                 "X de R$" +
                                                 (parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",") +
@@ -322,7 +322,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                                         <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>
                                             {
                                                 e.description +
-                                                "por apenas " +
+                                                " por apenas " +
                                                 maxInstallments(e.price) +
                                                 "X de R$" +
                                                 (parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",") +
@@ -398,7 +398,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                                         <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>
                                             {
                                                 e.description +
-                                                "por apenas " +
+                                                " por apenas " +
                                                 maxInstallments(e.price) +
                                                 "X de R$" +
                                                 (parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",") +

@@ -210,7 +210,7 @@ const Register = (props) => {
   }
 
   const passwordReal = (e) => {
-    const regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/gm;
+    const regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[\$\*\*+-_&@#])[0-9a-zA-Z\$\*&\+-_@#]{8,}$/gm;
     const regex9c = /^.{8,}$/gm;
     const regexEsp = /[\$\*&@#]/gm;
     const regexLet = /[A-Z]/gm;
@@ -256,6 +256,7 @@ const Register = (props) => {
       let errorRegister;
       let newUser;
       let newCompany;
+      let xxx
 
       let data = {
         email: email,
@@ -268,15 +269,17 @@ const Register = (props) => {
         cep: "81730070",
       };
 
-      if (props.newUserToken === null) {
 
+      xxx = (await UsersRepo.getUserByEmailDoc(email, cpf)).data;
+
+
+      if (xxx === false) {
 
         try {
 
           newUser = (await UsersRepo.postUserClient(data)).data;
 
           let auth = newUser.jwt;
-
           let company = {
             "companyName": data.name,
             "document": data.document,
@@ -284,18 +287,16 @@ const Register = (props) => {
           }
 
           newCompany = (await UsersRepo.postUserCompany(auth, company)).data;
-          console.log(newCompany)
+
 
           nookies.set(null, "jwt", JSON.stringify(newUser.jwt), {
             maxAge: 28800 * 3 * 7,
             path: "/",
           });
-
           nookies.set(null, "newUserToken", JSON.stringify(newUser), {
             maxAge: 28800 * 3 * 7,
             path: "/",
           });
-
           nookies.set(null, "newCompanyToken", JSON.stringify(newCompany), {
             maxAge: 28800 * 3 * 7,
             path: "/",
@@ -318,8 +319,10 @@ const Register = (props) => {
           toast.error("Erro ao se cadastrar, tente novamente.");
         }
       } else {
-        toast.error("Usuário ja cacastrado no nosso sistema.")
-        router.push("/start/paywall");
+        toast.error("Por favor, faça o Login.")
+        toast.error("Documento ou E-mail ja cacastrados.")
+
+        router.push("/start/login");
       }
     }
     setIsLoading1(false);
@@ -862,18 +865,17 @@ const Register = (props) => {
             ) : (
               ""
             )}
-            {/* <Button
+            <Button
               variant="outlined"
-              // onClick={onSubmit({ name: { name }, email: { email }, password: { password }, document: { document }, phone: { phone }, cep: { cep } })}
+              onClick={() => {
+                toast.success("Por favor, faça o Login.")
+                router.push("/start/login");
+              }}
               style={{ cursor: "pointer", width: "250px", height: "35px" }}
-              color="primary"
+              color="secondary"
             >
-              {isLoading2 ? (
-                <CircularProgress></CircularProgress>
-              ) : (
-                "ESCOLHER ESTE AGORA"
-              )}
-            </Button> */}
+              JÁ SOU CLIENTE
+            </Button>
           </div>
         </div>
         <StepsShow step={3}></StepsShow>

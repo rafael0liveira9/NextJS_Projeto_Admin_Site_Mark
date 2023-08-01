@@ -13,7 +13,7 @@ export class PackagesRepo {
     let pack;
 
     const data = {
-      value: packageChose.sliderValue ? packageChose.sliderValue : 39990,
+      value: packageChose.sliderValue ? packageChose.sliderValue : 399,
       haveLogo: packageChose.questionOne,
       haveSite: packageChose.questionTwo,
       haveSocialMidia: packageChose.questionTree,

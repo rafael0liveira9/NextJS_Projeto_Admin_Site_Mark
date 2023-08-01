@@ -209,7 +209,7 @@ const PaywallComponent = ({ ctx, userToken, clientToken, companyToken }) => {
                             />
                             <Box sx={{ width: '100%' }}>
                                 <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
-                                    <Typography sx={{ fontWeight: 600 }}>{`Pagar em ${finalClientData.maxInstallments}X`}</Typography>
+                                    <Typography sx={{ fontWeight: 600 }}>{`Pode pagar em até ${finalClientData.maxInstallments}X`}</Typography>
                                     <Typography sx={{ fontWeight: 700, fontSize: "12px", minWidth: 96, backgroundColor: "#751fc5", borderRadius: 30, color: "#FFFFFF", textAlign: "center" }}>
                                         {`R$${(finalClientData.totalValue / finalClientData.maxInstallments).toFixed(2)}`}
                                     </Typography>

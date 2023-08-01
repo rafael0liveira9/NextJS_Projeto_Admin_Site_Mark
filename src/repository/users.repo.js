@@ -1,4 +1,5 @@
 import axios from "axios";
+import { stringify } from "stylis";
 
 export class UsersRepo {
 
@@ -63,18 +64,18 @@ export class UsersRepo {
 
 
 
-  static async getUserByEmail(email) {
-    try {
-      const x = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}user/search-user/${email}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "*/*"
-        },
-      });
-      return 200
-    } catch (error) {
-      return 400
-    }
+  static async getUserByEmailDoc(email, document) {
+    let data = {
+      "email": email,
+      "document": document
+    };
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}user/search-user-register`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*"
+      },
+    });
+
 
   }
 }
