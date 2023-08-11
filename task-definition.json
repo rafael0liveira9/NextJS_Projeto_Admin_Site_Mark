@@ -25,8 +25,8 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": null,
-      "memoryReservation": null,
+      "memory": 256,
+      "memoryReservation": 256,
       "volumesFrom": [],
       "stopTimeout": null,
       "image": "065249228369.dkr.ecr.us-east-1.amazonaws.com/mark-back",
@@ -50,7 +50,7 @@
     }
   ],
   "placementConstraints": [],
-  "memory": "1024",
+  "memory": "256",
   "taskRoleArn": null,
   "compatibilities": [
     "EXTERNAL",
@@ -72,7 +72,7 @@
   ],
   "networkMode": null,
   "runtimePlatform": null,
-  "cpu": "1024",
+  "cpu": "256",
   "revision": 1,
   "status": "ACTIVE",
   "inferenceAccelerators": null,

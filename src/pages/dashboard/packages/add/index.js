@@ -201,7 +201,6 @@ export default function PackageAddPage({ services, token }) {
           helperText={errors.value}
         ></TextField>
       </Grid>
-      {console.log(servicesSelect)}
     </Grid>
   );
 }

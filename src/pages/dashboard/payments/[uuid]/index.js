@@ -11,7 +11,7 @@ import { regexMoneyText, returnDay } from "src/utils/utils";
 
 export default function PaymentsByUUIDPage({ payment, uuid }) {
   const router = useRouter();
-  console.log(payment);
+
   return (
     <Grid container spacing={6} className="match-height">
       <PageHeader

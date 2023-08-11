@@ -84,7 +84,10 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
   const router = useRouter();
   const contextPackage = PackagesHooks();
 
+
   const [isLoading, setIsLoading] = useState(false)
+
+  const [finalInstallments, setFinalinstallments] = useState(contextPackage.finalClientData.maxInstallments ? contextPackage.finalClientData.maxInstallments : 1);
 
   const handleClick = async () => {
 
@@ -99,7 +102,7 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
             {
               "package": finalData.packageId,
               "companieId": finalData.company,
-              "installments": finalData.maxInstallments,
+              "installments": finalInstallments,
               "paymentMethod": {
                 "creditCard": {
                   "holderName": "Rafael Teste",
@@ -113,7 +116,7 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
             jwt
           )
           toast.success(`Plano ${finalData.packageName} contratado com sucesso`);
-          console.log(myPromise)
+
           return myPromise;
 
         } catch (error) {
@@ -128,7 +131,7 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
                 finalData.services.map((e) => (e.id))
               ],
               "companieId": finalData.company,
-              "installments": finalData.maxInstallments,
+              "installments": finalInstallments,
               "paymentMethod": {
                 "creditCard": {
                   "holderName": "Rafael Teste",
@@ -142,7 +145,7 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
             jwt
           )
           toast.success(`Plano ${finalData.packageName} contratado com sucesso`);
-          console.log(myPromise)
+
           return myPromise;
 
         } catch (error) {
@@ -154,7 +157,7 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
           const myPromise = await PaymentsRepo.buyNewPackage(
             {
               "service": finalData.services[0].id,
-              "installments": finalData.maxInstallments,
+              "installments": finalInstallments,
               "paymentMethod": {
                 "creditCard": {
                   "holderName": "Rafael Teste",
@@ -168,7 +171,7 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
             jwt
           )
           toast.success(`Serviço ${finalData.packageName} contratado com sucesso`);
-          console.log(myPromise)
+
           return myPromise;
 
         } catch (error) {
@@ -199,12 +202,29 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
             boxShadow: "0px 2px 1px -1px rgba(76, 78, 100, 0.2), 0px 1px 1px 0px rgba(76, 78, 100, 0.14), 0px 1px 3px 0px rgba(76, 78, 100, 0.12)",
             borderRadius: "10px"
           }}>
-            <Select value={contextPackage.finalClientData.maxInstallments} style={{ textAlign: "center", width: "30%" }}>
+            <Select value={finalInstallments} style={{ textAlign: "center" }}>
               {
-                [...Array(contextPackage.finalClientData.maxInstallments).keys()].map((x) => <option style={{ textAlign: "center" }} value={x + 1}>{x + 1}</option>)
+                [...Array(contextPackage.finalClientData.maxInstallments).keys()].map((x, y) =>
+                  <option key={y} style={{ textAlign: "center" }} value={x + 1}
+                    onClick={(e) => setFinalinstallments(x.value)}
+                  >{x + 1}</option>)
               }
             </Select>
-            <Typography style={{ textAlign: "center", width: "70%" }}>2</Typography>
+            <Typography
+              style={{
+                textAlign: "center",
+                width: "150px",
+                height: "60px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "24px",
+                color: "#777777",
+                border: "1px solid #E7E7EA",
+                borderRadius: "8px",
+              }}>
+              R$ {(contextPackage.finalClientData.totalValue / contextPackage.finalClientData.maxInstallments).toFixed(2).replace(".", ",")}
+            </Typography>
           </Grid>
           <Button
             onClick={handleClick}

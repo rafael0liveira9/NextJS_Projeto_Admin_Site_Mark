@@ -80,7 +80,7 @@ const Login = (props) => {
       try {
         let newLogin = (await UsersRepo.postLogin(email, password));
 
-        console.log("AQUI ", newLogin)
+
 
         nookies.set(null, "jwt", JSON.stringify(newLogin.jwt), {
           maxAge: 28800 * 3 * 7,

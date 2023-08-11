@@ -80,7 +80,7 @@ export default function ServicePage({ services, token }) {
 
     try {
       const serviceData = await SiteRepo.setServicePublished(data, token);
-      console.log(serviceData.data);
+
     } catch (error) {
       console.log(error);
     }
