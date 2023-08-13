@@ -68,7 +68,6 @@ const escapeRegExp = (value) => {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-
 const columns = [
   {
     flex: 0.275,
@@ -78,14 +77,13 @@ const columns = [
     renderCell: (params) => {
       const { row } = params;
 
-
       return (
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {renderClient(params)}
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               onClick={() => {
-                Router.push(`${Router.asPath}/${params.row.id}`);
+                Router.push(`${Router.asPath}/${params.row.companiesId}`);
               }}
               noWrap
               variant="body2"
@@ -106,9 +104,11 @@ const columns = [
     renderCell: (params) => (
       <Typography
         onClick={() => {
-          Router.push(`${Router.asPath}/${params.row.id}`);
+          Router.push(`${Router.asPath}/${params.row.companiesId}`);
         }}
-        variant="body2" sx={{ color: "text.primary" }}>
+        variant="body2"
+        sx={{ color: "text.primary" }}
+      >
         {params.row.LogoContratedItems.length}
       </Typography>
     ),
@@ -122,9 +122,11 @@ const columns = [
     renderCell: (params) => (
       <Typography
         onClick={() => {
-          Router.push(`${Router.asPath}/${params.row.id}`);
+          Router.push(`${Router.asPath}/${params.row.companiesId}`);
         }}
-        variant="body2" sx={{ color: "text.primary" }}>
+        variant="body2"
+        sx={{ color: "text.primary" }}
+      >
         {params.row.SocialContratedItems.length}
       </Typography>
     ),
@@ -137,9 +139,11 @@ const columns = [
     renderCell: (params) => (
       <Typography
         onClick={() => {
-          Router.push(`${Router.asPath}/${params.row.id}`);
+          Router.push(`${Router.asPath}/${params.row.companiesId}`);
         }}
-        variant="body2" sx={{ color: "text.primary" }}>
+        variant="body2"
+        sx={{ color: "text.primary" }}
+      >
         {params.row.SiteContratedItems.length}
       </Typography>
     ),
@@ -153,7 +157,7 @@ const columns = [
       <Typography variant="body2" sx={{ color: "text.primary" }}>
         <Button
           onClick={() => {
-            Router.push(`${Router.asPath}/${params.row.id}`);
+            Router.push(`${Router.asPath}/${params.row.companiesId}`);
           }}
         >
           <AiOutlineFolderView size={25}></AiOutlineFolderView>
@@ -164,7 +168,6 @@ const columns = [
 ];
 
 const TableColumns = ({ rowsData, params }) => {
-
   const [data] = useState(rowsData);
   const [pageSize, setPageSize] = useState(7);
   const [searchText, setSearchText] = useState("");

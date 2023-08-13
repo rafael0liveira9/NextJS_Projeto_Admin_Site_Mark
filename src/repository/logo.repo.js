@@ -1,6 +1,28 @@
 import axios from "axios";
 
 export class LogoRepo {
+  static async toPlan(data, token) {
+    return await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}logo/to-plan`,
+      data,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
+  static async toArchives(data, token) {
+    return await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}logo/to-archives`,
+      data,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
   static async sendProof(data, token) {
     return await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}logo/to-proof`,
@@ -25,7 +47,7 @@ export class LogoRepo {
     );
   }
 
-  static async sendArchives(data, token) {
+  static async sendArchives(data, companiesId, token) {
     return await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}logo/send-archives`,
       data,
