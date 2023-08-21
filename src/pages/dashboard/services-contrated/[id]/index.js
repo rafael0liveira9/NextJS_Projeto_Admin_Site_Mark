@@ -1,7 +1,14 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Icon from "src/@core/components/icon";
-import { Box, Button, Card, CardHeader, Table, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  Table,
+  Typography,
+} from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
 import PageHeader from "src/@core/components/page-header";
 import TableFilter from "src/@core/components/pages/services/ServiceContratedTable";
@@ -12,7 +19,6 @@ import spacing from "src/@core/theme/spacing";
 import { PackagesHooks } from "src/hooks/PackagesHooks";
 import { status } from "nprogress";
 
-
 export const getServerSideProps = async (ctx) => {
   let data;
   try {
@@ -22,8 +28,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.id
       )
     ).data;
-
-  } catch (error) { }
+  } catch (error) {}
 
   return {
     props: {
@@ -40,14 +45,15 @@ const columnsLogo = [
     headerName: "Titulo",
     renderCell: (params) => {
       const { row } = params;
-      const type = row.serviceTypeId == 1 ? "Logo" : "Logo + Brand"
+      const type = row.serviceTypeId == 1 ? "Logo" : "Logo + Brand";
 
       return (
         <Box
           onClick={() => {
             Router.push(`${Router.asPath}logo/${params.row.id}`);
           }}
-          sx={{ display: "flex", alignItems: "center" }}>
+          sx={{ display: "flex", alignItems: "center" }}
+        >
           {/* {renderClient(params)} */}
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
@@ -55,7 +61,9 @@ const columnsLogo = [
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
-              {row.LogoService.LogoBriefing.titlefirst ? type + " / Titulo: " + row.LogoService.LogoBriefing.titlefirst : "Não preencheu"}
+              {row?.LogoService?.LogoBriefing?.titlefirst
+                ? type + " / Titulo: " + row.LogoService.LogoBriefing.titlefirst
+                : "Não preencheu"}
             </Typography>
           </Box>
         </Box>
@@ -71,38 +79,39 @@ const columnsLogo = [
       const { row } = params;
       const statusFy = PackagesHooks();
 
-
       return (
         <Box
           onClick={() => {
             Router.push(`${Router.asPath}logo/${params.row.id}`);
           }}
-          sx={{ display: "flex", alignItems: "center" }}>
+          sx={{ display: "flex", alignItems: "center" }}
+        >
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               noWrap
               variant="body2"
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
-              {row?.LogoService?.status == 1 || row?.LogoService?.status == 5
-                ?
-                <p style={{ color: "#C13000" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
-                :
-                row?.LogoService?.status == 8
-                  ?
-                  < p style={{ color: "#16C100" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
-                  :
-                  <p style={{ color: "#CAD037" }}>{statusFy.returnStatus("logo", row?.LogoService?.status)}</p>
-              }
-
-
-
+              {row?.LogoService?.status == 1 ||
+              row?.LogoService?.status == 5 ? (
+                <p style={{ color: "#C13000" }}>
+                  {statusFy.returnStatus("logo", row?.LogoService?.status)}
+                </p>
+              ) : row?.LogoService?.status == 8 ? (
+                <p style={{ color: "#16C100" }}>
+                  {statusFy.returnStatus("logo", row?.LogoService?.status)}
+                </p>
+              ) : (
+                <p style={{ color: "#CAD037" }}>
+                  {statusFy.returnStatus("logo", row?.LogoService?.status)}
+                </p>
+              )}
             </Typography>
           </Box>
-        </Box >
+        </Box>
       );
     },
-  }
+  },
   // ,
   // {
   //   flex: 0.15,
@@ -127,7 +136,6 @@ const columnsLogo = [
   //     );
   //   },
   // }
-  ,
   {
     flex: 0.15,
     minWidth: 120,
@@ -141,7 +149,8 @@ const columnsLogo = [
           onClick={() => {
             Router.push(`${Router.asPath}logo/${params.row.id}`);
           }}
-          sx={{ display: "flex", alignItems: "center" }}>
+          sx={{ display: "flex", alignItems: "center" }}
+        >
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               noWrap
@@ -149,11 +158,11 @@ const columnsLogo = [
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
               {row?.LogoService?.LogoProof &&
-                row?.LogoService?.LogoProof.isApproved
-                ?
+              row?.LogoService?.LogoProof.isApproved ? (
                 <p style={{ color: "#16C100" }}>Sim</p>
-                :
-                <p style={{ color: "#C13000" }}>Não</p>}
+              ) : (
+                <p style={{ color: "#C13000" }}>Não</p>
+              )}
             </Typography>
           </Box>
         </Box>
@@ -357,7 +366,7 @@ const columnsSite = [
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
               {row?.SiteService?.SiteLayoutSelected &&
-                row?.SiteService?.siteLayoutSelectedId
+              row?.SiteService?.siteLayoutSelectedId
                 ? row?.SiteService?.siteLayoutSelectedId
                 : "Nenhum"}
             </Typography>
@@ -383,7 +392,7 @@ const columnsSite = [
               sx={{ color: "text.primary", fontWeight: 600 }}
             >
               {row?.SiteService?.SiteLayoutFinished &&
-                row?.SiteService?.siteLayoutFinishedId
+              row?.SiteService?.siteLayoutFinishedId
                 ? row?.SiteService?.siteLayoutFinishedId
                 : "Nenhum"}
             </Typography>
@@ -411,7 +420,6 @@ const columnsSite = [
   },
 ];
 
-
 export default function ServicePage({ services }) {
   const router = useRouter();
 
@@ -430,29 +438,34 @@ export default function ServicePage({ services }) {
         }}
       /> */}
       <Grid item xs={12}>
-
         <Card
           sx={{
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
-            padding: 5
+            padding: 5,
           }}
         >
-          <Typography
-            fontSize={20}
-            fontWeight={700}
-          >
+          <Typography fontSize={20} fontWeight={700}>
             {`Empresa Selecionada : ${services.Companies.companyName}`}
           </Typography>
           <Button
             onClick={() => {
               router.push(`/dashboard/services-contrated/`);
-            }}>Visualizar outra Empresa</Button>
+            }}
+          >
+            Visualizar outra Empresa
+          </Button>
         </Card>
       </Grid>
       <Grid item xs={12} sx={{ marginBottom: 10 }}>
-        <Grid sx={{ backgroundColor: "#FFFFFF", boxShadow: "0px 2px 10px 0px rgba(76, 78, 100, 0.22)", borderRadius: "12px" }}>
+        <Grid
+          sx={{
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0px 2px 10px 0px rgba(76, 78, 100, 0.22)",
+            borderRadius: "12px",
+          }}
+        >
           <Typography
             sx={{ padding: "15px" }}
             fontSize={20}
@@ -474,7 +487,7 @@ export default function ServicePage({ services }) {
           />
         </Card>
       </Grid>
-      {/* <Grid item xs={12} sx={{ marginBottom: 10 }}>
+      <Grid item xs={12} sx={{ marginTop: 10 }}>
         <Typography
           fontSize={20}
           fontWeight={700}
@@ -493,7 +506,7 @@ export default function ServicePage({ services }) {
             columns={columnsSite}
           />
         </Card>
-      </Grid> */}
+      </Grid>
       {/* <Grid item xs={12} sx={{ marginBottom: 5 }}>
         <Typography
           fontSize={20}
@@ -514,6 +527,6 @@ export default function ServicePage({ services }) {
           />
         </Card>
       </Grid> */}
-    </Grid >
+    </Grid>
   );
 }

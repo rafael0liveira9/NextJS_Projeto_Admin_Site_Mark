@@ -105,8 +105,8 @@ export default function ServicePage({ service, companieId, token, serviceId }) {
         );
 
         setIsLoading(false);
-
-        console.log(data);
+        router.reload();
+        toast.success("Provas enviadas com sucesso!");
       } catch (error) {
         console.log(error);
         setIsLoading(false);
@@ -115,60 +115,63 @@ export default function ServicePage({ service, companieId, token, serviceId }) {
   }
 
   async function updateProof() {
-    setIsLoading(true);
-    try {
-      let proofImage,
-        mockupsImages = proofMockupFiles;
-      if (mainFile != null) {
-        var bodyFormData = new FormData();
-        bodyFormData.append("file", mainFile[0]);
-        const data = await ImagesRepo.sendFile(bodyFormData, token);
-        const image = await ImagesRepo.sendImage(
-          { url: data.data.path },
-          token
-        );
-        proofImage = image.data.id;
-      }
-
-      if (mockupsFile != null) {
-        var bodyFormData = new FormData();
-        for (let i = 0; i < mockupsFile.length; i++) {
-          bodyFormData.append("file", mockupsFile[i]);
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        let proofImage,
+          mockupsImages = proofMockupFiles;
+        if (mainFile != null) {
+          var bodyFormData = new FormData();
+          bodyFormData.append("file", mainFile[0]);
           const data = await ImagesRepo.sendFile(bodyFormData, token);
           const image = await ImagesRepo.sendImage(
             { url: data.data.path },
             token
           );
-          mockupsImages.push(image.data.id);
+          proofImage = image.data.id;
         }
+
+        if (mockupsFile != null) {
+          var bodyFormData = new FormData();
+          for (let i = 0; i < mockupsFile.length; i++) {
+            bodyFormData.append("file", mockupsFile[i]);
+            const data = await ImagesRepo.sendFile(bodyFormData, token);
+            const image = await ImagesRepo.sendImage(
+              { url: data.data.path },
+              token
+            );
+            mockupsImages.push(image.data.id);
+          }
+        }
+
+        mockupsImages = mockupsImages.map((x) =>
+          typeof x == "number"
+            ? {
+                id: null,
+                image: x,
+              }
+            : x
+        );
+
+        console.log(mockupsImages);
+
+        const data = await LogoRepo.updateProof(
+          {
+            id: serviceId,
+            proof: proofImage || service.LogoProof.imagesId,
+            mockupsUp: mockupsImages,
+          },
+          token
+        );
+
+        console.log(data);
+        setIsLoading(false);
+        router.reload();
+        toast.success("Provas enviadas com sucesso!");
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
       }
-
-      mockupsImages = mockupsImages.map((x) =>
-        typeof x == "number"
-          ? {
-              id: null,
-              image: x,
-            }
-          : x
-      );
-
-      console.log(mockupsImages);
-
-      const data = await LogoRepo.updateProof(
-        {
-          id: serviceId,
-          proof: proofImage || service.LogoProof.imagesId,
-          mockupsUp: mockupsImages,
-        },
-        token
-      );
-
-      setIsLoading(false);
-
-      console.log(data);
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
     }
   }
 
@@ -193,6 +196,8 @@ export default function ServicePage({ service, companieId, token, serviceId }) {
             token
           );
           setIsLoading(false);
+          router.reload();
+          toast.success("Provas enviadas com sucesso!");
         }
       } catch (error) {
         setIsLoading(false);
@@ -542,7 +547,7 @@ export default function ServicePage({ service, companieId, token, serviceId }) {
                   await updateProof();
                 }}
               >
-                Enviar correção
+                {isLoading ? "Enviando..." : "Enviar correção"}
               </Button>
             </Card>
           </Grid>
@@ -625,7 +630,6 @@ export default function ServicePage({ service, companieId, token, serviceId }) {
                 );
               })}
             </Grid>
-            {console.log(archives)}
             <Stack flexDirection={"row"}>
               <Button
                 onClick={() => {

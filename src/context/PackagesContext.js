@@ -77,12 +77,14 @@ export const PackagesProvider = ({ children }) => {
     site: [
       "Aguardando Briefing",
       "Briefing Recebido",
-      "Em Criação",
-      "Aguardando Retorno do Usuário",
-      "Provas Recusadas",
-      "Provas Aprovadas",
-      "Aguardando Arquivos",
-      "Arquivos Enviados",
+      "Em Planejamento",
+      "Em Definição",
+      "Proposta enviada",
+      "Esperando Aprovação",
+      "Reprovado",
+      "Aprovado",
+      "Aguardando Publicação",
+      "Publicado",
     ],
   };
 

@@ -7,6 +7,10 @@ import {
   Card,
   CardHeader,
   Container,
+  FormControl,
+  Input,
+  Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { PackagesRepo } from "src/repository/packages.repo";
@@ -16,6 +20,9 @@ import { useRouter } from "next/router";
 import { ServicesRepo } from "src/repository/services.repo";
 import { AiOutlineFolderView } from "react-icons/ai";
 import { SiteRepo } from "src/repository/site.repo";
+import { PackagesHooks } from "src/hooks/PackagesHooks";
+import toast from "react-hot-toast";
+import { ImagesRepo } from "src/repository/images.repo";
 
 export const getServerSideProps = async (ctx) => {
   let data;
@@ -26,63 +33,129 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.service
       )
     ).data;
-  } catch (error) { }
+  } catch (error) {}
 
   return {
     props: {
       services: data,
       token: ctx.req.cookies.accessToken,
+      serviceId: ctx.query.service,
     },
   };
 };
 
-export default function ServicePage({ services, token }) {
+export default function ServicePage({ services, token, serviceId }) {
   const router = useRouter();
+  const statusFy = PackagesHooks();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const [fileLayoutFinished, setFileLayoutFinished] = React.useState([]);
+  const [filesLayoutSelect, setFilesLayoutSelect] = React.useState([]);
+
+  async function toPlan() {
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        const toPlanData = await SiteRepo.toPlan(+serviceId, token);
+        setIsLoading(false);
+        toast.success("Serviço atualizado!");
+        router.reload();
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+        toast.error("Ocorreu um erro: " + error?.response?.data?.message);
+      }
+    }
+  }
 
   async function sendLayout() {
-    const data = {
-      id: 1,
-      images: [
-        {
-          name: "Teste",
-          imageId: 1,
-        },
-      ],
-    };
+    if (!filesLayoutSelect.length) {
+      toast.error("Adicione pelo menos um layout");
+      return;
+    }
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        let initialData = filesLayoutSelect;
 
-    try {
-      const serviceData = await SiteRepo.sendLayout(data, token);
+        if (initialData.length) {
+          var bodyFormData = new FormData();
+          for (let i = 0; i < initialData.length; i++) {
+            bodyFormData.append("file", initialData[i].image);
+            const data = await ImagesRepo.sendFile(bodyFormData, token);
+            const image = await ImagesRepo.sendImage(
+              { url: data.data.path },
+              token
+            );
+            initialData[i].imageId = image.data.id;
+            delete initialData[i].image;
+          }
+        }
 
-      console.log(serviceData.data);
-    } catch (error) {
-      console.log(error);
+        const serviceData = await SiteRepo.sendLayout(
+          {
+            images: initialData,
+            id: +serviceId,
+          },
+          token
+        );
+
+        setIsLoading(false);
+        toast.success("Layout enviado com sucesso.");
+        router.reload();
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
     }
   }
 
   async function sendLayoutFinished() {
-    const data = {
-      id: 1,
-      imageId: 1,
-    };
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        var bodyFormData = new FormData();
+        bodyFormData.append("file", fileLayoutFinished);
+        const data = await ImagesRepo.sendFile(bodyFormData, token);
+        const image = await ImagesRepo.sendImage(
+          { url: data.data.path },
+          token
+        );
 
-    try {
-      const serviceData = await SiteRepo.sendLayoutFinished(data, token);
-      console.log(serviceData.data);
-    } catch (error) {
-      console.log(error);
+        const serviceData = await SiteRepo.sendLayoutFinished(
+          {
+            id: serviceId,
+            imageId: image.data.id,
+          },
+          token
+        );
+        setIsLoading(false);
+        toast.success("Layout enviado com sucesso.");
+        router.reload();
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+      }
     }
   }
 
   async function setServicePublish() {
     const data = {
-      id: 1,
+      id: +serviceId,
     };
 
-    try {
-      const serviceData = await SiteRepo.setServicePublished(data, token);
-
-    } catch (error) {
-      console.log(error);
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        const serviceData = await SiteRepo.setServicePublished(data, token);
+        setIsLoading(false);
+        toast.success("Layout enviado com sucesso.");
+        router.reload();
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+        toast.error("Ocorreu um erro ao atualizar o serviço");
+      }
     }
   }
 
@@ -97,89 +170,216 @@ export default function ServicePage({ services, token }) {
             Aqui você pode ver, adicionar e excluir serviços!
           </Typography>
         }
-        button={"Adicionar Serviço"}
-        onTap={() => {
-          router.push(`${router.pathname}/add`);
+        button={
+          services.status == 2
+            ? "Mudar para Em Planejamento"
+            : statusFy.returnStatus("site", services.status)
+        }
+        onTap={async () => {
+          if (services.status == 2) {
+            await toPlan();
+          }
+          if (services.status == 9) {
+            await setServicePublish();
+          }
         }}
       />
-      {/* {JSON.stringify(services)} */}
-      {/* {console.log(services)} */}
-      <Grid item>
-        <Typography>
-          Publicado: {services.isPublished ? "Sim" : "Não"}
-        </Typography>
-      </Grid>
       {services.SiteBriefing && (
         <Grid item>
-          <Typography fontSize={20} fontWeight={700}>
-            Briefing
-          </Typography>
-          <Typography>
-            Dados de Contato: {services.SiteBriefing.contactData}
-          </Typography>
-          <Typography>Logo: {services.SiteBriefing.logo}</Typography>
-          <Typography>
-            Referências: {services.SiteBriefing.references.join(", ")}
-          </Typography>
-          <Typography>
-            Modelo do Site: {services.SiteBriefing.siteModel}
-          </Typography>
-          <Typography>
-            Midias Sociais: {services.SiteBriefing.socialMidia}
-          </Typography>
-          <Typography>Link do Site: {services.SiteBriefing.url}</Typography>
+          <Card
+            style={{
+              padding: 20,
+            }}
+          >
+            <Typography fontSize={20} fontWeight={700}>
+              Briefing
+            </Typography>
+            {services.SiteBriefing.url != null ? (
+              <>
+                <Typography>
+                  Site do Domínio: {services.SiteBriefing.urlName}
+                </Typography>
+                <Typography>
+                  URL do Domínio: {services.SiteBriefing.url}
+                </Typography>
+                <Typography>
+                  Login do Domínio: {services.SiteBriefing.urlLogin}
+                </Typography>
+                <Typography>
+                  Password do Domínio: {services.SiteBriefing.urlPass}
+                </Typography>
+                <br></br>
+              </>
+            ) : (
+              <>
+                <Typography>Sem Domínio</Typography>
+              </>
+            )}
+            {services.SiteBriefing.host != null ? (
+              <>
+                <Typography>
+                  Site da Hospedagem: {services.SiteBriefing.host}
+                </Typography>
+                <Typography>
+                  Login da Hospedagem: {services.SiteBriefing.hostLogin}
+                </Typography>
+                <Typography>
+                  Password da Hospedagem: {services.SiteBriefing.hostPass}
+                </Typography>
+                <br></br>
+              </>
+            ) : (
+              <>
+                <Typography>Sem Hospedagem</Typography>
+              </>
+            )}
+            <Typography>
+              Dados de Contato: {services.SiteBriefing.contactData}
+            </Typography>
+            <Typography>Logo: {services.SiteBriefing.logo}</Typography>
+            <Typography>
+              Referências: {services.SiteBriefing.references.join(", ")}
+            </Typography>
+            <Typography>
+              Cores:{" "}
+              {services.SiteBriefing.colors.map((x) => (
+                <div
+                  style={{
+                    height: 10,
+                    width: 10,
+                    backgroundColor: x,
+                  }}
+                ></div>
+              ))}
+            </Typography>
+            <Typography>
+              Midias Sociais: {services.SiteBriefing.socialMidia}
+            </Typography>
+            <Typography>
+              Arquivos do Usuário: [<br></br>
+              {services.SiteBriefing.archives.map((x) => (
+                <>
+                  <a href={x.url}>{x.url}</a>
+                  <br></br>
+                </>
+              ))}
+              ]
+            </Typography>
+            <Typography>
+              Briefing Do usuário: {services.SiteBriefing.briefing.url}
+            </Typography>
+            <Typography>Link do Site: {services.SiteBriefing.url}</Typography>
+          </Card>
         </Grid>
       )}
-      {services.SiteLayoutBase.length > 0 && (
-        <Grid item>
-          <Typography fontSize={20} fontWeight={700}>
-            Layout Enviados para Escolha:
-          </Typography>
-          {services.SiteLayoutBase.map((x) => {
-            return (
-              <Container>
-                <img src={x.Layout.url} width={300} height="auto" />
-              </Container>
-            );
-          })}
-        </Grid>
+      {services.status == 4 && (
+        <>
+          <Grid item>
+            <Card
+              sx={{
+                padding: 10,
+              }}
+            >
+              <Typography fontSize={20} fontWeight={700}>
+                Enviar Layouts para seleção pelo usuário
+              </Typography>
+              <br></br>
+              {filesLayoutSelect.map((x, y) => {
+                return (
+                  <Stack>
+                    <TextField
+                      name="name"
+                      placeholder="Nome do Layout"
+                      onChange={(e) => {
+                        let initialData = filesLayoutSelect;
+                        initialData[y].name = e.target.value;
+                        setFilesLayoutSelect([...initialData]);
+                      }}
+                    ></TextField>
+                    <Input
+                      type="file"
+                      key={y}
+                      onChange={(e) => {
+                        let initialData = filesLayoutSelect;
+                        initialData[y].image = e.target.files[0];
+                        setFilesLayoutSelect([...initialData]);
+                      }}
+                    ></Input>
+                    <Button
+                      onClick={() => {
+                        let initialData = filesLayoutSelect;
+                        initialData.splice(y, 1);
+                        setFilesLayoutSelect([...initialData]);
+                      }}
+                    >
+                      Apagar
+                    </Button>
+                  </Stack>
+                );
+              })}
+              <Button
+                onClick={() => {
+                  let initialData = filesLayoutSelect;
+                  initialData.push({
+                    name: null,
+                    image: null,
+                    imageId: null,
+                  });
+                  setFilesLayoutSelect([...initialData]);
+                }}
+              >
+                Adicionar Layout
+              </Button>
+              <Button
+                onClick={async () => {
+                  await sendLayout();
+                }}
+              >
+                Enviar Layout
+              </Button>
+            </Card>
+          </Grid>
+        </>
       )}
-      {services.SiteLayoutSelected && (
+      {services.SiteLayoutSelected != null && (
         <Grid item>
-          <Typography fontSize={20} fontWeight={700}>
-            Layout Escolhido:
-          </Typography>
-          <Container>
+          <Card
+            sx={{
+              padding: 10,
+            }}
+          >
+            <Typography fontSize={20} fontWeight={700}>
+              Layout Selecionado pelo Usuário
+            </Typography>
             <img
               src={services.SiteLayoutSelected.LayoutSelected.url}
-              width={300}
-              height="auto"
+              alt=""
+              height={120}
             />
-          </Container>
+          </Card>
         </Grid>
       )}
-      {services.SiteLayoutFinished && (
+      {services.status == 6 && (
         <Grid item>
-          <Typography fontSize={20} fontWeight={700}>
-            Layout Finalizado:
-          </Typography>
-          <Typography>
-            Aprovado: {services.SiteLayoutFinished.isApproved ? "Sim" : "Não"}
-          </Typography>
-          {services.SiteLayoutFinished.reasonRefuse &&
-            services.SiteLayoutFinished.isApproved == false && (
-              <Typography>
-                Motivo da Recusa:{" "}
-                {services.SiteLayoutFinished.isApproved ? "Sim" : "Não"}
-              </Typography>
-            )}
-          <Container>
-            <img
-              src={services.SiteLayoutFinished.LayoutFinshed.url}
-              width={300}
-              height="auto"
-            />
-          </Container>
+          <Card
+            sx={{
+              padding: 10,
+            }}
+          >
+            <Input
+              type="file"
+              onChange={(e) => {
+                setFileLayoutFinished(e.target.files[0]);
+              }}
+            ></Input>
+            <Button
+              onClick={async () => {
+                await sendLayoutFinished();
+              }}
+            >
+              Enviar Layout para aprovação
+            </Button>
+          </Card>
         </Grid>
       )}
     </Grid>

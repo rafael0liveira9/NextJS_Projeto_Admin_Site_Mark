@@ -1,6 +1,20 @@
 import axios from "axios";
 
 export class SiteRepo {
+  static async toPlan(serviceId, token) {
+    return await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}site/to-plan`,
+      {
+        id: serviceId,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
+
   static async sendLayout(data, token) {
     return await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}site/to-layout`,
@@ -14,7 +28,7 @@ export class SiteRepo {
   }
 
   static async sendLayoutFinished(data, token) {
-    return await axios.put(
+    return await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}site/to-layout-finished`,
       data,
       {
@@ -26,7 +40,7 @@ export class SiteRepo {
   }
 
   static async setServicePublished(data, token) {
-    return await axios.put(
+    return await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}site/publish-layout`,
       data,
       {
