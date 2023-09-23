@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import PaywallComponent from "../../../@core/pages/components/paywallComponent";
 import StepsShow from "../../../@core/pages/components/stepsShow";
@@ -6,7 +6,18 @@ import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { Button, CircularProgress, Grid, Select } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import toast from "react-hot-toast";
 import Icon from "src/@core/components/icon";
 import Typography from "@mui/material/Typography";
@@ -50,9 +61,6 @@ export async function getServerSideProps(ctx) {
     clientChoice = null;
   }
 
-
-
-
   // try {
   //   getNewUser = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
   //     headers: {
@@ -64,33 +72,42 @@ export async function getServerSideProps(ctx) {
   //   console.log("catch getNewuser")
   // }
 
-
-
-
   return {
     props: {
       tokenLead: tokenLead,
       jwt: jwt,
       clientChoice: clientChoice,
       newUserToken: newUserToken,
-      newCompanyToken: newCompanyToken
+      newCompanyToken: newCompanyToken,
     },
   };
 }
 
-
-
-const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }) => {
+const Paywall = ({
+  tokenLead,
+  jwt,
+  newUserToken,
+  clientChoice,
+  newCompanyToken,
+}) => {
   const router = useRouter();
   const contextPackage = PackagesHooks();
+  console.log(contextPackage);
+  const [open, setOpen] = useState(false);
 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [finalInstallments, setFinalinstallments] = useState(contextPackage.finalClientData.maxInstallments ? contextPackage.finalClientData.maxInstallments : 1);
+  const [finalInstallments, setFinalinstallments] = useState(
+    contextPackage.finalClientData.maxInstallments
+      ? contextPackage.finalClientData.maxInstallments
+      : 1
+  );
 
   const handleClick = async () => {
-
     if (!isLoading) {
       setIsLoading(true);
 
@@ -100,115 +117,164 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
         try {
           const myPromise = await PaymentsRepo.buyNewPackage(
             {
-              "package": finalData.packageId,
-              "companieId": finalData.company,
-              "installments": finalInstallments,
-              "paymentMethod": {
-                "creditCard": {
-                  "holderName": "Rafael Teste",
-                  "number": "5162306219378829",
-                  "expiryMonth": "05",
-                  "expiryYear": "2024",
-                  "ccv": "318"
-                }
-              }
+              package: finalData.packageId,
+              companieId: finalData.company,
+              installments: finalInstallments,
+              paymentMethod: {
+                billingType: "CREDIT_CARD",
+                creditCard: {
+                  holderName: finalData.ccName,
+                  number: finalData.ccNumber,
+                  expiryMonth: finalData.ccExpiry.split("/")[0],
+                  expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                  ccv: finalData.ccCode,
+                },
+              },
             },
             jwt
-          )
-          toast.success(`Plano ${finalData.packageName} contratado com sucesso`);
+          );
+          toast.success(
+            `Pedido de Plano ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
+          );
+
+          setIsLoading(false);
 
           return myPromise;
-
         } catch (error) {
-          toast.error(`Erro ao contratar plano`)
-          console.log(error)
+          toast.error(`Erro ao contratar plano`);
+          console.log(error);
         }
       } else if (finalData.packageType === "custom") {
         try {
           const myPromise = await PaymentsRepo.buyNewPackage(
             {
-              "services": [
-                finalData.services.map((e) => (e.id))
-              ],
-              "companieId": finalData.company,
-              "installments": finalInstallments,
-              "paymentMethod": {
-                "creditCard": {
-                  "holderName": "Rafael Teste",
-                  "number": "5162306219378829",
-                  "expiryMonth": "05",
-                  "expiryYear": "2024",
-                  "ccv": "318"
-                }
-              }
+              services: [finalData.services.map((e) => e.id)],
+              companieId: finalData.company,
+              installments: finalInstallments,
+              paymentMethod: {
+                billingType: "CREDIT_CARD",
+                creditCard: {
+                  holderName: finalData.ccName,
+                  number: finalData.ccNumber,
+                  expiryMonth: finalData.ccExpiry.split("/")[0],
+                  expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                  ccv: finalData.ccCode,
+                },
+              },
             },
             jwt
-          )
-          toast.success(`Plano ${finalData.packageName} contratado com sucesso`);
+          );
+          toast.success(
+            `Pedido de Serviços ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
+          );
 
           return myPromise;
-
         } catch (error) {
-          toast.error(`Erro ao contratar plano`)
-          console.log(error)
+          toast.error(`Erro ao contratar plano`);
+          console.log(error);
         }
       } else {
         try {
           const myPromise = await PaymentsRepo.buyNewPackage(
             {
-              "service": finalData.services[0].id,
-              "installments": finalInstallments,
-              "paymentMethod": {
-                "creditCard": {
-                  "holderName": "Rafael Teste",
-                  "number": "5162306219378829",
-                  "expiryMonth": "05",
-                  "expiryYear": "2024",
-                  "ccv": "318"
-                }
-              }
+              service: finalData.services[0].id,
+              installments: finalInstallments,
+              paymentMethod: {
+                billingType: "CREDIT_CARD",
+                creditCard: {
+                  holderName: finalData.ccName,
+                  number: finalData.ccNumber,
+                  expiryMonth: finalData.ccExpiry.split("/")[0],
+                  expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                  ccv: finalData.ccCode,
+                },
+              },
             },
             jwt
-          )
-          toast.success(`Serviço ${finalData.packageName} contratado com sucesso`);
+          );
+          toast.success(
+            `Pedido de Serviço ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
+          );
 
           return myPromise;
-
         } catch (error) {
-          toast.error(`Erro ao contratar Serviço`)
-          console.log(error)
+          toast.error(`Erro ao contratar Serviço`);
+          console.log(error);
         }
       }
     }
-    setIsLoading(false);
-  }
-
-
+  };
 
   return (
     <>
+      <Fragment>
+        <Dialog
+          fullWidth
+          maxWidth={"sm"}
+          open={open}
+          onClose={handleClose}
+          style={{
+            transition: "all 0.3s ease",
+          }}
+        >
+          <DialogTitle id="form-dialog-title">Compra finalizada!</DialogTitle>
+
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Deseja ir para o app?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className="dialog-actions-dense">
+            <Button onClick={() => {}} color="secondary">
+              {!isLoading ? (
+                "Ainda não."
+              ) : (
+                <CircularProgress></CircularProgress>
+              )}
+            </Button>
+            <Button onClick={() => {}} color="primary">
+              {!isLoading ? "Claro!" : <CircularProgress></CircularProgress>}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Fragment>
+
       <div class="full-page-start">
         <div class="section-paywall">
           <div>
-            <PaywallComponent ctx={contextPackage} userToken={newUserToken} companyToken={newCompanyToken} clientToken={clientChoice} />
+            <PaywallComponent
+              ctx={contextPackage}
+              userToken={newUserToken}
+              companyToken={newCompanyToken}
+              clientToken={clientChoice}
+            />
           </div>
-          <Grid sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "2%",
-            margin: "20px 0 0 0",
-            width: "100%",
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0px 2px 1px -1px rgba(76, 78, 100, 0.2), 0px 1px 1px 0px rgba(76, 78, 100, 0.14), 0px 1px 3px 0px rgba(76, 78, 100, 0.12)",
-            borderRadius: "10px"
-          }}>
-            <Select value={finalInstallments} style={{ textAlign: "center" }}>
-              {
-                [...Array(contextPackage.finalClientData.maxInstallments).keys()].map((x, y) =>
-                  <option key={y} style={{ textAlign: "center" }} value={x + 1}
-                    onClick={(e) => setFinalinstallments(x.value)}
-                  >{x + 1}</option>)
-              }
+
+          <Grid
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "2%",
+              margin: "20px 0 0 0",
+              width: "100%",
+              backgroundColor: "#FFFFFF",
+              boxShadow:
+                "0px 2px 1px -1px rgba(76, 78, 100, 0.2), 0px 1px 1px 0px rgba(76, 78, 100, 0.14), 0px 1px 3px 0px rgba(76, 78, 100, 0.12)",
+              borderRadius: "10px",
+            }}
+          >
+            <Select
+              value={finalInstallments}
+              style={{ textAlign: "center" }}
+              onChange={(e) => {
+                setFinalinstallments(e.target.value);
+              }}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x, y) => (
+                <MenuItem key={y} style={{ textAlign: "center" }} value={x}>
+                  {x}
+                </MenuItem>
+              ))}
             </Select>
             <Typography
               style={{
@@ -222,8 +288,12 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
                 color: "#777777",
                 border: "1px solid #E7E7EA",
                 borderRadius: "8px",
-              }}>
-              R$ {(contextPackage.finalClientData.totalValue / contextPackage.finalClientData.maxInstallments).toFixed(2).replace(".", ",")}
+              }}
+            >
+              R${" "}
+              {(contextPackage.finalClientData.totalValue / finalInstallments)
+                .toFixed(2)
+                .replace(".", ",")}
             </Typography>
           </Grid>
           <Button
@@ -237,11 +307,15 @@ const Paywall = ({ tokenLead, jwt, newUserToken, clientChoice, newCompanyToken }
             }}
             color="secondary"
           >
-            {isLoading ? <CircularProgress></CircularProgress> : "CONCLUIR PAGAMENTO"}
+            {isLoading ? (
+              <CircularProgress></CircularProgress>
+            ) : (
+              "CONCLUIR PAGAMENTO"
+            )}
           </Button>
         </div>
         <StepsShow step={4}></StepsShow>
-      </div >
+      </div>
     </>
   );
 };
@@ -250,4 +324,3 @@ Paywall.anonUser = true;
 Paywall.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 export default Paywall;
-

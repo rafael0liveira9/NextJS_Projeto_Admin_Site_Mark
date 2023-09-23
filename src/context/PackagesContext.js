@@ -73,6 +73,10 @@ export const PackagesProvider = ({ children }) => {
       "Provas Aprovadas",
       "Aguardando Arquivos",
       "Arquivos Enviados",
+      "Reprovado",
+      "Mudar para Em Publicação",
+      "Mudar para Publicado",
+      "Publicado",
     ],
     site: [
       "Aguardando Briefing",

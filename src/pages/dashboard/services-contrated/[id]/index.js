@@ -488,14 +488,23 @@ export default function ServicePage({ services }) {
         </Card>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 10 }}>
-        <Typography
-          fontSize={20}
-          fontWeight={700}
-          marginBottom={5}
-          color={"#6A21AE"}
+        <Grid
+          sx={{
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0px 2px 10px 0px rgba(76, 78, 100, 0.22)",
+            borderRadius: "12px",
+          }}
         >
-          Site
-        </Typography>
+          <Typography
+            sx={{ padding: "15px" }}
+            fontSize={20}
+            fontWeight={700}
+            marginBottom={5}
+            color={"#6A21AE"}
+          >
+            Site
+          </Typography>
+        </Grid>
         <Card
           sx={{
             width: "100%",
@@ -507,15 +516,24 @@ export default function ServicePage({ services }) {
           />
         </Card>
       </Grid>
-      {/* <Grid item xs={12} sx={{ marginBottom: 5 }}>
-        <Typography
-          fontSize={20}
-          marginBottom={5}
-          fontWeight={700}
-          color={"#6A21AE"}
+      <Grid item xs={12} sx={{ marginTop: 20 }}>
+        <Grid
+          sx={{
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0px 2px 10px 0px rgba(76, 78, 100, 0.22)",
+            borderRadius: "12px",
+          }}
         >
-          Redes Sociais
-        </Typography>
+          <Typography
+            sx={{ padding: "15px" }}
+            fontSize={20}
+            fontWeight={700}
+            marginBottom={5}
+            color={"#6A21AE"}
+          >
+            Redes Sociais
+          </Typography>
+        </Grid>
         <Card
           sx={{
             width: "100%",
@@ -526,7 +544,7 @@ export default function ServicePage({ services }) {
             columns={columnsSocial}
           />
         </Card>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 }
