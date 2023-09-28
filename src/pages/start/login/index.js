@@ -3,7 +3,12 @@ import StepsShow from "../../../@core/pages/components/stepsShow";
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { useRouter } from "next/router";
 import nookies from "nookies";
-import { AiOutlineCheck, AiOutlineClose, AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import {
+  AiOutlineCheck,
+  AiOutlineClose,
+  AiFillEyeInvisible,
+  AiFillEye,
+} from "react-icons/ai";
 import {
   TextField,
   Button,
@@ -47,7 +52,7 @@ export async function getServerSideProps(ctx) {
     props: {
       tokenLead: tokenLead,
       jwt: jwt,
-      newUserToken: newUserToken
+      newUserToken: newUserToken,
     },
   };
 }
@@ -65,7 +70,7 @@ const Login = (props) => {
   const [passMask, setPassMask] = useState(false);
 
   const FormCheking = () => {
-    if (email, password) {
+    if ((email, password)) {
       return true;
     } else {
       return false;
@@ -74,15 +79,14 @@ const Login = (props) => {
 
   const onSubmit = async (email, password) => {
     if (!isLoading1) {
-
       setIsLoading1(true);
 
       try {
-        let newLogin = (await UsersRepo.postLogin(email, password));
+        let newLogin = await UsersRepo.postLogin(email, password);
 
+        console.log(newLogin);
 
-
-        nookies.set(null, "jwt", JSON.stringify(newLogin.jwt), {
+        nookies.set(null, "jwt", JSON.stringify(newLogin.data.jwt), {
           maxAge: 28800 * 3 * 7,
           path: "/",
         });
@@ -98,13 +102,14 @@ const Login = (props) => {
           documentType: newLogin.data.documentType,
           email: newLogin.data.User.email,
           phone: newLogin.data.phone,
-          companiesId: newLogin.data.companiesId
-        })
+          companiesId: newLogin.data.companiesId,
+        });
 
         setError(false);
         toast.success("Login efetuado com Sucesso");
         router.push("/start/paywall");
       } catch (error) {
+        console.log(error);
         setError(true);
         toast.error("Erro fazer Login, tente novamente...");
       }
@@ -135,8 +140,13 @@ const Login = (props) => {
             sx={{ margin: "5px" }}
           />
 
-
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <TextField
               required
               id="form-props-required"
@@ -149,7 +159,9 @@ const Login = (props) => {
               sx={{ margin: "5px 0", maxWidth: "80%" }}
             />
             <div
-              onClick={() => passMask === false ? setPassMask(true) : setPassMask(false)}
+              onClick={() =>
+                passMask === false ? setPassMask(true) : setPassMask(false)
+              }
               style={{
                 maxWidth: "15%",
                 padding: "0px 2.5%",
@@ -157,9 +169,14 @@ const Login = (props) => {
                 height: "50px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center"
-              }}>
-              {passMask ? <AiFillEyeInvisible fill="red" size={20}></AiFillEyeInvisible> : <AiFillEye size={20}></AiFillEye>}
+                justifyContent: "center",
+              }}
+            >
+              {passMask ? (
+                <AiFillEyeInvisible fill="red" size={20}></AiFillEyeInvisible>
+              ) : (
+                <AiFillEye size={20}></AiFillEye>
+              )}
             </div>
           </div>
 
@@ -171,11 +188,7 @@ const Login = (props) => {
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="secondary"
               >
-                {isLoading1 ? (
-                  <CircularProgress></CircularProgress>
-                ) : (
-                  "ENTRAR"
-                )}
+                {isLoading1 ? <CircularProgress></CircularProgress> : "ENTRAR"}
               </Button>
             ) : (
               <Button
@@ -184,11 +197,7 @@ const Login = (props) => {
                 style={{ cursor: "pointer", width: "250px", height: "50px" }}
                 color="secondary"
               >
-                {isLoading1 ? (
-                  <CircularProgress></CircularProgress>
-                ) : (
-                  "ENTRAR"
-                )}
+                {isLoading1 ? <CircularProgress></CircularProgress> : "ENTRAR"}
               </Button>
             )}
             {error ? (
@@ -201,8 +210,8 @@ const Login = (props) => {
             <Button
               variant="outlined"
               onClick={() => {
-                toast.success("Por favor, faça o Cadastro.")
-                router.push('/start/register')
+                toast.success("Por favor, faça o Cadastro.");
+                router.push("/start/register");
               }}
               style={{ cursor: "pointer", width: "250px", height: "50px" }}
               color="secondary"

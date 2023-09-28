@@ -82,4 +82,16 @@ export class SocialRepo {
       }
     );
   }
+
+  static async updateApprove(data, token) {
+    return await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}social/update-approve`,
+      data,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
 }

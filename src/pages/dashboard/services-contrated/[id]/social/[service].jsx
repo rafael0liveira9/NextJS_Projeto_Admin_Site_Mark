@@ -47,21 +47,36 @@ export default function ServicePage({ services, token, serviceId }) {
   const router = useRouter();
   const statusFy = PackagesHooks();
   const [isLoading, setIsLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [postsApprove, setPostsApprove] = useState(
-    services.status == 7
-      ? services?.SocialShow?.feed?.map((x) => ({
-          text: x?.text,
-          type: x?.type,
-          id: x?.id,
-          image: null,
-          imageId: x?.Images?.id,
-          imagePreview: x?.Images?.url,
-          isSelected: false,
-          ...x,
-        }))
-      : []
-  );
+  const [posts, setPosts] = useState(
+      services.status == 5
+        ? services?.SocialShow?.feed?.map((x) => ({
+            text: x?.text,
+            type: x?.type,
+            id: x?.id,
+            image: null,
+            imageId: x?.Images?.id,
+            imagePreview: x?.Images?.url,
+            isSelected: false,
+            reason: x.reasonRefuse,
+            ...x,
+          }))
+        : []
+    ),
+    [postsApprove, setPostsApprove] = useState(
+      services.status == 7 || services.status == 9
+        ? services?.SocialShow?.feed?.map((x) => ({
+            text: x?.text,
+            type: x?.type,
+            id: x?.id,
+            image: null,
+            imageId: x?.Images?.id,
+            imagePreview: x?.Images?.url,
+            isSelected: false,
+            reason: x.reasonRefuse,
+            ...x,
+          }))
+        : []
+    );
 
   console.log(services);
 
@@ -167,18 +182,107 @@ export default function ServicePage({ services, token, serviceId }) {
     }
   }
 
-  async function updateShow() {
+  async function updateSocialApprove() {
     const data = {
       id: services.id,
-      allApproved: true,
+      allApproved: false,
       isRefused: false,
       feed: [],
     };
 
-    try {
-      const socialService = (await SocialRepo.updateShow(data, token)).data;
-    } catch (error) {
-      console.log(error);
+    let haveImage = true;
+
+    if (postsApprove.some((e) => e.image == null && e.imageId == null)) {
+      setIsLoading(false);
+      haveImage = false;
+      toast.error("Todas as postagens devem ter foto");
+      return;
+    }
+
+    if (postsApprove.some((e) => e.text.length == 0)) {
+      setIsLoading(false);
+      toast.error("Todas as postagens devem ter texto");
+      return;
+    }
+
+    if (haveImage && postsApprove.length) {
+      let postsCopy = postsApprove;
+      var bodyFormData = new FormData();
+
+      for (let i = 0; i < postsCopy.length; i++) {
+        if (postsCopy[i].image != null) {
+          bodyFormData.append("file", postsCopy[i].image);
+          const dataImage = await ImagesRepo.sendFile(bodyFormData, token);
+          const image = await ImagesRepo.sendImage(
+            { url: dataImage.data.path },
+            token
+          );
+          postsCopy[i].image = image.data.id;
+        } else {
+          if (postsCopy[i].imageId == null) {
+            setIsLoading(false);
+            toast.error("Necessário que todos os posts tenham imagem");
+            break;
+          }
+          postsCopy[i].image = postsCopy[i].imageId;
+        }
+      }
+      data.feed = postsCopy;
+
+      const socialService = (await SocialRepo.updateApprove(data, token)).data;
+      setIsLoading(false);
+      toast.success("Serviço atualizado!");
+      router.reload();
+    } else {
+      setIsLoading(false);
+      toast.error("Adicione pelo menos um post");
+    }
+  }
+
+  async function updateShow() {
+    if (!isLoading) {
+      setIsLoading(true);
+
+      try {
+        let data = {
+          id: services.id,
+          allApproved: true,
+          isRefused: false,
+          feed: [],
+        };
+
+        if (posts.length) {
+          let postsCopy = posts;
+          var bodyFormData = new FormData();
+
+          for (let i = 0; i < postsCopy.length; i++) {
+            if (postsCopy[i].image != null) {
+              bodyFormData.append("file", postsCopy[i].image);
+              const dataImage = await ImagesRepo.sendFile(bodyFormData, token);
+              const image = await ImagesRepo.sendImage(
+                { url: dataImage.data.path },
+                token
+              );
+              postsCopy[i].image = image.data.id;
+            } else {
+              delete postsCopy[i].image;
+            }
+          }
+          data.feed = postsCopy;
+
+          const socialService = (await SocialRepo.updateShow(data, token)).data;
+          setIsLoading(false);
+          toast.success("Serviço atualizado!");
+          router.reload();
+        } else {
+          setIsLoading(false);
+          toast.error("Adicione pelo menos um post");
+        }
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+        toast.error("Ocorreu um erro: " + error?.response?.data?.message);
+      }
     }
   }
 
@@ -358,7 +462,7 @@ export default function ServicePage({ services, token, serviceId }) {
         </Grid>
       )}
 
-      {services.status == 3 && (
+      {(services.status == 5 || services.status == 3) && (
         <MlabsCopy
           posts={posts}
           funcAddNew={(e) => {
@@ -389,11 +493,13 @@ export default function ServicePage({ services, token, serviceId }) {
             setPosts([...postCopy]);
           }}
           funcSend={async () => {
-            await socialToShow();
+            if (services.status == 5) await updateShow();
+            if (services.status == 3) await socialToShow();
           }}
+          showReason={services.status == 5}
         ></MlabsCopy>
       )}
-      {services.status == 7 && (
+      {(services.status == 7 || services.status == 9) && (
         <MlabsCopy
           posts={postsApprove}
           funcAddNew={(e) => {
@@ -424,15 +530,24 @@ export default function ServicePage({ services, token, serviceId }) {
             setPostsApprove([...postCopy]);
           }}
           funcSend={async () => {
-            await socialToApprove();
+            if (services.status == 7) await socialToApprove();
+            if (services.status == 9) await updateSocialApprove();
           }}
+          showReason={services.status == 9}
         ></MlabsCopy>
       )}
     </Grid>
   );
 }
 
-const MlabsCopy = ({ posts, funcAddNew, funcEdit, funcSelect, funcSend }) => {
+const MlabsCopy = ({
+  posts,
+  funcAddNew,
+  funcEdit,
+  funcSelect,
+  funcSend,
+  showReason = false,
+}) => {
   return (
     <Grid item>
       <Stack flexDirection={"row"} gap={5}>
@@ -532,6 +647,12 @@ const MlabsCopy = ({ posts, funcAddNew, funcEdit, funcSelect, funcSend }) => {
                   funcEdit(e.target.value, "text");
                 }}
               />
+              {showReason && (
+                <Typography fontSize={16} fontWeight={700}>
+                  Motivo por ser recusado:{" "}
+                  {posts[posts.findIndex((e) => e.isSelected)].reason}
+                </Typography>
+              )}
               <Button>
                 <label
                   style={{

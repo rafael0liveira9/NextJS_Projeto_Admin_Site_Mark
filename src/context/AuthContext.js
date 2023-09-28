@@ -26,6 +26,7 @@ const AuthProvider = ({ children, cookies }) => {
   useEffect(() => {
     const initAuth = async () => {
       const storedToken = cookies[authConfig.storageTokenKeyName];
+
       if (storedToken) {
         await axios
           .get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
@@ -77,9 +78,9 @@ const AuthProvider = ({ children, cookies }) => {
         setToken(response.data.jwt);
         params.rememberMe
           ? nookies.set(null, "userData", JSON.stringify(response.data), {
-            maxAge: 30 * 24 * 60 * 60,
-            path: "/",
-          })
+              maxAge: 30 * 24 * 60 * 60,
+              path: "/",
+            })
           : null;
         const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
         router.replace(redirectURL);

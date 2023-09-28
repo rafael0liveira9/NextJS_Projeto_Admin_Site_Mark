@@ -92,8 +92,8 @@ const Paywall = ({
 }) => {
   const router = useRouter();
   const contextPackage = PackagesHooks();
-  console.log(contextPackage);
   const [open, setOpen] = useState(false);
+  console.log(jwt);
 
   const handleClose = () => {
     setOpen(false);
