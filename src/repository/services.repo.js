@@ -89,4 +89,23 @@ export class ServicesRepo {
       },
     });
   }
+
+  static async getsiteModels(token) {
+
+    let x = (await axios.get(`${process.env.NEXT_PUBLIC_API_URL}service/service-choose`, {
+      headers: {
+        Authorization: token,
+      },
+    })).data;
+
+    return x;
+  }
+
+  static async postsiteModels(token, id) {
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}service/service-choose`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  }
 }

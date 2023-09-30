@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Icon from "src/@core/components/icon";
 import { Button, Card, TextField, Typography } from "@mui/material";
@@ -9,16 +9,20 @@ import { regexMoney, reverseRegexMoney } from "src/utils/utils";
 import { ServicesRepo } from "src/repository/services.repo";
 
 import Select from "react-select";
+import CreateSelect from 'react-select/creatable'
 import { toast } from "react-hot-toast";
 import Router from "next/router";
 
-export default function ServiceAddPage({ services, token }) {
+export default function ServiceAddPage({ services, token, models }) {
   const [valuePackage, setValuePackage] = useState(0);
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [value, setValue] = useState(0);
   const [dueDate, setDueDate] = useState(null);
   const [servicesSelect, setServicesSelect] = useState(null);
+  const [modelSelect, setModelSelect] = useState(null);
+  const [modelValue, setModelValue] = useState(null);
+
   const servicesData = [
     {
       label: "Site",
@@ -33,6 +37,8 @@ export default function ServiceAddPage({ services, token }) {
       value: 3,
     },
   ];
+
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState({
@@ -75,12 +81,28 @@ export default function ServiceAddPage({ services, token }) {
   const onSubmit = async () => {
     if (!isLoading && verifyInputs()) {
       setIsLoading(true);
-      const data = {
-        serviceTypeId: servicesSelect.value,
-        name: name,
-        price: value,
-        description: description,
-      };
+
+      const x = modelSelect?.filter((e) => e.value === modelValue?.value)
+
+      const data = x.length === 0 ?
+        {
+          serviceTypeId: servicesSelect.value,
+          name: name,
+          price: value,
+          description: description,
+          model: {
+            name: modelValue?.label
+          }
+        }
+        :
+        {
+          serviceTypeId: servicesSelect.value,
+          name: name,
+          price: value,
+          description: description,
+          modelId: modelValue?.value
+        };
+
 
       try {
         let serviceCreate = await ServicesRepo.sendService(data, token);
@@ -97,6 +119,23 @@ export default function ServiceAddPage({ services, token }) {
       toast.error("Preencha todos os campos");
     }
   };
+
+  useEffect(() => {
+    if (servicesSelect === null) {
+      console.log("nulo")
+      setModelSelect(null)
+    } else {
+      console.log("mudando")
+      setModelSelect((models?.filter((e) => e.serviceTypeId === servicesSelect?.value)).map((e) => {
+        return {
+          label: e.name,
+          value: e.id
+        }
+      }))
+    }
+  }, [servicesSelect])
+
+  console.log(modelSelect?.filter((e) => e.value === modelValue?.value));
 
   return (
     <Grid container spacing={6} className="match-height">
@@ -171,6 +210,38 @@ export default function ServiceAddPage({ services, token }) {
           </Typography>
         )}
       </Grid>
+      <Grid item xs={12} xl={6}>
+        <CreateSelect
+          styles={{
+            input: (styles) => ({
+              ...styles,
+              height: 39.5,
+            }),
+            menu: (styles) => ({ ...styles, zIndex: 999999 }),
+          }}
+          required
+          defaultValue={[]}
+          placeholder="Modelo do serviço"
+          options={modelSelect === null ? [] : modelSelect}
+          onChange={(a) => {
+            console.log(a.value)
+            setModelValue(a);
+            verifyInputs();
+          }}
+        />
+        {errors.description && (
+          <Typography
+            style={{
+              color: "#f00",
+              marginTop: 10,
+              marginLeft: 10,
+            }}
+            fontSize={12}
+          >
+            {errors.description}
+          </Typography>
+        )}
+      </Grid>
       <Grid item xs={12} xl={3}>
         <TextField
           fullWidth
@@ -201,16 +272,29 @@ export default function ServiceAddPage({ services, token }) {
 
 export const getServerSideProps = async (ctx) => {
   let data;
+  let models = "";
   try {
     data = await ServicesRepo.getAllServices();
   } catch (error) { }
 
   let token = ctx.req.cookies.accessToken ?? "";
 
+  try {
+
+    models = await ServicesRepo.getsiteModels(token);
+
+  } catch (error) {
+
+  }
+
+
+
+
   return {
     props: {
       services: data,
       token,
+      models: models
     },
   };
 };

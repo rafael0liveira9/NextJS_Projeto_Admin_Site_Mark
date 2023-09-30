@@ -100,8 +100,8 @@ const schema = yup.object().shape({
 });
 
 const defaultValues = {
-  email: "mark4pp@gmail.com",
-  password: "Matheu123th@",
+  email: "markapptecnologia@gmail.com",
+  password: "Senha@01",
 };
 
 const LoginPage = () => {
