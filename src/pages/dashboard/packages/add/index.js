@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Icon from "src/@core/components/icon";
 import { Button, Card, TextField, Typography } from "@mui/material";
@@ -18,6 +18,7 @@ export default function PackageAddPage({ services, token }) {
   const [description, setDescription] = useState(null);
   const [value, setValue] = useState(0);
   const [dueDate, setDueDate] = useState(null);
+  const [dueDateVal, setDueDateVal] = useState(null);
   const [servicesSelect, setServicesSelect] = useState([]);
   const servicesData = services.map((x) => ({
     ...x,
@@ -34,13 +35,11 @@ export default function PackageAddPage({ services, token }) {
     services: null,
   });
 
+  useEffect(() => {
+    verifyInputs();
+  }, [value, description, dueDate, servicesSelect]);
+
   const verifyInputs = () => {
-    // console.log(
-    //   errors.name == null,
-    //   description == null,
-    //   value == 0,
-    //   servicesSelect.length == 0
-    // );
     if (
       name == null ||
       description == null ||
@@ -68,6 +67,8 @@ export default function PackageAddPage({ services, token }) {
     }
   };
 
+  console.log(dueDate);
+
   const onSubmit = async () => {
     if (!isLoading && verifyInputs()) {
       setIsLoading(true);
@@ -78,6 +79,8 @@ export default function PackageAddPage({ services, token }) {
         dueDate: dueDate,
         services: servicesSelect.map((x) => x.id),
       };
+
+      console.log(data);
 
       try {
         let packageCreate = await PackagesRepo.sendPackage(data, token);
@@ -111,7 +114,6 @@ export default function PackageAddPage({ services, token }) {
           value={name}
           onChange={(e) => {
             setName(e.target.value);
-            verifyInputs();
           }}
           required
           error={errors.name}
@@ -125,7 +127,6 @@ export default function PackageAddPage({ services, token }) {
           label="Descrição do Pacote"
           onChange={(e) => {
             setDescription(e.target.value);
-            verifyInputs();
           }}
           required
           error={errors.description}
@@ -135,12 +136,12 @@ export default function PackageAddPage({ services, token }) {
       <Grid item xs={12} xl={6}>
         <TextField
           fullWidth
-          // type="datetime-local"
-          value={dueDate}
+          type="datetime-local"
+          value={dueDateVal}
           label="Data de Validade"
           onChange={(e) => {
-            setDueDate(e.target.value);
-            verifyInputs();
+            setDueDate(new Date(e.target.value));
+            setDueDateVal(e.target.value);
           }}
           error={errors.dueDate}
           helperText={errors.dueDate}
@@ -162,7 +163,6 @@ export default function PackageAddPage({ services, token }) {
           options={servicesData}
           onChange={(a) => {
             setServicesSelect(a);
-            verifyInputs();
           }}
         />
         {errors.description && (
@@ -195,7 +195,6 @@ export default function PackageAddPage({ services, token }) {
           onChange={(e) => {
             setValuePackage(regexMoney(e.target));
             setValue(reverseRegexMoney(e.target));
-            verifyInputs();
           }}
           error={errors.value}
           helperText={errors.value}
@@ -209,7 +208,7 @@ export const getServerSideProps = async (ctx) => {
   let data;
   try {
     data = await ServicesRepo.getAllServices();
-  } catch (error) { }
+  } catch (error) {}
 
   let token = ctx.req.cookies.accessToken ?? "";
 
