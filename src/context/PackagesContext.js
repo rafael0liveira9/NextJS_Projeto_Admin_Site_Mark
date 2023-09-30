@@ -14,10 +14,14 @@ export const PackagesContext = createContext({
   setCheckPaywall: null,
   finalClientData: null,
   setFinalClientData: null,
+  isCreditCard: null,
+  setIsCreditCard: null
+
 });
 
 export const PackagesProvider = ({ children }) => {
   const [checkCustom, setCheckCustom] = useState(false);
+  const [isCreditCard, setIsCreditCard] = useState(true);
   const [checkPaywall, setCheckPaywall] = useState(false);
   const [finalClientData, setFinalClientData] = useState({
     clientName: "",
@@ -109,6 +113,8 @@ export const PackagesProvider = ({ children }) => {
     setCheckPaywall,
     finalClientData,
     setFinalClientData,
+    isCreditCard,
+    setIsCreditCard,
   };
 
   return (

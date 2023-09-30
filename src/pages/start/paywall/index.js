@@ -93,7 +93,8 @@ const Paywall = ({
   const router = useRouter();
   const contextPackage = PackagesHooks();
   const [open, setOpen] = useState(false);
-  console.log(jwt);
+  const social = clientChoice.services.filter((e) => e.Service.serviceTypeId === 1)
+
 
   const handleClose = () => {
     setOpen(false);
@@ -112,33 +113,54 @@ const Paywall = ({
       setIsLoading(true);
 
       let finalData = contextPackage.finalClientData;
-
+      let myPromise;
       if (finalData.packageType === "package") {
         try {
-          const myPromise = await PaymentsRepo.buyNewPackage(
-            {
-              package: finalData.packageId,
-              companieId: finalData.company,
-              installments: finalInstallments,
-              paymentMethod: {
-                billingType: "CREDIT_CARD",
-                creditCard: {
-                  holderName: finalData.ccName,
-                  number: finalData.ccNumber,
-                  expiryMonth: finalData.ccExpiry.split("/")[0],
-                  expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                  ccv: finalData.ccCode,
+          if (social.length > 0) {
+            myPromise = await PaymentsRepo.buyNewPackage(
+              {
+                package: finalData.packageId,
+                companieId: finalData.company,
+                contractTime: finalInstallments,
+                paymentMethod: {
+                  billingType: "CREDIT_CARD",
+                  creditCard: {
+                    holderName: finalData.ccName,
+                    number: finalData.ccNumber,
+                    expiryMonth: finalData.ccExpiry.split("/")[0],
+                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                    ccv: finalData.ccCode,
+                  },
                 },
               },
-            },
-            jwt
-          );
+              jwt
+            );
+          } else {
+            myPromise = await PaymentsRepo.buyNewPackage(
+              {
+                package: finalData.packageId,
+                companieId: finalData.company,
+                installments: finalInstallments,
+                paymentMethod: {
+                  billingType: "CREDIT_CARD",
+                  creditCard: {
+                    holderName: finalData.ccName,
+                    number: finalData.ccNumber,
+                    expiryMonth: finalData.ccExpiry.split("/")[0],
+                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                    ccv: finalData.ccCode,
+                  },
+                },
+              },
+              jwt
+            );
+          }
           toast.success(
             `Pedido de Plano ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
 
           setIsLoading(false);
-
+          router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
           toast.error(`Erro ao contratar plano`);
@@ -146,28 +168,50 @@ const Paywall = ({
         }
       } else if (finalData.packageType === "custom") {
         try {
-          const myPromise = await PaymentsRepo.buyNewPackage(
-            {
-              services: [finalData.services.map((e) => e.id)],
-              companieId: finalData.company,
-              installments: finalInstallments,
-              paymentMethod: {
-                billingType: "CREDIT_CARD",
-                creditCard: {
-                  holderName: finalData.ccName,
-                  number: finalData.ccNumber,
-                  expiryMonth: finalData.ccExpiry.split("/")[0],
-                  expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                  ccv: finalData.ccCode,
+          let myPromise;
+          if (social.length > 0) {
+            myPromise = await PaymentsRepo.buyNewPackage(
+              {
+                services: [finalData.services.map((e) => e.id)],
+                companieId: finalData.company,
+                contractTime: finalInstallments,
+                paymentMethod: {
+                  billingType: "CREDIT_CARD",
+                  creditCard: {
+                    holderName: finalData.ccName,
+                    number: finalData.ccNumber,
+                    expiryMonth: finalData.ccExpiry.split("/")[0],
+                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                    ccv: finalData.ccCode,
+                  },
                 },
               },
-            },
-            jwt
-          );
+              jwt
+            );
+          } else {
+            myPromise = await PaymentsRepo.buyNewPackage(
+              {
+                services: [finalData.services.map((e) => e.id)],
+                companieId: finalData.company,
+                installments: finalInstallments,
+                paymentMethod: {
+                  billingType: "CREDIT_CARD",
+                  creditCard: {
+                    holderName: finalData.ccName,
+                    number: finalData.ccNumber,
+                    expiryMonth: finalData.ccExpiry.split("/")[0],
+                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+                    ccv: finalData.ccCode,
+                  },
+                },
+              },
+              jwt
+            );
+          }
           toast.success(
             `Pedido de Serviços ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
-
+          router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
           toast.error(`Erro ao contratar plano`);
@@ -205,6 +249,7 @@ const Paywall = ({
     }
   };
 
+  console.log(contextPackage.isCreditCard)
   return (
     <>
       <Fragment>
@@ -225,20 +270,19 @@ const Paywall = ({
             </DialogContentText>
           </DialogContent>
           <DialogActions className="dialog-actions-dense">
-            <Button onClick={() => {}} color="secondary">
+            <Button onClick={() => { }} color="secondary">
               {!isLoading ? (
                 "Ainda não."
               ) : (
                 <CircularProgress></CircularProgress>
               )}
             </Button>
-            <Button onClick={() => {}} color="primary">
+            <Button onClick={() => { }} color="primary">
               {!isLoading ? "Claro!" : <CircularProgress></CircularProgress>}
             </Button>
           </DialogActions>
         </Dialog>
       </Fragment>
-
       <div class="full-page-start">
         <div class="section-paywall">
           <div>
@@ -249,70 +293,139 @@ const Paywall = ({
               clientToken={clientChoice}
             />
           </div>
-
-          <Grid
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "2%",
-              margin: "20px 0 0 0",
-              width: "100%",
-              backgroundColor: "#FFFFFF",
-              boxShadow:
-                "0px 2px 1px -1px rgba(76, 78, 100, 0.2), 0px 1px 1px 0px rgba(76, 78, 100, 0.14), 0px 1px 3px 0px rgba(76, 78, 100, 0.12)",
-              borderRadius: "10px",
-            }}
-          >
-            <Select
-              value={finalInstallments}
-              style={{ textAlign: "center" }}
-              onChange={(e) => {
-                setFinalinstallments(e.target.value);
-              }}
-            >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x, y) => (
-                <MenuItem key={y} style={{ textAlign: "center" }} value={x}>
-                  {x}
-                </MenuItem>
-              ))}
-            </Select>
-            <Typography
-              style={{
-                textAlign: "center",
-                width: "150px",
-                height: "60px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: "24px",
-                color: "#777777",
-                border: "1px solid #E7E7EA",
-                borderRadius: "8px",
-              }}
-            >
-              R${" "}
-              {(contextPackage.finalClientData.totalValue / finalInstallments)
-                .toFixed(2)
-                .replace(".", ",")}
-            </Typography>
-          </Grid>
-          <Button
-            onClick={handleClick}
-            variant="contained"
-            style={{
-              cursor: "pointer",
-              marginTop: "20px",
-              width: "250px",
-              height: "50px",
-            }}
-            color="secondary"
-          >
-            {isLoading ? (
-              <CircularProgress></CircularProgress>
-            ) : (
-              "CONCLUIR PAGAMENTO"
-            )}
-          </Button>
+          {contextPackage.isCreditCard === true ?
+            <>
+              <Grid
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "2%",
+                  margin: "20px 0 0 0",
+                  width: "100%",
+                  backgroundColor: "#FFFFFF",
+                  boxShadow:
+                    "0px 2px 1px -1px rgba(76, 78, 100, 0.2), 0px 1px 1px 0px rgba(76, 78, 100, 0.14), 0px 1px 3px 0px rgba(76, 78, 100, 0.12)",
+                  borderRadius: "10px",
+                }}
+              >
+                <Select
+                  value={finalInstallments}
+                  style={{ textAlign: "center" }}
+                  onChange={(e) => {
+                    setFinalinstallments(e.target.value);
+                  }}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x, y) => (
+                    <MenuItem key={y} style={{ textAlign: "center" }} value={x}>
+                      {x}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Typography
+                  style={{
+                    textAlign: "center",
+                    width: "150px",
+                    height: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "24px",
+                    color: "#777777",
+                    border: "1px solid #E7E7EA",
+                    borderRadius: "8px",
+                  }}
+                >
+                  R${" "}
+                  {(contextPackage.finalClientData.totalValue / finalInstallments)
+                    .toFixed(2)
+                    .replace(".", ",")}
+                </Typography>
+              </Grid>
+              <Button
+                onClick={handleClick}
+                variant="contained"
+                style={{
+                  cursor: "pointer",
+                  marginTop: "20px",
+                  width: "250px",
+                  height: "50px",
+                }}
+                color="secondary"
+              >
+                {isLoading ? (
+                  <CircularProgress></CircularProgress>
+                ) : (
+                  "CONCLUIR PAGAMENTO"
+                )}
+              </Button>
+            </>
+            :
+            <>
+              <Grid
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "2%",
+                  margin: "20px 0 0 0",
+                  width: "100%",
+                  backgroundColor: "#FFFFFF",
+                  boxShadow:
+                    "0px 2px 1px -1px rgba(76, 78, 100, 0.2), 0px 1px 1px 0px rgba(76, 78, 100, 0.14), 0px 1px 3px 0px rgba(76, 78, 100, 0.12)",
+                  borderRadius: "10px",
+                }}
+              >
+                <Select
+                  value={finalInstallments}
+                  style={{ textAlign: "center" }}
+                  onChange={(e) => {
+                    setFinalinstallments(e.target.value);
+                  }}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x, y) => (
+                    <MenuItem key={y} style={{ textAlign: "center" }} value={x}>
+                      {x}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Typography
+                  style={{
+                    textAlign: "center",
+                    width: "150px",
+                    height: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "24px",
+                    color: "#777777",
+                    border: "1px solid #E7E7EA",
+                    borderRadius: "8px",
+                  }}
+                >
+                  R${" "}
+                  {(contextPackage.finalClientData.totalValue / finalInstallments)
+                    .toFixed(2)
+                    .replace(".", ",")}
+                </Typography>
+              </Grid>
+              <Button
+                onClick={handleClick}
+                variant="contained"
+                style={{
+                  cursor: "pointer",
+                  marginTop: "20px",
+                  width: "250px",
+                  height: "50px",
+                }}
+                color="secondary"
+              >
+                {isLoading ? (
+                  <CircularProgress></CircularProgress>
+                ) : (
+                  "CONCLUIR PAGAMENTO"
+                )}
+              </Button>
+            </>
+          }
         </div>
         <StepsShow step={4}></StepsShow>
       </div>

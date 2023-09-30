@@ -39,9 +39,9 @@ export async function getServerSideProps(ctx) {
 
     packageChose = {
       sliderValue: x.sliderValue,
-      questionOne: true,
-      questionTwo: true,
-      questionTree: true,
+      questionOne: x.questionOne,
+      questionTwo: x.questionTwo,
+      questionTree: x.questionTree,
     }
 
   } catch (error) {
@@ -55,6 +55,7 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
+
     packages = (await PackagesRepo.getPackagesBySearch({ packageChose })).data;
 
   } catch {
@@ -72,11 +73,9 @@ export async function getServerSideProps(ctx) {
 }
 
 
-const Packages = ({ packages }) => {
+const Packages = ({ packages, packageChose }) => {
   const router = useRouter();
   const contextPackage = PackagesHooks();
-
-
 
   const [modalPackage, setModalPackage] = useState(false);
   const [descriptiion, setDescriptiion] = useState({});
