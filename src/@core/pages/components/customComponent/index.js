@@ -128,7 +128,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
     }
 
     useEffect(() => {
-        servicesList.servicesList.length <= 1 ? toast.error("Erro, tente novamente mais tarde!") : "";
+        servicesList.servicesList.length === 0 ? toast.error("Erro, tente novamente mais tarde!") : "";
 
         setServices(
             [{
@@ -194,7 +194,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
 
     }, [logoactive, siteactive, rsactive, servicesValue])
 
-
+    console.log(servicesList)
     return (
         <form onSubmit={e => e.preventDefault()} style={{ maxWidth: "90% !important" }}>
 
@@ -223,7 +223,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
                     {servicesList.servicesList.map((e) => {
-                        if (e?.name?.startsWith("Logo")) {
+                        if (e?.serviceTypeId === 2) {
                             return (
                                 <BoxWrapper
                                     key={e.id}
@@ -244,13 +244,13 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                                                 R$ <span style={{ fontSize: "16px" }}>{(parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",")}</span></Typography>
                                         </Box>
                                         <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>
-                                            {
-                                                e.description +
-                                                " por apenas " +
+                                            {maxInstallments(e.price) > 1
+                                                ?
+                                                "Valor mensal para pagamento em " +
                                                 maxInstallments(e.price) +
-                                                "X de R$" +
-                                                (parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",") +
-                                                "."
+                                                " Parcelas."
+                                                :
+                                                "Valor a vista."
                                             }
                                         </Typography>
                                     </Box>
@@ -299,7 +299,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
                     {servicesList.servicesList.map((e) => {
-                        if (e?.name?.startsWith("Site")) {
+                        if (e?.serviceTypeId === 1) {
                             return (
                                 <BoxWrapper
                                     key={e.id}
@@ -320,13 +320,13 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                                                 R$ <span style={{ fontSize: "16px" }}>{(parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",")}</span></Typography>
                                         </Box>
                                         <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>
-                                            {
-                                                e.description +
-                                                " por apenas " +
+                                            {maxInstallments(e.price) > 1
+                                                ?
+                                                "Valor mensal para pagamento em " +
                                                 maxInstallments(e.price) +
-                                                "X de R$" +
-                                                (parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",") +
-                                                "."
+                                                " Parcelas."
+                                                :
+                                                "Valor a vista."
                                             }
                                         </Typography>
                                     </Box>
@@ -375,7 +375,7 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                 <Divider sx={{ m: '0 !important' }} />
                 <AccordionDetails sx={{ pt: 6, pb: 6 }}>
                     {servicesList.servicesList.map((e) => {
-                        if (e?.name?.startsWith("Redes")) {
+                        if (e?.serviceTypeId === 3) {
                             return (
                                 <BoxWrapper
                                     key={e.id}
@@ -396,13 +396,13 @@ const PaywallComponent = (servicesList, checkT, checkF) => {
                                                 R$ <span style={{ fontSize: "16px" }}>{(parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",")}</span></Typography>
                                         </Box>
                                         <Typography sx={{ fontWeight: 600, fontSize: "12px" }} variant='body2'>
-                                            {
-                                                e.description +
-                                                " por apenas " +
+                                            {maxInstallments(e.price) > 1
+                                                ?
+                                                "Valor mensal para pagamento em " +
                                                 maxInstallments(e.price) +
-                                                "X de R$" +
-                                                (parseInt(e.price) / maxInstallments(parseInt(e.price))).toFixed(2).replace(".", ",") +
-                                                "."
+                                                " Parcelas."
+                                                :
+                                                "Valor a vista."
                                             }
                                         </Typography>
                                     </Box>
