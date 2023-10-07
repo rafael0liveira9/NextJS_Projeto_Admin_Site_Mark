@@ -211,6 +211,7 @@ const Paywall = ({
           toast.success(
             `Pedido de Serviços ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
+          setIsLoading(false)
           router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
@@ -239,13 +240,15 @@ const Paywall = ({
           toast.success(
             `Pedido de Serviço ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
-
+          setIsLoading(false)
           return myPromise;
         } catch (error) {
+          setIsLoading(false)
           toast.error(`Erro ao contratar Serviço`);
           console.log(error);
         }
       }
+      setIsLoading(false)
     }
   };
 

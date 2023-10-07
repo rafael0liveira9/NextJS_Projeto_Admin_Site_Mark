@@ -198,7 +198,9 @@ const Packages = ({ packages, packageChose }) => {
     }
   };
 
-
+  if (packages?.length === 0) {
+    router.push("/start/custom/");
+  }
 
 
   return (
