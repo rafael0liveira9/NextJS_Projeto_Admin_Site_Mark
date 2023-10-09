@@ -93,8 +93,9 @@ const Paywall = ({
   const router = useRouter();
   const contextPackage = PackagesHooks();
   const [open, setOpen] = useState(false);
-  const social = clientChoice.services.filter((e) => e.Service.serviceTypeId === 1)
-
+  const social = clientChoice?.services?.filter(
+    (e) => e.Service.serviceTypeId === 1
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -113,6 +114,7 @@ const Paywall = ({
       setIsLoading(true);
 
       let finalData = contextPackage.finalClientData;
+      console.log(finalData);
       let myPromise;
       if (finalData.packageType === "package") {
         try {
@@ -211,7 +213,7 @@ const Paywall = ({
           toast.success(
             `Pedido de Serviços ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
-          setIsLoading(false)
+          setIsLoading(false);
           router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
@@ -220,6 +222,7 @@ const Paywall = ({
         }
       } else {
         try {
+          console.log(finalData.services);
           const myPromise = await PaymentsRepo.buyNewPackage(
             {
               service: finalData.services[0].id,
@@ -240,19 +243,19 @@ const Paywall = ({
           toast.success(
             `Pedido de Serviço ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
-          setIsLoading(false)
+          setIsLoading(false);
           return myPromise;
         } catch (error) {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.error(`Erro ao contratar Serviço`);
           console.log(error);
         }
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
-  console.log(contextPackage.isCreditCard)
+  console.log(contextPackage.isCreditCard);
   return (
     <>
       <Fragment>
@@ -273,14 +276,14 @@ const Paywall = ({
             </DialogContentText>
           </DialogContent>
           <DialogActions className="dialog-actions-dense">
-            <Button onClick={() => { }} color="secondary">
+            <Button onClick={() => {}} color="secondary">
               {!isLoading ? (
                 "Ainda não."
               ) : (
                 <CircularProgress></CircularProgress>
               )}
             </Button>
-            <Button onClick={() => { }} color="primary">
+            <Button onClick={() => {}} color="primary">
               {!isLoading ? "Claro!" : <CircularProgress></CircularProgress>}
             </Button>
           </DialogActions>
@@ -296,7 +299,7 @@ const Paywall = ({
               clientToken={clientChoice}
             />
           </div>
-          {contextPackage.isCreditCard === true ?
+          {contextPackage.isCreditCard === true ? (
             <>
               <Grid
                 sx={{
@@ -339,7 +342,10 @@ const Paywall = ({
                   }}
                 >
                   R${" "}
-                  {(contextPackage.finalClientData.totalValue / finalInstallments)
+                  {(
+                    contextPackage.finalClientData.totalValue /
+                    finalInstallments
+                  )
                     .toFixed(2)
                     .replace(".", ",")}
                 </Typography>
@@ -362,7 +368,7 @@ const Paywall = ({
                 )}
               </Button>
             </>
-            :
+          ) : (
             <>
               <Grid
                 sx={{
@@ -405,7 +411,10 @@ const Paywall = ({
                   }}
                 >
                   R${" "}
-                  {(contextPackage.finalClientData.totalValue / finalInstallments)
+                  {(
+                    contextPackage.finalClientData.totalValue /
+                    finalInstallments
+                  )
                     .toFixed(2)
                     .replace(".", ",")}
                 </Typography>
@@ -428,7 +437,7 @@ const Paywall = ({
                 )}
               </Button>
             </>
-          }
+          )}
         </div>
         <StepsShow step={4}></StepsShow>
       </div>
