@@ -126,7 +126,7 @@ const PaywallComponent = ({ ctx, userToken, clientToken, companyToken }) => {
     services:
       ctx.clientChoice?.services > 0
         ? ctx.clientChoice?.services
-        : clientToken.services,
+        : clientToken?.services,
     totalValue: ctx.clientChoice?.totalValue
       ? ctx.clientChoice?.totalValue
       : clientToken?.totalValue,

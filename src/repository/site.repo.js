@@ -14,6 +14,19 @@ export class SiteRepo {
       }
     );
   }
+  static async toDefinition(serviceId, token) {
+    return await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}site/to-definition`,
+      {
+        id: serviceId,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
 
   static async sendLayout(data, token) {
     return await axios.post(

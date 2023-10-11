@@ -33,7 +33,7 @@ export const getServerSideProps = async (ctx) => {
         ctx.query.service
       )
     ).data;
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     props: {
@@ -53,6 +53,22 @@ export default function ServicePage({ services, token, serviceId }) {
   const [filesLayoutSelect, setFilesLayoutSelect] = React.useState([]);
 
   async function toPlan() {
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        const toPlanData = await SiteRepo.toPlan(+serviceId, token);
+        setIsLoading(false);
+        toast.success("Serviço atualizado!");
+        router.reload();
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+        toast.error("Ocorreu um erro: " + error?.response?.data?.message);
+      }
+    }
+  }
+
+  async function toDefinition() {
     if (!isLoading) {
       setIsLoading(true);
       try {
@@ -181,6 +197,9 @@ export default function ServicePage({ services, token, serviceId }) {
           }
           if (services.status == 9) {
             await setServicePublish();
+          }
+          if (services.status == 3) {
+            await toDefinition();
           }
         }}
       />

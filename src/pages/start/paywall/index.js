@@ -61,16 +61,6 @@ export async function getServerSideProps(ctx) {
     clientChoice = null;
   }
 
-  // try {
-  //   getNewUser = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
-  //     headers: {
-  //       Authorization: jwt,
-  //     },
-  //   })
-  // } catch {
-  //   getNewUser = null;
-  //   console.log("catch getNewuser")
-  // }
 
   return {
     props: {
@@ -93,7 +83,7 @@ const Paywall = ({
   const router = useRouter();
   const contextPackage = PackagesHooks();
   const [open, setOpen] = useState(false);
-  const social = clientChoice.services.filter((e) => e.Service.serviceTypeId === 1)
+  const social = !!clientChoice?.services ? clientChoice?.services.filter((e) => e.Service?.serviceTypeId === 3) : []
 
 
   const handleClose = () => {
@@ -114,95 +104,83 @@ const Paywall = ({
 
       let finalData = contextPackage.finalClientData;
       let myPromise;
+      let creditCard = {
+        billingType: "CREDIT_CARD",
+        creditCard: {
+          holderName: finalData.ccName,
+          number: finalData.ccNumber,
+          expiryMonth: finalData.ccExpiry.split("/")[0],
+          expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+          ccv: finalData.ccCode,
+        }
+      }
+
       if (finalData.packageType === "package") {
         try {
           if (social.length > 0) {
+            // COMPRA DE Package, NO CC COM SOCIAL / RECORRENCIA
             myPromise = await PaymentsRepo.buyNewPackage(
               {
                 package: finalData.packageId,
                 companieId: finalData.company,
                 contractTime: finalInstallments,
                 paymentMethod: {
-                  billingType: "CREDIT_CARD",
-                  creditCard: {
-                    holderName: finalData.ccName,
-                    number: finalData.ccNumber,
-                    expiryMonth: finalData.ccExpiry.split("/")[0],
-                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                    ccv: finalData.ccCode,
-                  },
+                  ...creditCard
                 },
               },
               jwt
             );
           } else {
+            // COMPRA DE Package, NO CC SEM SOCIAL / PARCELADO OU A VISTA
             myPromise = await PaymentsRepo.buyNewPackage(
               {
                 package: finalData.packageId,
                 companieId: finalData.company,
                 installments: finalInstallments,
                 paymentMethod: {
-                  billingType: "CREDIT_CARD",
-                  creditCard: {
-                    holderName: finalData.ccName,
-                    number: finalData.ccNumber,
-                    expiryMonth: finalData.ccExpiry.split("/")[0],
-                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                    ccv: finalData.ccCode,
-                  },
+                  ...creditCard
                 },
               },
               jwt
             );
           }
           toast.success(
-            `Pedido de Plano ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
+            `Pedido de Plano ${finalData?.packageName} criado com sucesso! Aguardando Pagamento.`
           );
 
           setIsLoading(false);
           router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
-          toast.error(`Erro ao contratar plano`);
+          setIsLoading(false);
+          toast.error(`Erro ao contratar plano, revise os dados de pagamento`);
           console.log(error);
         }
-      } else if (finalData.packageType === "custom") {
+      } else if (finalData.packageType === "custom" && finalData?.services?.length > 0) {
         try {
           let myPromise;
           if (social.length > 0) {
+            // COMPRA DE Custom, NO CC COM SOCIAL / RECORRENCIA
             myPromise = await PaymentsRepo.buyNewPackage(
               {
                 services: [finalData.services.map((e) => e.id)],
                 companieId: finalData.company,
                 contractTime: finalInstallments,
                 paymentMethod: {
-                  billingType: "CREDIT_CARD",
-                  creditCard: {
-                    holderName: finalData.ccName,
-                    number: finalData.ccNumber,
-                    expiryMonth: finalData.ccExpiry.split("/")[0],
-                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                    ccv: finalData.ccCode,
-                  },
+                  ...creditCard
                 },
               },
               jwt
             );
           } else {
+            // COMPRA DE Custom, mais de 1 Serviço, NO CC SEM SOCIAL / PARCELADO OU A VISTA
             myPromise = await PaymentsRepo.buyNewPackage(
               {
-                services: [finalData.services.map((e) => e.id)],
+                services: [finalData?.services.map((e) => e.id)],
                 companieId: finalData.company,
                 installments: finalInstallments,
                 paymentMethod: {
-                  billingType: "CREDIT_CARD",
-                  creditCard: {
-                    holderName: finalData.ccName,
-                    number: finalData.ccNumber,
-                    expiryMonth: finalData.ccExpiry.split("/")[0],
-                    expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                    ccv: finalData.ccCode,
-                  },
+                  ...creditCard
                 },
               },
               jwt
@@ -215,24 +193,19 @@ const Paywall = ({
           router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
+          setIsLoading(false)
           toast.error(`Erro ao contratar plano`);
           console.log(error);
         }
       } else {
         try {
+          // COMPRA DE Custom, 1 Serviço, NO CC SEM SOCIAL / PARCELADO OU A VISTA
           const myPromise = await PaymentsRepo.buyNewPackage(
             {
               service: finalData.services[0].id,
               installments: finalInstallments,
               paymentMethod: {
-                billingType: "CREDIT_CARD",
-                creditCard: {
-                  holderName: finalData.ccName,
-                  number: finalData.ccNumber,
-                  expiryMonth: finalData.ccExpiry.split("/")[0],
-                  expiryYear: "20" + finalData.ccExpiry.split("/")[1],
-                  ccv: finalData.ccCode,
-                },
+                ...creditCard
               },
             },
             jwt
@@ -248,7 +221,6 @@ const Paywall = ({
           console.log(error);
         }
       }
-      setIsLoading(false)
     }
   };
 
@@ -345,7 +317,7 @@ const Paywall = ({
                 </Typography>
               </Grid>
               <Button
-                onClick={handleClick}
+                onClick={contextPackage.isCreditCard === true ? handleClick : ""}
                 variant="contained"
                 style={{
                   cursor: "pointer",

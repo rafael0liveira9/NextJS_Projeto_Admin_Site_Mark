@@ -1,0 +1,80 @@
+Cartao de credito a vista
+{
+    package: finalData.packageId,
+    companieId: finalData.company,
+    contractTime: finalInstallments,
+    paymentMethod: {
+        billingType: "CREDIT_CARD",
+        creditCard: {
+        holderName: finalData.ccName,
+        number: finalData.ccNumber,
+        expiryMonth: finalData.ccExpiry.split("/")[0],
+        expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+        ccv: finalData.ccCode,
+        },
+    },
+},
+Cartao de credito parcelado
+{
+    package: finalData.packageId,
+    companieId: finalData.company,
+    contractTime: finalInstallments,
+    paymentMethod: {
+        billingType: "CREDIT_CARD",
+        creditCard: {
+        holderName: finalData.ccName,
+        number: finalData.ccNumber,
+        expiryMonth: finalData.ccExpiry.split("/")[0],
+        expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+        ccv: finalData.ccCode,
+        },
+    },
+},
+Cartao de credito recorrencia
+{
+    package: finalData.packageId,
+    companieId: finalData.company,
+    contractTime: finalInstallments,
+    paymentMethod: {
+        billingType: "CREDIT_CARD",
+        creditCard: {
+        holderName: finalData.ccName,
+        number: finalData.ccNumber,
+        expiryMonth: finalData.ccExpiry.split("/")[0],
+        expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+        ccv: finalData.ccCode,
+        },
+    },
+},
+Boleto ou Pix
+{
+    package: finalData.packageId,
+    companieId: finalData.company,
+    contractTime: finalInstallments,
+    paymentMethod: {
+        billingType: "CREDIT_CARD",
+        creditCard: {
+        holderName: finalData.ccName,
+        number: finalData.ccNumber,
+        expiryMonth: finalData.ccExpiry.split("/")[0],
+        expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+        ccv: finalData.ccCode,
+        },
+    },
+},
+{
+    package: finalData.packageId,
+    companieId: finalData.company,
+    contractTime: finalInstallments,
+    paymentMethod: {
+        billingType: "CREDIT_CARD",
+        creditCard: {
+        holderName: finalData.ccName,
+        number: finalData.ccNumber,
+        expiryMonth: finalData.ccExpiry.split("/")[0],
+        expiryYear: "20" + finalData.ccExpiry.split("/")[1],
+        ccv: finalData.ccCode,
+        },
+    },
+},
+
