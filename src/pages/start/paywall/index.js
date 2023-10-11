@@ -103,6 +103,7 @@ const Paywall = ({
       setIsLoading(true);
 
       let finalData = contextPackage.finalClientData;
+      console.log(finalData);
       let myPromise;
       let creditCard = {
         billingType: "CREDIT_CARD",
@@ -189,7 +190,7 @@ const Paywall = ({
           toast.success(
             `Pedido de Serviços ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
-          setIsLoading(false)
+          setIsLoading(false);
           router.push("/start/tankyou/");
           return myPromise;
         } catch (error) {
@@ -213,18 +214,19 @@ const Paywall = ({
           toast.success(
             `Pedido de Serviço ${finalData.packageName} criado com sucesso! Aguardando Pagamento.`
           );
-          setIsLoading(false)
+          setIsLoading(false);
           return myPromise;
         } catch (error) {
-          setIsLoading(false)
+          setIsLoading(false);
           toast.error(`Erro ao contratar Serviço`);
           console.log(error);
         }
       }
+      setIsLoading(false)
     }
   };
 
-  console.log(contextPackage.isCreditCard)
+
   return (
     <>
       <Fragment>
@@ -268,7 +270,7 @@ const Paywall = ({
               clientToken={clientChoice}
             />
           </div>
-          {contextPackage.isCreditCard === true ?
+          {contextPackage.isCreditCard === true ? (
             <>
               <Grid
                 sx={{
@@ -311,7 +313,10 @@ const Paywall = ({
                   }}
                 >
                   R${" "}
-                  {(contextPackage.finalClientData.totalValue / finalInstallments)
+                  {(
+                    contextPackage.finalClientData.totalValue /
+                    finalInstallments
+                  )
                     .toFixed(2)
                     .replace(".", ",")}
                 </Typography>
@@ -334,7 +339,7 @@ const Paywall = ({
                 )}
               </Button>
             </>
-            :
+          ) : (
             <>
               <Grid
                 sx={{
@@ -377,7 +382,10 @@ const Paywall = ({
                   }}
                 >
                   R${" "}
-                  {(contextPackage.finalClientData.totalValue / finalInstallments)
+                  {(
+                    contextPackage.finalClientData.totalValue /
+                    finalInstallments
+                  )
                     .toFixed(2)
                     .replace(".", ",")}
                 </Typography>
@@ -400,7 +408,7 @@ const Paywall = ({
                 )}
               </Button>
             </>
-          }
+          )}
         </div>
         <StepsShow step={4}></StepsShow>
       </div>

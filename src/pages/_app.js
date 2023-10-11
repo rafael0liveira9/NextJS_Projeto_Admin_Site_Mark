@@ -18,7 +18,7 @@ import UserLayout from "src/layouts/UserLayout";
 import Spinner from "src/@core/components/spinner";
 import {
   SettingsConsumer,
-  SettingsProvider
+  SettingsProvider,
 } from "src/@core/context/settingsContext";
 import { PackagesProvider } from "src/context/PackagesContext";
 import { AuthProvider } from "src/context/AuthContext";
@@ -53,22 +53,23 @@ const Guard = ({ children, authGuard, guestGuard, cookies, anonUser }) => {
   if (anonUser) {
     return <>{children}</>;
   }
-  if (guestGuard) {
-    return (
-      <GuestGuard cookies={cookies} fallback={<Spinner />}>
-        {children}
-      </GuestGuard>
-    );
-  } else if (!guestGuard && !authGuard) {
-    return <>{children}</>;
-  } else {
-    return (
-      <AuthGuard cookies={cookies} fallback={<Spinner />}>
-        {children}
-      </AuthGuard>
-    );
+  if (!anonUser) {
+    if (guestGuard) {
+      return (
+        <GuestGuard cookies={cookies} fallback={<Spinner />}>
+          {children}
+        </GuestGuard>
+      );
+    } else if (!guestGuard && !authGuard) {
+      return <>{children}</>;
+    } else {
+      return (
+        <AuthGuard cookies={cookies} fallback={<Spinner />}>
+          {children}
+        </AuthGuard>
+      );
+    }
   }
-
 };
 
 const App = (props) => {

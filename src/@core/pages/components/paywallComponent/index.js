@@ -112,8 +112,8 @@ const PaywallComponent = ({ ctx, userToken, clientToken, companyToken }) => {
     company: ctx.newClient?.companyID
       ? ctx.newClient?.companyID
       : userToken?.companiesId
-        ? userToken?.companiesId
-        : companyToken?.id,
+      ? userToken?.companiesId
+      : companyToken?.id,
     packageId: ctx.clientChoice?.packageId
       ? ctx.clientChoice?.packageId
       : clientToken?.packageId,
@@ -156,9 +156,8 @@ const PaywallComponent = ({ ctx, userToken, clientToken, companyToken }) => {
       ccNumber: finalClientData.ccNumber,
       ccCode: finalClientData.ccCode,
     });
-    check.setIsCreditCard(paymentMethod === "card" ? true : false)
+    check.setIsCreditCard(paymentMethod === "card" ? true : false);
   }, [name, expiry, cardNumber, cvc, paymentMethod]);
-
 
   return (
     <>
@@ -218,8 +217,8 @@ const PaywallComponent = ({ ctx, userToken, clientToken, companyToken }) => {
             </Box>
             <Box sx={{ width: "100%", marginTop: 10 }}>
               {finalClientData.name &&
-                finalClientData.document &&
-                finalClientData.email ? (
+              finalClientData.document &&
+              finalClientData.email ? (
                 ""
               ) : (
                 <Button
@@ -459,18 +458,30 @@ const PaywallComponent = ({ ctx, userToken, clientToken, companyToken }) => {
                         </Grid>
                       </Grid>
                     </Grid>
-                  ) :
+                  ) : (
                     <Grid item xs={12}>
-                      <div style={{ display: "flex", alignItems: "center", width: '100%' }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "100%",
+                        }}
+                      >
                         <Typography
                           variant="subtitle1"
-                          sx={{ fontWeight: 500, fontSize: "14px", textAlign: "justify" }}
+                          sx={{
+                            fontWeight: 500,
+                            fontSize: "14px",
+                            textAlign: "justify",
+                          }}
                         >
-                          ATENÇÃO: O pagamento poderá ser efetuado por Pix ou Boleto, após clicar em "Concluir Pagamento" receberá um e-mail com as instruções para finalizar a compra.
+                          ATENÇÃO: O pagamento poderá ser efetuado por Pix ou
+                          Boleto, após clicar em "Concluir Pagamento" receberá
+                          um e-mail com as instruções para finalizar a compra.
                         </Typography>
                       </div>
                     </Grid>
-                  }
+                  )}
                 </Grid>
               </Grid>
             </Grid>
