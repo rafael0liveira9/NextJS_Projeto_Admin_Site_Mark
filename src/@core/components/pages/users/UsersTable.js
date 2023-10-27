@@ -7,7 +7,12 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineEye,
+  AiOutlineMoneyCollect,
+} from "react-icons/ai";
 
 // ** Custom Components
 import CustomChip from "src/@core/components/mui/chip";
@@ -67,93 +72,114 @@ const escapeRegExp = (value) => {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-const columns = [
-  {
-    flex: 0.275,
-    minWidth: 290,
-    field: "email",
-    headerName: "Email do Usuário",
-    renderCell: (params) => {
-      const { row } = params;
+const TableColumns = ({ rowsData, onArrears }) => {
+  const columns = [
+    {
+      flex: 0.275,
+      minWidth: 290,
+      field: "email",
+      headerName: "Email do Usuário",
+      renderCell: (params) => {
+        const { row } = params;
 
-      return (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {renderClient(params)}
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: "text.primary", fontWeight: 600 }}
-            >
-              {row.email}
-            </Typography>
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {renderClient(params)}
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography
+                noWrap
+                variant="body2"
+                sx={{ color: "text.primary", fontWeight: 600 }}
+              >
+                {row.email}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-      );
+        );
+      },
     },
-  },
-  {
-    flex: 0.2,
-    minWidth: 120,
-    headerName: "Tipo de Usuário",
-    field: "user_type",
-    renderCell: (params) => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        {params.row.roleTypeId == 1
-          ? "Cliente"
-          : params.row.roleTypeId == 2
+    {
+      flex: 0.2,
+      minWidth: 120,
+      headerName: "Tipo de Usuário",
+      field: "user_type",
+      renderCell: (params) => (
+        <Typography variant="body2" sx={{ color: "text.primary" }}>
+          {params.row.roleTypeId == 1
+            ? "Cliente"
+            : params.row.roleTypeId == 2
             ? "Empregado"
             : "Admin"}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.125,
-    field: "createdat",
-    minWidth: 80,
-    headerName: "Data de Criação",
-    renderCell: (params) => {
-      const dueDate = new Date(Date.parse(params.row.createdAt));
-
-      return (
-        <Typography variant="body2" sx={{ color: "text.primary" }}>
-          {params.row.createdAt
-            ? `${dueDate.getDate()}/${dueDate.getMonth() + 1
-            }/${dueDate.getFullYear()}`
-            : "Sem Data"}
         </Typography>
-      );
+      ),
     },
-  },
-  // {
-  //   flex: 0.01,
-  //   minWidth: 10,
-  //   field: "remove",
-  //   headerName: "Editar",
-  //   renderCell: () => (
-  //     <Typography variant="body2" sx={{ color: "text.primary" }}>
-  //       <Button>
-  //         <AiOutlineDelete></AiOutlineDelete>
-  //       </Button>
-  //     </Typography>
-  //   ),
-  // },
-  {
-    flex: 0.125,
-    minWidth: 30,
-    field: "remove",
-    headerName: "Remover",
-    renderCell: () => (
-      <Typography variant="body2" sx={{ color: "text.primary" }}>
-        <Button>
-          <AiOutlineDelete></AiOutlineDelete>
-        </Button>
-      </Typography>
-    ),
-  },
-];
+    {
+      flex: 0.125,
+      field: "createdat",
+      minWidth: 80,
+      headerName: "Data de Criação",
+      renderCell: (params) => {
+        const dueDate = new Date(Date.parse(params.row.createdAt));
 
-const TableColumns = ({ rowsData }) => {
+        return (
+          <Typography variant="body2" sx={{ color: "text.primary" }}>
+            {params.row.createdAt
+              ? `${dueDate.getDate()}/${
+                  dueDate.getMonth() + 1
+                }/${dueDate.getFullYear()}`
+              : "Sem Data"}
+          </Typography>
+        );
+      },
+    },
+    {
+      flex: 0.01,
+      minWidth: 10,
+      field: "isArrears",
+      headerName: "Inadimplente",
+      renderCell: (r) => {
+        console.log(r.row);
+        return (
+          <Typography
+            variant="body2"
+            sx={{ color: "text.primary" }}
+          ></Typography>
+        );
+      },
+    },
+
+    {
+      flex: 0.125,
+      minWidth: 30,
+      field: "arrears",
+      headerName: "Trocar para inadimplente",
+      renderCell: ({ row }) => (
+        <Typography variant="body2" sx={{ color: "text.primary" }}>
+          <Button
+            onClick={async () => {
+              await onArrears(row.id);
+            }}
+          >
+            <AiOutlineMoneyCollect></AiOutlineMoneyCollect>
+          </Button>
+        </Typography>
+      ),
+    },
+    {
+      flex: 0.125,
+      minWidth: 30,
+      field: "remove",
+      headerName: "Remover",
+      renderCell: () => (
+        <Typography variant="body2" sx={{ color: "text.primary" }}>
+          <Button>
+            <AiOutlineDelete></AiOutlineDelete>
+          </Button>
+        </Typography>
+      ),
+    },
+  ];
+
   const [data] = useState(rowsData);
   const [pageSize, setPageSize] = useState(7);
   const [searchText, setSearchText] = useState("");

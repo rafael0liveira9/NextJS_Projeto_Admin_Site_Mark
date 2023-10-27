@@ -10,8 +10,9 @@ import { ServicesRepo } from "src/repository/services.repo";
 import { UsersRepo } from "src/repository/users.repo";
 
 import nookies from "nookies";
+import toast from "react-hot-toast";
 
-export default function UsersPage({ users }) {
+export default function UsersPage({ users, userToken }) {
   const router = useRouter();
   return (
     <Grid container spacing={6} className="match-height">
@@ -28,7 +29,17 @@ export default function UsersPage({ users }) {
         }}
       />
       <Grid item xs={12}>
-        <TableFilter rowsData={users} />
+        <TableFilter
+          rowsData={users}
+          onArrears={async (id) => {
+            try {
+              await UsersRepo.putArrearsUser(id, userToken);
+              router.reload();
+            } catch (error) {
+              toast.error("Ocorreu um erro");
+            }
+          }}
+        />
       </Grid>
     </Grid>
   );
@@ -37,6 +48,7 @@ export default function UsersPage({ users }) {
 export const getServerSideProps = async (ctx) => {
   let data = [];
   const cookies = nookies.get(ctx);
+
   try {
     data = (await UsersRepo.getAllUsers(cookies.accessToken)).data;
   } catch (error) {}
@@ -44,6 +56,7 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       users: data,
+      userToken: JSON.parse(cookies.userData).jwt,
     },
   };
 };
